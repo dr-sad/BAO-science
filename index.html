@@ -1,0 +1,2906 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <!-- GitHub Pages: enable Pages on branch root. Bottle Drop sim: assets/free_fall_simulation_drag.html (fork of Hackathon-Sims; iframe cannot style cross-origin). Figma MCP URLs may expire. -->
+  <title>Beast Academy — Air Resistance</title>
+  <link href="https://fonts.googleapis.com/css2?family=Roboto+Slab:wght@400;500;700;800&family=Roboto+Flex:wght@400;500&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+    .visually-hidden {
+      position: absolute;
+      width: 1px;
+      height: 1px;
+      padding: 0;
+      margin: -1px;
+      overflow: hidden;
+      clip: rect(0, 0, 0, 0);
+      white-space: nowrap;
+      border: 0;
+    }
+
+    html, body {
+      width: 100%;
+      height: 100%;
+      background: #0a1628;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+      font-family: 'Roboto Slab', serif;
+    }
+
+    /* Outer viewport shell */
+    #app {
+      position: absolute;
+      width: 1280px;
+      height: 800px;
+      transform-origin: top left;
+      overflow: hidden;
+    }
+
+    /* Screens */
+    .screen {
+      position: absolute;
+      inset: 0;
+      display: none;
+    }
+    .screen.visible { display: block; }
+
+    /* ════ SHARED BACKGROUND ════ */
+    .bg-base {
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(90deg, #c3edff 0%, #c3edff 100%);
+    }
+    .bg-scene {
+      position: absolute;
+      inset: 0;
+      background-image: url('https://www.figma.com/api/mcp/asset/b6bea685-2c56-40d1-877f-f9a0ad193c88');
+      background-size: cover;
+      background-position: center top;
+    }
+    .bg-scene-2 {
+      background-image: url('https://www.figma.com/api/mcp/asset/64b4e8d5-d607-400d-8e8e-a2eb07574c97');
+    }
+    .sand-floor {
+      position: absolute;
+      top: 240px;
+      left: -35px;
+      width: 1400px;
+      height: 573px;
+      pointer-events: none;
+    }
+
+    /* ════ HOME BUTTON ════ */
+    .home-btn {
+      position: absolute;
+      left: -4px;
+      top: 12px;
+      width: 108px;
+      height: 72px;
+      cursor: pointer;
+      z-index: 20;
+    }
+    .home-btn .btn-bg  { position:absolute; inset:0; width:100%; height:100%; transform:scaleX(-1); }
+    .home-btn .btn-logo { position:absolute; left:15px; top:18px; width:67px; height:36px; }
+
+    /* ════ TOP NAV ════ */
+    .top-nav {
+      position: absolute;
+      left: 50%;
+      transform: translateX(-50%);
+      top: -1px;
+      width: 856px;
+      height: 90px;
+      background: #247baf;
+      border-bottom: 8px solid #005b8e;
+      border-bottom-left-radius: 60px;
+      border-bottom-right-radius: 60px;
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      padding: 20px 48px 0;
+      z-index: 10;
+    }
+    .nav-left-btns { display:flex; gap:16px; align-items:center; width:195px; }
+    .nav-btn-img   { width:44px; height:44px; cursor:pointer; flex-shrink:0; }
+    .nav-question-btn {
+      position: relative;
+      width: 44px; height: 44px;
+      cursor: pointer; flex-shrink: 0;
+    }
+    .nav-question-btn img { position:absolute; inset:0; width:100%; height:100%; }
+    .nav-question-btn span {
+      position: absolute; left:50%; top:0;
+      transform: translateX(-50%);
+      font-weight: 800; font-size: 28px;
+      color: #0058a8; line-height: 1.25;
+    }
+    .nav-title {
+      font-weight: 500; font-size: 27.66px;
+      color: white; letter-spacing: -0.6085px;
+      text-align: center; width: 327px; line-height: 1.5;
+    }
+    .nav-profile    { display:flex; gap:8px; align-items:center; }
+    .nav-avatar     { width:58px; height:56px; box-shadow:2.667px 2.667px 0 #1057a8; flex-shrink:0; }
+    .nav-profile-info { display:flex; flex-direction:column; gap:4px; align-items:flex-end; }
+    .nav-username   { font-weight:500; font-size:14px; color:white; text-shadow:1px 1px 0 #053564; letter-spacing:-0.154px; white-space:nowrap; }
+    .xp-bar         { position:relative; width:146px; height:22px; border-radius:10px; background:#bf9414; overflow:hidden; }
+    .xp-bar-fill    { width:84px; height:100%; background:#ffc640; border-radius:10px; box-shadow:2px 1px 0 rgba(0,0,0,.25); }
+    .xp-bar-label   { position:absolute; left:50%; top:50%; transform:translate(-50%,-50%); font-weight:700; font-size:14px; color:white; text-align:center; pointer-events:none; }
+
+    /* ════ PROBLEM NAV DOTS ════ */
+    .problem-nav {
+      position: absolute; left:50%; transform:translateX(-50%);
+      top: 61px; display:flex; gap:10px; align-items:center; z-index:10;
+    }
+    .dot {
+      width:37px; height:37px; border-radius:30px;
+      display:flex; align-items:center; justify-content:center;
+      font-weight:500; font-size:18px; letter-spacing:-0.396px;
+      box-shadow:2px 2px 0 #777674; flex-shrink:0; position:relative;
+    }
+    .dot-info    { background:#0058a8; border:3px solid #0058a8; }
+    .dot-current { background:white; border:3px solid #bebbb4; color:#2c2b2f; }
+    .dot-locked  { background:#b6b6b6; color:#2c2b2f; }
+    .dot-gold {
+      background: #ffc640;
+      border: 3px solid #c9a020;
+      color: #2c2b2f;
+      box-shadow: 2px 2px 0 #777674;
+    }
+    .dot-info img { width:14px; height:18px; }
+    /* Navigable dots (visited screens) */
+    .dot.nav-link { cursor:pointer; transition: filter 0.15s, transform 0.15s; }
+    .dot.nav-link:hover { filter:brightness(1.2); transform:scale(1.1); }
+
+    /* Bottle Drop lesson nav — Figma 4098:20146 (i · 1 · i · 2 · i · 3) */
+    .problem-nav--bottle-drop {
+      gap: 10.5px;
+    }
+    .problem-nav--bottle-drop .dot-info {
+      background: #0058a8;
+      border: 3px solid #0058a8;
+    }
+    .problem-nav--bottle-drop .dot-info img {
+      width: 14px;
+      height: 18px;
+      display: block;
+      flex-shrink: 0;
+      object-fit: contain;
+    }
+    .problem-nav--bottle-drop .dot-current {
+      background: #fff;
+      border: 3px solid #bebbb4;
+      box-shadow: 2px 2px 0 #777674;
+      color: #2c2b2f;
+    }
+    .problem-nav--bottle-drop .dot-locked {
+      background: #b6b6b6;
+      border: none;
+      color: #2c2b2f;
+      box-shadow: 2px 2px 0 #777674;
+    }
+
+    /* ════ MODAL ════ */
+    .modal-wrap { position:absolute; left:213px; top:147px; width:852px; }
+    .modal-card {
+      background: white;
+      border: 11px solid #e9e9e9;
+      border-radius: 16px;
+      padding: 40px;
+      width: 100%; height: 540px;
+      overflow: hidden; position: relative;
+    }
+    .modal-toolbar {
+      display:flex; align-items:center; justify-content:space-between;
+      margin-bottom: 36px;
+    }
+    .toolbar-tools { display:flex; gap:8px; align-items:center; }
+    .tool-icon  { width:44px; height:44px; cursor:pointer; }
+    .audio-icon { width:42px; height:42px; cursor:pointer; }
+
+    .question-text {
+      font-weight:500; font-size:24px; color:#2c2b2f;
+      text-align:center; letter-spacing:-0.264px; line-height:1.5;
+      width:765px; margin:0 auto 36px;
+    }
+    .answer-box {
+      width:765px; height:216px;
+      border:1.5px solid #bebbb4; background:white;
+      margin:0 auto; border-radius:6px;
+      transition: border-color 0.2s, box-shadow 0.2s;
+    }
+    .answer-box:focus-within {
+      border-color: #0058a8;
+      box-shadow: 0 0 0 3px rgba(0,88,168,.15);
+    }
+    .answer-box.shake { border-color:#e05c5c; animation:shake 0.4s ease; }
+    @keyframes shake {
+      0%,100%{ transform:translateX(0); }
+      20%    { transform:translateX(-6px); }
+      40%    { transform:translateX(6px); }
+      60%    { transform:translateX(-4px); }
+      80%    { transform:translateX(4px); }
+    }
+    .answer-textarea {
+      width:100%; height:100%; border:none; outline:none; resize:none;
+      padding:16px 20px;
+      font-family:'Roboto Slab',serif; font-size:17px; color:#2c2b2f;
+      line-height:1.6; background:transparent; border-radius:6px;
+    }
+    .answer-textarea::placeholder { color:#c0bdb8; }
+
+    /* ════ SUBMIT / TRY-AGAIN BUTTON ════ */
+    .action-btn-wrap {
+      position:absolute; left:50%; transform:translateX(-50%);
+      top:662px; z-index:20;
+    }
+    .action-btn-wrap.action-btn-wrap--pair {
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      justify-content: center;
+      gap: 24px;
+      width: max-content;
+    }
+    .action-btn-wrap--pair .action-btn span {
+      text-transform: none;
+    }
+    .action-btn {
+      position:relative; width:170px; height:59px;
+      background:none; border:none; cursor:pointer; padding:0;
+    }
+    .action-btn .btn-bg-img { position:absolute; inset:0; width:100%; height:100%; }
+    .action-btn span {
+      position:absolute; inset:0; display:flex;
+      align-items:center; justify-content:center;
+      font-weight:500; font-size:17px; color:white;
+      text-align:center; letter-spacing:.5px;
+      text-transform:uppercase; pointer-events:none;
+    }
+    .action-btn:hover  { filter:brightness(1.08); }
+    .action-btn:active { filter:brightness(.93); transform:scale(.98); }
+
+    /* ════ KRAKEN ════ */
+    .kraken-wrap {
+      position:absolute; right:-85px; top:120px;
+      width:550px; height:680px; z-index:30;
+      animation: krakenIn 0.55s cubic-bezier(0.34,1.56,0.64,1) both;
+    }
+    @keyframes krakenIn {
+      from { transform:translateX(160px) translateY(20px); opacity:0; }
+      to   { transform:translateX(0)     translateY(0);    opacity:1; }
+    }
+    .kraken-svg {
+      position:absolute; bottom:0; right:0;
+      width:550px; height:auto;
+    }
+
+    .bubble-wrap {
+      position:absolute;
+      width:288px; height:268px;
+      left:0px; top:30px;
+    }
+    .bubble-wrap img.bubble-img {
+      position:absolute; inset:0; width:100%; height:100%;
+    }
+    .bubble-text {
+      position:absolute;
+      top:18%; left:12%; right:12%; bottom:24%;
+      display:flex; align-items:center; justify-content:center;
+      font-family:'Roboto Slab',serif; font-weight:500;
+      font-size:15px; color:white;
+      text-align:center; line-height:1.35;
+    }
+    .bubble-text.bubble-text-q3 {
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      gap: 10px;
+      top: 14%;
+      bottom: 20%;
+      padding: 0 4px;
+    }
+    .bubble-text-q3-msg {
+      margin: 0;
+      font-family: 'Roboto Slab', serif;
+      font-weight: 500;
+      font-size: 14px;
+      color: white;
+      line-height: 1.35;
+      text-align: center;
+    }
+    button.q3-kraken-video-btn.action-btn {
+      cursor: pointer;
+    }
+    button.q3-kraken-video-btn.action-btn span {
+      color: #0058a8;
+      text-shadow: none;
+    }
+
+    /* Q3 Kraken — video modal (Figma 4092:18378) */
+    .q3-video-overlay {
+      display: none;
+      position: absolute;
+      inset: 0;
+      z-index: 100;
+      align-items: center;
+      justify-content: center;
+    }
+    .q3-video-overlay.is-open {
+      display: flex;
+    }
+    .q3-video-overlay-backdrop {
+      position: absolute;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.25);
+      cursor: pointer;
+    }
+    .q3-video-overlay-dialog {
+      position: relative;
+      z-index: 1;
+      width: 856px;
+      max-width: calc(100% - 48px);
+      flex-shrink: 0;
+    }
+    .q3-video-overlay-close {
+      position: absolute;
+      top: 0;
+      right: 0;
+      width: 61px;
+      height: 62px;
+      padding: 0;
+      border: none;
+      background: none;
+      cursor: pointer;
+      z-index: 2;
+      filter: drop-shadow(2px 2px 4px rgba(0, 0, 0, 0.2));
+    }
+    .q3-video-overlay-close img {
+      display: block;
+      width: 100%;
+      height: 100%;
+    }
+    .q3-video-overlay-card {
+      margin-top: 19px;
+      height: 499px;
+      box-sizing: border-box;
+      background: #fff;
+      border: 11px solid #4090cd;
+      padding: 20px 24px 24px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .q3-video-overlay-player {
+      width: 100%;
+      max-height: 100%;
+      border-radius: 8px;
+      background: #000;
+    }
+
+    /* ════ SUCCESS OVERLAY ════ */
+    .success-overlay {
+      position:absolute; inset:0;
+      background:rgba(0,68,130,.88);
+      display:flex; align-items:center; justify-content:center;
+      border-radius:8px;
+      animation: fadeIn 0.4s ease;
+    }
+    @keyframes fadeIn {
+      from { opacity:0; transform:scale(.96); }
+      to   { opacity:1; transform:scale(1); }
+    }
+    .success-inner { text-align:center; }
+    .success-stars {
+      font-size:56px; margin-bottom:14px;
+      animation: popIn 0.5s cubic-bezier(0.34,1.56,0.64,1) 0.2s both;
+    }
+    @keyframes popIn {
+      from { transform:scale(0); opacity:0; }
+      to   { transform:scale(1); opacity:1; }
+    }
+    .success-title { font-weight:800; font-size:38px; color:#ffc640; text-shadow:2px 3px 0 rgba(0,0,0,.3); letter-spacing:-.5px; margin-bottom:14px; }
+    .success-msg   { font-weight:500; font-size:20px; color:white; line-height:1.5; }
+
+    /* ════ INFO CARD ════ */
+    .info-card {
+      background: white;
+      border: 11px solid #4090cd;
+      border-radius: 16px;
+      width: 100%; height: 540px;
+      overflow: hidden;
+      position: relative;
+      display: flex;
+      flex-direction: column;
+    }
+
+    /* Fixed top section — title + divider never scroll */
+    .info-fixed-header {
+      flex-shrink: 0;
+      padding: 40px 40px 0;
+    }
+
+    /* Scrollable body below the divider */
+    .info-scroll-body {
+      flex: 1;
+      overflow-y: auto;
+      overflow-x: hidden;
+      padding: 24px 40px 40px;
+      scroll-behavior: smooth;
+    }
+    .info-scroll-body::-webkit-scrollbar { width: 8px; }
+    .info-scroll-body::-webkit-scrollbar-track { background: #f0f0f0; border-radius: 4px; }
+    .info-scroll-body::-webkit-scrollbar-thumb { background: #4090cd; border-radius: 4px; }
+
+    .info-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 16px;
+    }
+    .info-title {
+      font-family: 'Roboto Slab', serif;
+      font-weight: 700; font-size: 32px;
+      color: black; letter-spacing: -0.704px;
+      line-height: 1.5;
+    }
+    .info-divider {
+      width: 100%; height: 2px;
+      background: #dedad1;
+      margin-bottom: 24px;
+      border: none;
+    }
+    .info-body {
+      display: flex;
+      gap: 24px;
+      align-items: flex-start;
+    }
+    .info-character {
+      width: 241px;
+      height: auto;
+      display: block;
+      object-fit: contain;
+      flex-shrink: 0;
+      align-self: flex-start;
+    }
+    .info-text {
+      flex: 1;
+      font-family: 'Roboto Flex', sans-serif;
+      font-weight: 400;
+      font-size: 20px;
+      color: black;
+      line-height: 1.5;
+    }
+    .info-text p { margin-bottom: 16px; }
+    .info-text p:last-child { margin-bottom: 0; }
+
+    /* Q3 — selectable image cards & follow-up MC (Figma-aligned) */
+    .modal-wrap.modal-wrap-q3 {
+      padding-bottom: 28px;
+    }
+    .modal-card.modal-q3 {
+      height: 540px;
+      padding: 24px 32px 48px;
+      display: flex;
+      flex-direction: column;
+      overflow: visible;
+      position: relative;
+      box-sizing: border-box;
+    }
+    .modal-card.modal-q3 .modal-toolbar {
+      margin-bottom: 10px;
+      flex-shrink: 0;
+    }
+    .q3-question {
+      font-weight: 500;
+      font-size: 22px;
+      color: #2c2b2f;
+      text-align: center;
+      letter-spacing: -0.264px;
+      line-height: 1.45;
+      width: 100%;
+      max-width: 771px;
+      margin: 0 auto 12px;
+      flex-shrink: 0;
+    }
+    .q3-question .q3-q-strong { font-weight: 700; }
+    .q3-question .q3-q-sub {
+      font-weight: 400;
+      font-size: 20px;
+    }
+    .q3-modal-actions {
+      position: absolute;
+      left: 50%;
+      bottom: -22px;
+      transform: translateX(-50%);
+      z-index: 6;
+    }
+    .q3-modal-actions .action-btn {
+      filter: drop-shadow(0 2px 4px rgba(0,0,0,.12));
+    }
+    .q3-choices-row {
+      display: flex;
+      gap: 54px;
+      align-items: center;
+      justify-content: center;
+      margin-top: 4px;
+      flex: 1;
+      min-height: 0;
+      flex-wrap: wrap;
+    }
+    .q3-choice {
+      width: 237px;
+      min-height: 0;
+      border-radius: 24px;
+      border: 2px solid #e5e5e5;
+      background: #fff;
+      cursor: pointer;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: flex-start;
+      padding: 10px 10px 14px;
+      transition: box-shadow 0.15s, border-color 0.15s;
+      box-sizing: border-box;
+    }
+    .q3-choice:focus { outline: none; }
+    .q3-choice:focus-visible {
+      border-color: #0058a8;
+      box-shadow: 0 0 0 3px #0058a8;
+    }
+    .q3-choice.selected {
+      border-color: #0058a8;
+      box-shadow: 0 0 0 3px #0058a8;
+    }
+    .q3-choice.wrong-pick {
+      border-color: #e05c5c;
+      box-shadow: 0 0 0 3px rgba(224, 92, 92, 0.35);
+    }
+    .q3-choice-img-box {
+      width: 157px;
+      height: 170px;
+      margin-top: 6px;
+      border-radius: 12px;
+      overflow: hidden;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      background: #f7f7f7;
+    }
+    .q3-choice-img-box img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+    .q3-choice-crumpled .q3-choice-img-box img {
+      width: 168%;
+      max-width: none;
+      height: 100%;
+      margin-left: -28%;
+      object-fit: cover;
+    }
+    .q3-choice-label {
+      font-family: 'Roboto Slab', serif;
+      font-weight: 500;
+      font-size: 16px;
+      color: #2c2b2f;
+      text-align: center;
+      margin-top: 10px;
+      line-height: 1.35;
+    }
+    .q4-mc-row {
+      display: flex;
+      gap: 54px;
+      align-items: stretch;
+      justify-content: center;
+      margin-top: 8px;
+      flex-wrap: wrap;
+    }
+    .q3-text-choice {
+      width: 237px;
+      min-height: 120px;
+      border-radius: 24px;
+      border: 2px solid #e5e5e5;
+      background: #fff;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 20px 16px;
+      text-align: center;
+      font-family: 'Roboto Slab', serif;
+      font-weight: 500;
+      font-size: 24px;
+      color: #000;
+      letter-spacing: -0.264px;
+      line-height: 1.35;
+      transition: box-shadow 0.15s, border-color 0.15s;
+    }
+    .q3-text-choice.selected {
+      border-color: #0058a8;
+      box-shadow: 0 0 0 3px #0058a8;
+    }
+    .q3-text-choice.wrong-pick {
+      border-color: #e05c5c;
+      box-shadow: 0 0 0 3px rgba(224, 92, 92, 0.35);
+    }
+    .q3-choices-row.shake .q3-choice,
+    .q4-mc-row.shake .q3-text-choice {
+      animation: shake 0.4s ease;
+    }
+
+    /* Lesson complete — Figma 4092:18442 (inner 4093:18760) */
+    .modal-wrap-final {
+      z-index: 12;
+      position: relative;
+      overflow: visible;
+    }
+    .final-results-card {
+      position: relative;
+      width: 852px;
+      height: 540px;
+      border-radius: 16px;
+      overflow: visible;
+      border: 9px solid #4090cd;
+      box-sizing: border-box;
+      padding: 122px 65px 52px;
+    }
+    .final-results-bg {
+      position: absolute;
+      inset: 0;
+      background: #0659a6;
+      border-radius: 8px;
+    }
+    .final-results-bg::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background-image: url('https://www.figma.com/api/mcp/asset/87e65513-9dd6-40b2-b288-b306279f9676');
+      background-size: cover;
+      background-position: center;
+      opacity: 0.5;
+      border-radius: 8px;
+    }
+    .final-sparkles {
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+      z-index: 1;
+      background-image:
+        radial-gradient(circle at 12% 18%, rgba(255,255,255,.95) 0, transparent 0.35%),
+        radial-gradient(circle at 88% 22%, rgba(255,248,200,.9) 0, transparent 0.4%),
+        radial-gradient(circle at 30% 72%, rgba(255,255,255,.85) 0, transparent 0.3%),
+        radial-gradient(circle at 70% 65%, rgba(200,235,255,.9) 0, transparent 0.35%),
+        radial-gradient(circle at 50% 40%, rgba(255,255,255,.7) 0, transparent 0.25%),
+        radial-gradient(circle at 18% 55%, rgba(255,220,120,.85) 0, transparent 0.3%),
+        radial-gradient(circle at 82% 48%, rgba(255,255,255,.8) 0, transparent 0.28%);
+      animation: finalSparklePulse 2.8s ease-in-out infinite alternate;
+    }
+    @keyframes finalSparklePulse {
+      0%   { opacity: 0.35; transform: scale(1); }
+      100% { opacity: 1;    transform: scale(1.03); }
+    }
+    .final-sparkles::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background-image:
+        radial-gradient(2px 2px at 25% 35%, rgba(255,255,255,.9), transparent),
+        radial-gradient(2px 2px at 75% 28%, rgba(255,255,255,.85), transparent),
+        radial-gradient(2px 2px at 45% 80%, rgba(255,255,255,.75), transparent),
+        radial-gradient(2px 2px at 92% 75%, rgba(255,248,180,.8), transparent);
+      animation: finalSparkleTwinkle 1.6s ease-in-out infinite;
+    }
+    @keyframes finalSparkleTwinkle {
+      0%, 100% { opacity: 0.25; }
+      50%      { opacity: 0.95; }
+    }
+    .final-stars-wrap {
+      position: absolute;
+      left: 50%;
+      top: 60px;
+      transform: translateX(-50%);
+      display: flex;
+      gap: 6px;
+      align-items: flex-end;
+      justify-content: center;
+      z-index: 4;
+      pointer-events: none;
+    }
+    .final-star {
+      height: 106px;
+      width: auto;
+      display: block;
+      opacity: 0;
+      filter: blur(4px);
+    }
+    .final-star--1 { width: 118px; object-fit: contain; }
+    .final-star--2,
+    .final-star--3 { width: 112px; object-fit: contain; }
+    @keyframes finalStarIn {
+      from {
+        opacity: 0;
+        filter: blur(8px);
+        transform: translateY(16px) scale(0.88);
+      }
+      to {
+        opacity: 1;
+        filter: blur(0);
+        transform: translateY(0) scale(1);
+      }
+    }
+    .final-stars-wrap.final-stars--play .final-star--1 {
+      animation: finalStarIn 0.55s ease forwards;
+    }
+    .final-stars-wrap.final-stars--play .final-star--2 {
+      animation: finalStarIn 0.55s ease forwards;
+      animation-delay: 0.38s;
+    }
+    .final-stars-wrap.final-stars--play .final-star--3 {
+      animation: finalStarIn 0.55s ease forwards;
+      animation-delay: 0.76s;
+    }
+    .final-results-white {
+      position: relative;
+      z-index: 3;
+      width: 100%;
+      height: 342px;
+      background: #fff;
+      padding: 13px;
+      box-sizing: border-box;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .final-results-stack {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+    }
+    .final-results-banner {
+      background: #0d3e73;
+      color: #fff;
+      font-family: 'Roboto Slab', serif;
+      font-weight: 700;
+      font-size: 39px;
+      line-height: 1.5;
+      letter-spacing: -0.86px;
+      padding: 16px 22px;
+      margin-bottom: -10px;
+      position: relative;
+      z-index: 2;
+      white-space: nowrap;
+    }
+    .final-results-sub {
+      background: #bde3ff;
+      color: #2c2b2f;
+      font-family: 'Roboto Slab', serif;
+      font-weight: 500;
+      font-size: 14.7px;
+      line-height: 1.5;
+      padding: 13px 20px;
+      letter-spacing: -0.32px;
+      position: relative;
+      z-index: 1;
+      max-width: 520px;
+    }
+    .final-results-sub p { margin: 0; }
+    .final-results-btn-wrap {
+      position: absolute;
+      left: 50%;
+      bottom: 36px;
+      transform: translateX(-50%);
+      z-index: 5;
+    }
+    /* Same Kraken + bubble pattern as error states; above modal + sparkles */
+    .final-success-kraken.kraken-wrap {
+      z-index: 40;
+      pointer-events: none;
+      right: -72px;
+      top: 108px;
+    }
+    .final-success-kraken .bubble-text {
+      font-size: 14px;
+      line-height: 1.35;
+      white-space: normal;
+    }
+
+    /* Guidebook / “Falling” — uses same .bg-scene + .sand-floor as other lesson screens */
+    .guidebook-nav {
+      width: auto;
+      min-width: unset;
+      gap: 10px;
+    }
+    .guidebook-nav .dot-guidebook-comic {
+      width: 37px;
+      height: 37px;
+      padding: 0;
+      overflow: hidden;
+    }
+    .guidebook-nav .dot-guidebook-comic img {
+      display: block;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+    .guidebook-modal-card {
+      position: relative;
+      overflow: hidden;
+      padding: 14px;
+    }
+    /* Bottle Drop sim: no inner padding — navy sim flush to light gray modal border */
+    .modal-card--bottle-drop-sim.guidebook-modal-card {
+      padding: 0;
+      display: flex;
+      flex-direction: column;
+      min-height: 0;
+    }
+    .modal-card--bottle-drop-sim .guidebook-video-placeholder.bottle-drop-sim-host {
+      flex: 1;
+      min-height: 0;
+      height: auto;
+      border-radius: 0;
+      background: #1a2e44;
+    }
+    .guidebook-video-placeholder {
+      position: relative;
+      width: 100%;
+      height: 490px;
+      background: #5a5a5a;
+      border-radius: 4px;
+      overflow: hidden;
+    }
+    .guidebook-iframe {
+      position: absolute;
+      left: 0;
+      top: 0;
+      width: 100%;
+      height: 100%;
+      border: none;
+      background: #5a5a5a;
+    }
+    /* Bottle Drop sim: scale to fit host (no scroll); center if letterboxed */
+    .bottle-drop-sim-host {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+      background: #1a2e44;
+    }
+    .bottle-drop-sim-clip {
+      overflow: hidden;
+      flex-shrink: 0;
+      line-height: 0;
+    }
+    .bottle-drop-sim-scale-inner {
+      transform-origin: top left;
+      will-change: transform;
+    }
+    .bottle-drop-sim-host .bottle-drop-sim-iframe {
+      position: static;
+      left: auto;
+      top: auto;
+      display: block;
+      border: none;
+      background: #1a2e44;
+    }
+    /* Bottle Drop Q1 — intro modal (Figma 4098:20056) */
+    .bottle-drop-intro-overlay {
+      display: none;
+      position: absolute;
+      inset: 0;
+      z-index: 60;
+      align-items: center;
+      justify-content: center;
+      padding: 24px;
+      box-sizing: border-box;
+    }
+    .bottle-drop-intro-overlay.is-open {
+      display: flex;
+    }
+    .bottle-drop-intro-backdrop {
+      position: absolute;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.35);
+      cursor: pointer;
+    }
+    /* Modal root: 726px frame; white card sits 21px below top to clear close control */
+    .bottle-drop-intro-modal {
+      position: relative;
+      z-index: 1;
+      width: 726px;
+      max-width: calc(100% - 32px);
+      min-height: 354px;
+      flex-shrink: 0;
+    }
+    .bottle-drop-intro-card {
+      position: relative;
+      margin-top: 21px;
+      width: 100%;
+      height: 333px;
+      box-sizing: border-box;
+      background: #fff;
+      border: 11px solid #4090cd;
+      box-shadow: 0 16px 48px rgba(0, 0, 0, 0.22);
+      overflow: visible;
+    }
+    .bottle-drop-intro-close {
+      position: absolute;
+      top: 0;
+      right: 0;
+      width: 61px;
+      height: 62px;
+      padding: 0;
+      border: none;
+      background: none;
+      cursor: pointer;
+      z-index: 3;
+      filter: drop-shadow(2px 2px 4px rgba(0, 0, 0, 0.2));
+    }
+    .bottle-drop-intro-close img {
+      display: block;
+      width: 100%;
+      height: 100%;
+    }
+    .bottle-drop-intro-content {
+      position: absolute;
+      left: 92px;
+      top: 53px;
+      width: 542px;
+      max-width: calc(100% - 184px);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 26px;
+      text-align: center;
+      box-sizing: border-box;
+      z-index: 1;
+    }
+    .bottle-drop-intro-title {
+      font-family: 'Roboto Slab', serif;
+      font-weight: 700;
+      font-size: 32px;
+      line-height: 1.5;
+      letter-spacing: -0.704px;
+      color: #000;
+      margin: 0;
+    }
+    .bottle-drop-intro-body {
+      font-family: 'Roboto Flex', sans-serif;
+      font-weight: 400;
+      font-size: 20px;
+      line-height: 1.5;
+      letter-spacing: 0;
+      color: #000;
+      margin: 0;
+      text-align: center;
+    }
+    .bottle-drop-intro-body p {
+      margin: 0 0 16px;
+    }
+    .bottle-drop-intro-body p:last-child {
+      margin-bottom: 0;
+    }
+    .guidebook-comic-icon {
+      width: 22px;
+      height: 18px;
+      color: #2c2b2f;
+    }
+    /* Full-stage sparkles (lesson complete) */
+    .final-screen-sparkles {
+      position: absolute;
+      inset: 0;
+      z-index: 2;
+      pointer-events: none;
+      background-image:
+        radial-gradient(circle at 6% 14%, rgba(255,255,255,.9) 0, transparent 0.45%),
+        radial-gradient(circle at 18% 78%, rgba(255,230,150,.85) 0, transparent 0.4%),
+        radial-gradient(circle at 94% 22%, rgba(255,255,255,.88) 0, transparent 0.38%),
+        radial-gradient(circle at 72% 88%, rgba(200,245,255,.8) 0, transparent 0.42%),
+        radial-gradient(circle at 40% 8%, rgba(255,255,255,.75) 0, transparent 0.32%),
+        radial-gradient(circle at 52% 62%, rgba(255,248,200,.82) 0, transparent 0.36%),
+        radial-gradient(circle at 88% 56%, rgba(255,255,255,.7) 0, transparent 0.3%);
+      animation: finalScreenSparkle 2.4s ease-in-out infinite alternate;
+    }
+    @keyframes finalScreenSparkle {
+      0%   { opacity: 0.2; transform: scale(1); }
+      100% { opacity: 0.85; transform: scale(1.02); }
+    }
+  </style>
+</head>
+<body>
+<div id="app">
+
+  <!-- ══ SCREEN 0 — INFO (intro concept) ══ -->
+  <div class="screen visible" id="screen-info">
+    <div class="bg-base"></div>
+    <div class="bg-scene"></div>
+    <img class="sand-floor" src="https://www.figma.com/api/mcp/asset/f5a0e650-37e5-46c3-95d4-551d7b16250a" alt="">
+
+    <div class="home-btn">
+      <img class="btn-bg"   src="https://www.figma.com/api/mcp/asset/6b56f2b8-a858-4c60-b144-152398b3ba49" alt="">
+      <img class="btn-logo" src="https://www.figma.com/api/mcp/asset/b7f55f59-95eb-4154-99a9-0a31af4927cf" alt="BAQ">
+    </div>
+
+    <div class="top-nav">
+      <div class="nav-left-btns">
+        <img class="nav-btn-img" src="https://www.figma.com/api/mcp/asset/802d55d7-1403-4edb-bda5-dca001e3716f" alt="Back">
+        <div class="nav-question-btn">
+          <img src="https://www.figma.com/api/mcp/asset/3ba0bca4-dff1-41cd-95e8-5242c93191a7" alt="">
+          <span>?</span>
+        </div>
+      </div>
+      <span class="nav-title">Air Resistance</span>
+      <div class="nav-profile">
+        <img class="nav-avatar" src="assets/avatar.svg" alt="Profile">
+        <div class="nav-profile-info">
+          <span class="nav-username">EnergeticArmadillo35</span>
+          <div class="xp-bar"><div class="xp-bar-fill"></div><span class="xp-bar-label">Lv. 13</span></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Nav dots: first "i" is the active/current screen -->
+    <div class="problem-nav">
+      <div class="dot dot-info" style="box-shadow:0 0 0 3px white, 0 0 0 5px #0058a8;">
+        <img src="https://www.figma.com/api/mcp/asset/1c80acf8-f527-4803-80ab-b2049571b897" alt="i">
+      </div>
+      <div class="dot dot-locked">1</div>
+      <div class="dot dot-locked">2</div>
+      <div class="dot dot-info"><img src="https://www.figma.com/api/mcp/asset/1c80acf8-f527-4803-80ab-b2049571b897" alt="i"></div>
+      <div class="dot dot-locked">3</div>
+      <div class="dot dot-locked">4</div>
+    </div>
+
+    <!-- Info modal — blue border, scrollable -->
+    <div class="modal-wrap">
+      <div class="info-card">
+
+        <!-- Fixed: title + audio + divider -->
+        <div class="info-fixed-header">
+          <div class="info-header">
+            <span class="info-title">Air Resistance</span>
+            <img style="width:42px;height:42px;cursor:pointer;"
+                 src="https://www.figma.com/api/mcp/asset/0128d2bc-00aa-470f-b1d7-9c5131ca6f3d" alt="Audio">
+          </div>
+          <hr class="info-divider">
+        </div>
+
+        <!-- Scrollable: character + text -->
+        <div class="info-scroll-body">
+          <div class="info-body">
+            <img class="info-character" src="assets/shark-dude.svg" alt="Character">
+            <div class="info-text">
+              <p>To figure out why some objects fall faster, we have to talk about what's <strong>IN</strong> the way on the way down. Hint: it's all around you right now. Air.</p>
+              <p>Every falling object has to shove air out of its path. That push-back from the air has a name: <strong>air resistance</strong> — or, if you want to sound like a proper aerodynamics beast, <strong>drag</strong>.</p>
+              <p>Want to feel drag for yourself? Stick your hand out the window of a moving car. Feel that pushing? That's drag doing its thing.</p>
+              <p>Now try turning your hand sideways — flat like a fin. Less push, right? That's because a narrower shape doesn't have to move as much air out of the way.</p>
+              <p>That's exactly why narrow objects fall faster than wide ones — less air to shove, less drag to fight.</p>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- Next → goes to the question -->
+    <div class="action-btn-wrap">
+      <button class="action-btn" onclick="showScreen('screen-question')">
+        <img class="btn-bg-img" src="https://www.figma.com/api/mcp/asset/3c1fc56c-ae3d-47c6-942f-d80d16b44f37" alt="">
+        <span>Next</span>
+      </button>
+    </div>
+  </div>
+
+
+  <!-- ══ SCREEN 1 — QUESTION ══ -->
+  <div class="screen" id="screen-question">
+    <div class="bg-base"></div>
+    <div class="bg-scene"></div>
+    <img class="sand-floor" src="https://www.figma.com/api/mcp/asset/f5a0e650-37e5-46c3-95d4-551d7b16250a" alt="">
+
+    <div class="home-btn">
+      <img class="btn-bg"  src="https://www.figma.com/api/mcp/asset/6b56f2b8-a858-4c60-b144-152398b3ba49" alt="">
+      <img class="btn-logo" src="https://www.figma.com/api/mcp/asset/b7f55f59-95eb-4154-99a9-0a31af4927cf" alt="BAQ">
+    </div>
+
+    <div class="top-nav">
+      <div class="nav-left-btns">
+        <img class="nav-btn-img" src="https://www.figma.com/api/mcp/asset/802d55d7-1403-4edb-bda5-dca001e3716f" alt="Back">
+        <div class="nav-question-btn">
+          <img src="https://www.figma.com/api/mcp/asset/3ba0bca4-dff1-41cd-95e8-5242c93191a7" alt="">
+          <span>?</span>
+        </div>
+      </div>
+      <span class="nav-title">Air Resistance</span>
+      <div class="nav-profile">
+        <img class="nav-avatar" src="assets/avatar.svg" alt="Profile">
+        <div class="nav-profile-info">
+          <span class="nav-username">EnergeticArmadillo35</span>
+          <div class="xp-bar"><div class="xp-bar-fill"></div><span class="xp-bar-label">Lv. 13</span></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="problem-nav">
+      <div class="dot dot-info nav-link" onclick="navTo('screen-info')"><img src="https://www.figma.com/api/mcp/asset/1c80acf8-f527-4803-80ab-b2049571b897" alt="i"></div>
+      <div class="dot dot-current">1</div>
+      <div class="dot dot-locked">2</div>
+      <div class="dot dot-info"><img src="https://www.figma.com/api/mcp/asset/1c80acf8-f527-4803-80ab-b2049571b897" alt="i"></div>
+      <div class="dot dot-locked">3</div>
+      <div class="dot dot-locked">4</div>
+    </div>
+
+    <div class="modal-wrap">
+      <div class="modal-card">
+        <div class="modal-toolbar">
+          <div class="toolbar-tools">
+            <img class="tool-icon" src="https://www.figma.com/api/mcp/asset/7ed24186-5f03-4936-87dd-ee6bf89af38b" alt="Undo">
+            <img class="tool-icon" src="https://www.figma.com/api/mcp/asset/aaae76d7-fe62-431e-b64a-8d323b23f4b7" alt="Redo">
+            <img class="tool-icon" src="https://www.figma.com/api/mcp/asset/ff085e7a-cde8-4f4a-af7a-44bdd8ff3f8d" alt="Reset">
+          </div>
+          <img class="audio-icon" src="https://www.figma.com/api/mcp/asset/e196da58-d543-4d05-ae2a-adc64ac222aa" alt="Audio">
+        </div>
+        <p class="question-text">Parachutes are used to slow the falls of people and objects. Why does a person fall so much slower with an open parachute?</p>
+        <div class="answer-box" id="answer-box-1">
+          <textarea id="answer-input" class="answer-textarea" placeholder="Write your answer here…"></textarea>
+        </div>
+      </div>
+    </div>
+
+    <div class="action-btn-wrap">
+      <button class="action-btn" onclick="checkAnswer()">
+        <img class="btn-bg-img" src="https://www.figma.com/api/mcp/asset/8bb57f0b-7689-432a-9ab3-6009e2b9d317" alt="">
+        <span>Submit</span>
+      </button>
+    </div>
+  </div>
+
+
+  <!-- ══ SCREEN 2 — WRONG ANSWER (KRAKEN) ══ -->
+  <div class="screen" id="screen-kraken">
+    <div class="bg-base"></div>
+    <div class="bg-scene bg-scene-2"></div>
+    <img class="sand-floor" src="https://www.figma.com/api/mcp/asset/29ecfdf4-5cb8-43f1-b33d-ffe8f813aee6" alt="">
+
+    <div class="home-btn">
+      <img class="btn-bg"   src="https://www.figma.com/api/mcp/asset/1d306f4a-62b8-4547-9ec5-0e6e55640811" alt="">
+      <img class="btn-logo" src="https://www.figma.com/api/mcp/asset/0f2956f7-18f1-42ef-9702-4e32d8695f79" alt="BAQ">
+    </div>
+
+    <div class="top-nav">
+      <div class="nav-left-btns">
+        <img class="nav-btn-img" src="https://www.figma.com/api/mcp/asset/12a0c4fa-16de-4ffa-afd4-f514ce45ff30" alt="Back">
+        <div class="nav-question-btn">
+          <img src="https://www.figma.com/api/mcp/asset/25b33426-895e-4e76-9509-73ddf17a5931" alt="">
+          <span>?</span>
+        </div>
+      </div>
+      <span class="nav-title">Air Resistance</span>
+      <div class="nav-profile">
+        <img class="nav-avatar" src="assets/avatar.svg" alt="Profile">
+        <div class="nav-profile-info">
+          <span class="nav-username">EnergeticArmadillo35</span>
+          <div class="xp-bar"><div class="xp-bar-fill"></div><span class="xp-bar-label">Lv. 13</span></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="problem-nav">
+      <div class="dot dot-info nav-link" onclick="navTo('screen-info')"><img src="https://www.figma.com/api/mcp/asset/7005b4ae-9b85-47c5-8357-eda5dcf16fee" alt="i"></div>
+      <div class="dot dot-current nav-link" style="overflow:hidden;" onclick="navTo('screen-question')">
+        <img src="https://www.figma.com/api/mcp/asset/675083d8-0c0d-4a45-8757-44c23269443f"
+             alt="" style="position:absolute;left:0;top:-0.5px;width:18px;height:35px;">
+        <span style="position:absolute;left:13px;top:2px;">1</span>
+      </div>
+      <div class="dot dot-locked">2</div>
+      <div class="dot dot-info"><img src="https://www.figma.com/api/mcp/asset/7005b4ae-9b85-47c5-8357-eda5dcf16fee" alt="i"></div>
+      <div class="dot dot-locked">3</div>
+      <div class="dot dot-locked">4</div>
+    </div>
+
+    <!-- Modal shows user's previous answer (read-only) -->
+    <div class="modal-wrap">
+      <div class="modal-card">
+        <div class="modal-toolbar">
+          <div class="toolbar-tools">
+            <img class="tool-icon" src="https://www.figma.com/api/mcp/asset/fc32a14d-f236-4dc7-9522-1032f6805343" alt="Undo">
+            <img class="tool-icon" src="https://www.figma.com/api/mcp/asset/293448fc-3e1d-4813-a87a-2a42c639afb3" alt="Redo">
+            <img class="tool-icon" src="https://www.figma.com/api/mcp/asset/ba68bfd1-7dc6-45d8-b43a-1f5a546cd520" alt="Reset">
+          </div>
+          <img class="audio-icon" src="https://www.figma.com/api/mcp/asset/daf4c2ee-667a-4f4c-8e39-595b31189848" alt="Audio">
+        </div>
+        <p class="question-text">Parachutes are used to slow the falls of people and objects. Why does a person fall so much slower with an open parachute?</p>
+        <div class="answer-box" style="border-color:#f0c0c0;">
+          <textarea id="answer-display" class="answer-textarea" readonly
+                    style="color:#999; background:#fafafa;"></textarea>
+        </div>
+      </div>
+    </div>
+
+    <div class="action-btn-wrap">
+      <button class="action-btn" onclick="tryAgain()">
+        <img class="btn-bg-img" src="https://www.figma.com/api/mcp/asset/d1c6e57a-5b6e-4e30-9cee-21bc587850e2" alt="">
+        <span>Try Again</span>
+      </button>
+    </div>
+
+    <!-- Kraken character -->
+    <div class="kraken-wrap" id="kraken-wrap">
+      <img class="kraken-svg" src="assets/Kraken.svg" alt="Kraken">
+
+      <!-- Speech bubble — text is injected dynamically by generateHint() -->
+      <div class="bubble-wrap">
+        <img class="bubble-img" src="https://www.figma.com/api/mcp/asset/d64ce6c4-cc3a-4c7a-a0d4-703b37a2431f" alt="">
+        <div class="bubble-text" id="hint-text"></div>
+      </div>
+    </div>
+  </div>
+
+
+  <!-- ══ SCREEN 3 — CORRECT ANSWER ══ -->
+  <div class="screen" id="screen-correct">
+    <div class="bg-base"></div>
+    <div class="bg-scene"></div>
+    <img class="sand-floor" src="https://www.figma.com/api/mcp/asset/f5a0e650-37e5-46c3-95d4-551d7b16250a" alt="">
+
+    <div class="home-btn">
+      <img class="btn-bg"   src="https://www.figma.com/api/mcp/asset/6b56f2b8-a858-4c60-b144-152398b3ba49" alt="">
+      <img class="btn-logo" src="https://www.figma.com/api/mcp/asset/b7f55f59-95eb-4154-99a9-0a31af4927cf" alt="BAQ">
+    </div>
+
+    <div class="top-nav">
+      <div class="nav-left-btns">
+        <img class="nav-btn-img" src="https://www.figma.com/api/mcp/asset/802d55d7-1403-4edb-bda5-dca001e3716f" alt="Back">
+        <div class="nav-question-btn">
+          <img src="https://www.figma.com/api/mcp/asset/3ba0bca4-dff1-41cd-95e8-5242c93191a7" alt="">
+          <span>?</span>
+        </div>
+      </div>
+      <span class="nav-title">Air Resistance</span>
+      <div class="nav-profile">
+        <img class="nav-avatar" src="assets/avatar.svg" alt="Profile">
+        <div class="nav-profile-info">
+          <span class="nav-username">EnergeticArmadillo35</span>
+          <div class="xp-bar"><div class="xp-bar-fill"></div><span class="xp-bar-label">Lv. 13</span></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="problem-nav">
+      <div class="dot dot-info nav-link" onclick="navTo('screen-info')"><img src="https://www.figma.com/api/mcp/asset/1c80acf8-f527-4803-80ab-b2049571b897" alt="i"></div>
+      <!-- Green checkmark done state -->
+      <div class="dot nav-link" style="background:#14ae5c; border:3px solid #22b35f;" onclick="navTo('screen-question')">
+        <img src="https://www.figma.com/api/mcp/asset/6a9ca000-bd0e-4de4-95a1-358153a16940" alt="done" style="width:16px; height:15px;">
+      </div>
+      <div class="dot dot-locked">2</div>
+      <div class="dot dot-info"><img src="https://www.figma.com/api/mcp/asset/1c80acf8-f527-4803-80ab-b2049571b897" alt="i"></div>
+      <div class="dot dot-locked">3</div>
+      <div class="dot dot-locked">4</div>
+    </div>
+
+    <div class="modal-wrap">
+      <div class="modal-card" style="display:flex; align-items:center; justify-content:center;">
+        <div class="success-overlay">
+          <div class="success-inner">
+            <div class="success-title">Awesome job!</div>
+            <p class="success-msg">
+              That's right! An open parachute has a large surface<br>
+              that catches the air around it. The air pushing back<br>
+              creates <strong>air resistance</strong>, which slows the fall way down!
+            </p>
+            <!-- Next button → Q2 -->
+            <div style="margin-top:32px; display:flex; justify-content:center;">
+              <button class="action-btn" onclick="showScreen('screen-q2')">
+                <img class="btn-bg-img" src="https://www.figma.com/api/mcp/asset/96df872c-ec37-4128-9b19-b4ba537c1b5b" alt="">
+                <span>Next</span>
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+  <!-- ══ SCREEN Q2 — QUESTION 2 (CYCLISTS) ══ -->
+  <div class="screen" id="screen-q2">
+    <div class="bg-base"></div>
+    <div class="bg-scene"></div>
+    <img class="sand-floor" src="https://www.figma.com/api/mcp/asset/f5a0e650-37e5-46c3-95d4-551d7b16250a" alt="">
+
+    <div class="home-btn">
+      <img class="btn-bg"  src="https://www.figma.com/api/mcp/asset/6b56f2b8-a858-4c60-b144-152398b3ba49" alt="">
+      <img class="btn-logo" src="https://www.figma.com/api/mcp/asset/b7f55f59-95eb-4154-99a9-0a31af4927cf" alt="BAQ">
+    </div>
+
+    <div class="top-nav">
+      <div class="nav-left-btns">
+        <img class="nav-btn-img" src="https://www.figma.com/api/mcp/asset/802d55d7-1403-4edb-bda5-dca001e3716f" alt="Back">
+        <div class="nav-question-btn">
+          <img src="https://www.figma.com/api/mcp/asset/3ba0bca4-dff1-41cd-95e8-5242c93191a7" alt="">
+          <span>?</span>
+        </div>
+      </div>
+      <span class="nav-title">Air Resistance</span>
+      <div class="nav-profile">
+        <img class="nav-avatar" src="assets/avatar.svg" alt="Profile">
+        <div class="nav-profile-info">
+          <span class="nav-username">EnergeticArmadillo35</span>
+          <div class="xp-bar"><div class="xp-bar-fill"></div><span class="xp-bar-label">Lv. 13</span></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="problem-nav">
+      <div class="dot dot-info nav-link" onclick="navTo('screen-info')"><img src="https://www.figma.com/api/mcp/asset/1c80acf8-f527-4803-80ab-b2049571b897" alt="i"></div>
+      <div class="dot nav-link" style="background:#14ae5c; border:3px solid #22b35f;" onclick="navTo('screen-question')">
+        <img src="https://www.figma.com/api/mcp/asset/6a9ca000-bd0e-4de4-95a1-358153a16940" alt="done" style="width:16px; height:15px;">
+      </div>
+      <div class="dot dot-current">2</div>
+      <div class="dot dot-info"><img src="https://www.figma.com/api/mcp/asset/1c80acf8-f527-4803-80ab-b2049571b897" alt="i"></div>
+      <div class="dot dot-locked">3</div>
+      <div class="dot dot-locked">4</div>
+    </div>
+
+    <div class="modal-wrap">
+      <div class="modal-card">
+        <div class="modal-toolbar">
+          <div class="toolbar-tools">
+            <img class="tool-icon" src="https://www.figma.com/api/mcp/asset/08e00fb7-c7c2-44bd-97ab-5ee7bf176559" alt="Undo">
+            <img class="tool-icon" src="https://www.figma.com/api/mcp/asset/be0e67e7-31fb-4d0c-a0bd-5ec8572ccf21" alt="Redo">
+            <img class="tool-icon" src="https://www.figma.com/api/mcp/asset/1053a414-ec83-47be-8df6-c524bb0aa210" alt="Reset">
+          </div>
+          <img class="audio-icon" src="https://www.figma.com/api/mcp/asset/958374ab-a377-40e4-961e-37dc2e8ae695" alt="Audio">
+        </div>
+        <!-- Row: question text left, rotated photo right -->
+        <div style="display:flex; gap:64px; align-items:flex-start; justify-content:center; margin-top:20px; margin-bottom:28px;">
+          <p class="question-text" style="width:388px; flex-shrink:0; margin:0;">
+            Cyclists often race wheel-to-wheel in a line as shown. Why do you think cyclists ride like this?
+          </p>
+          <!-- Photo: 188×137 slot, landscape asset cropped with object-fit -->
+          <div style="width:188px; height:137px; flex-shrink:0; border-radius:8px; overflow:hidden;">
+            <img src="assets/q2-cyclists.png"
+                 alt="Cyclists racing in a tight peloton on a coastal road"
+                 style="width:100%; height:100%; object-fit:cover; display:block;">
+          </div>
+        </div>
+        <!-- Answer textarea: full width below -->
+        <div class="answer-box" id="answer-box-2" style="height:151px;">
+          <textarea id="answer-input-2" class="answer-textarea" placeholder="Write your answer here…" style="height:100%;"></textarea>
+        </div>
+      </div>
+    </div>
+
+    <div class="action-btn-wrap">
+      <button class="action-btn" onclick="checkAnswerQ2()">
+        <img class="btn-bg-img" src="https://www.figma.com/api/mcp/asset/4b02438f-cba5-4c1b-a856-cb42af5406cb" alt="">
+        <span>Submit</span>
+      </button>
+    </div>
+  </div>
+
+
+  <!-- ══ SCREEN Q2-KRAKEN — WRONG ANSWER ══ -->
+  <div class="screen" id="screen-q2-kraken">
+    <div class="bg-base"></div>
+    <div class="bg-scene bg-scene-2"></div>
+    <img class="sand-floor" src="https://www.figma.com/api/mcp/asset/29ecfdf4-5cb8-43f1-b33d-ffe8f813aee6" alt="">
+
+    <div class="home-btn">
+      <img class="btn-bg"   src="https://www.figma.com/api/mcp/asset/1d306f4a-62b8-4547-9ec5-0e6e55640811" alt="">
+      <img class="btn-logo" src="https://www.figma.com/api/mcp/asset/0f2956f7-18f1-42ef-9702-4e32d8695f79" alt="BAQ">
+    </div>
+
+    <div class="top-nav">
+      <div class="nav-left-btns">
+        <img class="nav-btn-img" src="https://www.figma.com/api/mcp/asset/12a0c4fa-16de-4ffa-afd4-f514ce45ff30" alt="Back">
+        <div class="nav-question-btn">
+          <img src="https://www.figma.com/api/mcp/asset/25b33426-895e-4e76-9509-73ddf17a5931" alt="">
+          <span>?</span>
+        </div>
+      </div>
+      <span class="nav-title">Air Resistance</span>
+      <div class="nav-profile">
+        <img class="nav-avatar" src="assets/avatar.svg" alt="Profile">
+        <div class="nav-profile-info">
+          <span class="nav-username">EnergeticArmadillo35</span>
+          <div class="xp-bar"><div class="xp-bar-fill"></div><span class="xp-bar-label">Lv. 13</span></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="problem-nav">
+      <div class="dot dot-info nav-link" onclick="navTo('screen-info')"><img src="https://www.figma.com/api/mcp/asset/7005b4ae-9b85-47c5-8357-eda5dcf16fee" alt="i"></div>
+      <div class="dot nav-link" style="background:#14ae5c; border:3px solid #22b35f;" onclick="navTo('screen-question')">
+        <img src="https://www.figma.com/api/mcp/asset/6a9ca000-bd0e-4de4-95a1-358153a16940" alt="done" style="width:16px; height:15px;">
+      </div>
+      <div class="dot dot-current nav-link" style="overflow:hidden;" onclick="navTo('screen-q2')">
+        <img src="https://www.figma.com/api/mcp/asset/675083d8-0c0d-4a45-8757-44c23269443f"
+             alt="" style="position:absolute;left:0;top:-0.5px;width:18px;height:35px;">
+        <span style="position:absolute;left:13px;top:2px;">2</span>
+      </div>
+      <div class="dot dot-info"><img src="https://www.figma.com/api/mcp/asset/7005b4ae-9b85-47c5-8357-eda5dcf16fee" alt="i"></div>
+      <div class="dot dot-locked">3</div>
+      <div class="dot dot-locked">4</div>
+    </div>
+
+    <!-- Modal shows user's previous answer (read-only) -->
+    <div class="modal-wrap">
+      <div class="modal-card">
+        <div class="modal-toolbar">
+          <div class="toolbar-tools">
+            <img class="tool-icon" src="https://www.figma.com/api/mcp/asset/fc32a14d-f236-4dc7-9522-1032f6805343" alt="Undo">
+            <img class="tool-icon" src="https://www.figma.com/api/mcp/asset/293448fc-3e1d-4813-a87a-2a42c639afb3" alt="Redo">
+            <img class="tool-icon" src="https://www.figma.com/api/mcp/asset/ba68bfd1-7dc6-45d8-b43a-1f5a546cd520" alt="Reset">
+          </div>
+          <img class="audio-icon" src="https://www.figma.com/api/mcp/asset/daf4c2ee-667a-4f4c-8e39-595b31189848" alt="Audio">
+        </div>
+        <!-- Row: question text left, rotated photo right -->
+        <div style="display:flex; gap:64px; align-items:flex-start; justify-content:center; margin-top:20px; margin-bottom:28px;">
+          <p class="question-text" style="width:388px; flex-shrink:0; margin:0;">
+            Cyclists often race wheel-to-wheel in a line as shown. Why do you think cyclists ride like this?
+          </p>
+          <div style="width:188px; height:137px; flex-shrink:0; border-radius:8px; overflow:hidden;">
+            <img src="assets/q2-cyclists.png"
+                 alt="Cyclists racing in a tight peloton on a coastal road"
+                 style="width:100%; height:100%; object-fit:cover; display:block;">
+          </div>
+        </div>
+        <!-- Read-only answer display -->
+        <div class="answer-box" style="border-color:#f0c0c0; height:151px;">
+          <textarea id="answer-display-2" class="answer-textarea" readonly
+                    style="color:#999; background:#fafafa; height:100%;"></textarea>
+        </div>
+      </div>
+    </div>
+
+    <div class="action-btn-wrap">
+      <button class="action-btn" onclick="tryAgainQ2()">
+        <img class="btn-bg-img" src="https://www.figma.com/api/mcp/asset/d1c6e57a-5b6e-4e30-9cee-21bc587850e2" alt="">
+        <span>Try Again</span>
+      </button>
+    </div>
+
+    <!-- Kraken character -->
+    <div class="kraken-wrap" id="kraken-wrap-2">
+      <img class="kraken-svg" src="assets/Kraken.svg" alt="Kraken">
+      <div class="bubble-wrap">
+        <img class="bubble-img" src="https://www.figma.com/api/mcp/asset/d64ce6c4-cc3a-4c7a-a0d4-703b37a2431f" alt="">
+        <div class="bubble-text" id="hint-text-2"></div>
+      </div>
+    </div>
+  </div>
+
+
+  <!-- ══ SCREEN Q2-CORRECT — SUCCESS ══ -->
+  <div class="screen" id="screen-q2-correct">
+    <div class="bg-base"></div>
+    <div class="bg-scene"></div>
+    <img class="sand-floor" src="https://www.figma.com/api/mcp/asset/f5a0e650-37e5-46c3-95d4-551d7b16250a" alt="">
+
+    <div class="home-btn">
+      <img class="btn-bg"   src="https://www.figma.com/api/mcp/asset/6b56f2b8-a858-4c60-b144-152398b3ba49" alt="">
+      <img class="btn-logo" src="https://www.figma.com/api/mcp/asset/b7f55f59-95eb-4154-99a9-0a31af4927cf" alt="BAQ">
+    </div>
+
+    <div class="top-nav">
+      <div class="nav-left-btns">
+        <img class="nav-btn-img" src="https://www.figma.com/api/mcp/asset/802d55d7-1403-4edb-bda5-dca001e3716f" alt="Back">
+        <div class="nav-question-btn">
+          <img src="https://www.figma.com/api/mcp/asset/3ba0bca4-dff1-41cd-95e8-5242c93191a7" alt="">
+          <span>?</span>
+        </div>
+      </div>
+      <span class="nav-title">Air Resistance</span>
+      <div class="nav-profile">
+        <img class="nav-avatar" src="assets/avatar.svg" alt="Profile">
+        <div class="nav-profile-info">
+          <span class="nav-username">EnergeticArmadillo35</span>
+          <div class="xp-bar"><div class="xp-bar-fill"></div><span class="xp-bar-label">Lv. 13</span></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="problem-nav">
+      <div class="dot dot-info nav-link" onclick="navTo('screen-info')"><img src="https://www.figma.com/api/mcp/asset/1c80acf8-f527-4803-80ab-b2049571b897" alt="i"></div>
+      <div class="dot nav-link" style="background:#14ae5c; border:3px solid #22b35f;" onclick="navTo('screen-question')">
+        <img src="https://www.figma.com/api/mcp/asset/6a9ca000-bd0e-4de4-95a1-358153a16940" alt="done" style="width:16px; height:15px;">
+      </div>
+      <div class="dot nav-link" style="background:#14ae5c; border:3px solid #22b35f;" onclick="navTo('screen-q2')">
+        <img src="https://www.figma.com/api/mcp/asset/6a9ca000-bd0e-4de4-95a1-358153a16940" alt="done" style="width:16px; height:15px;">
+      </div>
+      <div class="dot dot-info nav-link" onclick="navTo('screen-info-2')"><img src="https://www.figma.com/api/mcp/asset/1c80acf8-f527-4803-80ab-b2049571b897" alt="i"></div>
+      <div class="dot dot-locked">3</div>
+      <div class="dot dot-locked">4</div>
+    </div>
+
+    <div class="modal-wrap">
+      <div class="modal-card" style="display:flex; align-items:center; justify-content:center;">
+        <div class="success-overlay">
+          <div class="success-inner">
+            <div class="success-title">Awesome job!</div>
+            <p class="success-msg">
+              Exactly right! The front cyclist punches through the air first,<br>
+              creating a <strong>slipstream</strong> — a pocket of calmer air right behind them.<br>
+              Riders tucked in that slipstream face much less <strong>air resistance</strong>,<br>
+              so they can keep up while saving energy for the final sprint!
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="action-btn-wrap">
+      <button class="action-btn" onclick="showScreen('screen-info-2')">
+        <img class="btn-bg-img" src="https://www.figma.com/api/mcp/asset/ec097fce-8ffe-4263-92b2-cb1d7d6f8258" alt="">
+        <span>Next</span>
+      </button>
+    </div>
+  </div>
+
+
+  <!-- ══ SCREEN INFO-2 — DOES WEIGHT MATTER? ══ -->
+  <div class="screen" id="screen-info-2">
+    <div class="bg-base"></div>
+    <div class="bg-scene"></div>
+    <img class="sand-floor" src="https://www.figma.com/api/mcp/asset/f5a0e650-37e5-46c3-95d4-551d7b16250a" alt="">
+
+    <div class="home-btn">
+      <img class="btn-bg"   src="https://www.figma.com/api/mcp/asset/6b56f2b8-a858-4c60-b144-152398b3ba49" alt="">
+      <img class="btn-logo" src="https://www.figma.com/api/mcp/asset/b7f55f59-95eb-4154-99a9-0a31af4927cf" alt="BAQ">
+    </div>
+
+    <div class="top-nav">
+      <div class="nav-left-btns">
+        <img class="nav-btn-img" src="https://www.figma.com/api/mcp/asset/802d55d7-1403-4edb-bda5-dca001e3716f" alt="Back">
+        <div class="nav-question-btn">
+          <img src="https://www.figma.com/api/mcp/asset/3ba0bca4-dff1-41cd-95e8-5242c93191a7" alt="">
+          <span>?</span>
+        </div>
+      </div>
+      <span class="nav-title">Air Resistance</span>
+      <div class="nav-profile">
+        <img class="nav-avatar" src="assets/avatar.svg" alt="Profile">
+        <div class="nav-profile-info">
+          <span class="nav-username">EnergeticArmadillo35</span>
+          <div class="xp-bar"><div class="xp-bar-fill"></div><span class="xp-bar-label">Lv. 13</span></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Nav dots: i(done) | ✓Q1 | ✓Q2 | i(current, white ring) | 3 | 4 -->
+    <div class="problem-nav">
+      <div class="dot dot-info nav-link" onclick="navTo('screen-info')">
+        <img src="https://www.figma.com/api/mcp/asset/1c80acf8-f527-4803-80ab-b2049571b897" alt="i">
+      </div>
+      <div class="dot nav-link" style="background:#14ae5c; border:3px solid #22b35f;" onclick="navTo('screen-question')">
+        <img src="https://www.figma.com/api/mcp/asset/6a9ca000-bd0e-4de4-95a1-358153a16940" alt="done" style="width:16px; height:15px;">
+      </div>
+      <div class="dot nav-link" style="background:#14ae5c; border:3px solid #22b35f;" onclick="navTo('screen-q2')">
+        <img src="https://www.figma.com/api/mcp/asset/6a9ca000-bd0e-4de4-95a1-358153a16940" alt="done" style="width:16px; height:15px;">
+      </div>
+      <!-- Current info dot — white ring to indicate selected -->
+      <div class="dot dot-info" style="box-shadow:0 0 0 3px white, 0 0 0 5px #0058a8;">
+        <img src="https://www.figma.com/api/mcp/asset/1c80acf8-f527-4803-80ab-b2049571b897" alt="i">
+      </div>
+      <div class="dot dot-locked">3</div>
+      <div class="dot dot-locked">4</div>
+    </div>
+
+    <!-- Info modal — same blue-border card as screen-info -->
+    <div class="modal-wrap">
+      <div class="info-card">
+
+        <!-- Fixed: title + audio + divider -->
+        <div class="info-fixed-header">
+          <div class="info-header">
+            <span class="info-title">Does Weight Matter?</span>
+            <img style="width:42px;height:42px;cursor:pointer;"
+                 src="https://www.figma.com/api/mcp/asset/f77f325b-dd9a-432c-9800-4c8382563aa8" alt="Audio">
+          </div>
+          <hr class="info-divider">
+        </div>
+
+        <!-- Scrollable: character left, text right -->
+        <div class="info-scroll-body">
+          <div class="info-body">
+            <img class="info-character" src="assets/shark-dude.svg" alt="Character">
+
+            <div class="info-text">
+              <p>Think about how air affects objects of different weights that are about the same size and shape. A light breeze could blow a balloon for miles, but the same breeze wouldn't budge a bowling ball.</p>
+              <p>This helps explain why <strong>heavy objects usually fall through the air faster</strong> than light ones.</p>
+              <p>Heavy objects are not affected by air as much as light objects. This is due to a property called <strong>inertia</strong>. We explore inertia in Science 3B.</p>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- Next → Q3 simulation -->
+    <div class="action-btn-wrap">
+      <button class="action-btn" onclick="showScreen('screen-q3')">
+        <img class="btn-bg-img" src="https://www.figma.com/api/mcp/asset/ec097fce-8ffe-4263-92b2-cb1d7d6f8258" alt="">
+        <span>Next</span>
+      </button>
+    </div>
+  </div>
+
+  <!-- ══ SCREEN Q3 — SIMULATION (IFRAME PLACEHOLDER) ══ -->
+  <div class="screen" id="screen-q3">
+    <div class="bg-base"></div>
+    <div class="bg-scene"></div>
+    <img class="sand-floor" src="https://www.figma.com/api/mcp/asset/f5a0e650-37e5-46c3-95d4-551d7b16250a" alt="">
+
+    <div class="home-btn">
+      <img class="btn-bg"  src="https://www.figma.com/api/mcp/asset/6b56f2b8-a858-4c60-b144-152398b3ba49" alt="">
+      <img class="btn-logo" src="https://www.figma.com/api/mcp/asset/b7f55f59-95eb-4154-99a9-0a31af4927cf" alt="BAQ">
+    </div>
+
+    <div class="top-nav">
+      <div class="nav-left-btns">
+        <img class="nav-btn-img" src="https://www.figma.com/api/mcp/asset/802d55d7-1403-4edb-bda5-dca001e3716f" alt="Back">
+        <div class="nav-question-btn">
+          <img src="https://www.figma.com/api/mcp/asset/3ba0bca4-dff1-41cd-95e8-5242c93191a7" alt="">
+          <span>?</span>
+        </div>
+      </div>
+      <span class="nav-title">Air Resistance</span>
+      <div class="nav-profile">
+        <img class="nav-avatar" src="assets/avatar.svg" alt="Profile">
+        <div class="nav-profile-info">
+          <span class="nav-username">EnergeticArmadillo35</span>
+          <div class="xp-bar"><div class="xp-bar-fill"></div><span class="xp-bar-label">Lv. 13</span></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Nav dots: i(done) | ✓Q1 | ✓Q2 | i(done) | 3(current) | 4(locked) -->
+    <div class="problem-nav">
+      <div class="dot dot-info nav-link" onclick="navTo('screen-info')">
+        <img src="https://www.figma.com/api/mcp/asset/1c80acf8-f527-4803-80ab-b2049571b897" alt="i">
+      </div>
+      <div class="dot nav-link" style="background:#14ae5c; border:3px solid #22b35f;" onclick="navTo('screen-question')">
+        <img src="https://www.figma.com/api/mcp/asset/6a9ca000-bd0e-4de4-95a1-358153a16940" alt="done" style="width:16px; height:15px;">
+      </div>
+      <div class="dot nav-link" style="background:#14ae5c; border:3px solid #22b35f;" onclick="navTo('screen-q2')">
+        <img src="https://www.figma.com/api/mcp/asset/6a9ca000-bd0e-4de4-95a1-358153a16940" alt="done" style="width:16px; height:15px;">
+      </div>
+      <div class="dot dot-info nav-link" onclick="navTo('screen-info-2')">
+        <img src="https://www.figma.com/api/mcp/asset/1c80acf8-f527-4803-80ab-b2049571b897" alt="i">
+      </div>
+      <div class="dot dot-current">3</div>
+      <div class="dot dot-locked">4</div>
+    </div>
+
+    <div class="modal-wrap modal-wrap-q3">
+      <div class="modal-card modal-q3">
+        <div class="modal-toolbar">
+          <div class="toolbar-tools">
+            <img class="tool-icon" src="https://www.figma.com/api/mcp/asset/08e00fb7-c7c2-44bd-97ab-5ee7bf176559" alt="Undo">
+            <img class="tool-icon" src="https://www.figma.com/api/mcp/asset/be0e67e7-31fb-4d0c-a0bd-5ec8572ccf21" alt="Redo">
+            <img class="tool-icon" src="https://www.figma.com/api/mcp/asset/1053a414-ec83-47be-8df6-c524bb0aa210" alt="Reset">
+          </div>
+          <img class="audio-icon" src="https://www.figma.com/api/mcp/asset/958374ab-a377-40e4-961e-37dc2e8ae695" alt="Audio">
+        </div>
+        <p class="q3-question">
+          <span class="q3-q-strong">Which object will fall faster?</span>
+          <span class="q3-q-sub"> (Test your guesses by dropping objects like the ones below from the same height.)</span>
+        </p>
+        <div class="q3-choices-row" id="q3-choices-row" role="group" aria-label="Choose open or crumpled bag">
+          <div class="q3-choice q3-choice-open" id="q3-choice-open" role="button" tabindex="0" data-q3-value="open"
+               onclick="selectQ3ImageChoice('open')" onkeydown="q3ChoiceKey(event,'open')">
+            <div class="q3-choice-img-box">
+              <img src="https://www.figma.com/api/mcp/asset/0c69aaa3-17d4-42a4-b695-d8d85c338706" alt="Open plastic grocery bag">
+            </div>
+            <span class="q3-choice-label">Open bag</span>
+          </div>
+          <div class="q3-choice q3-choice-crumpled" id="q3-choice-crumpled" role="button" tabindex="0" data-q3-value="crumpled"
+               onclick="selectQ3ImageChoice('crumpled')" onkeydown="q3ChoiceKey(event,'crumpled')">
+            <div class="q3-choice-img-box">
+              <img src="https://www.figma.com/api/mcp/asset/0bb1ccb9-d30b-4e72-b54d-9d4ec02db9c2" alt="Crumpled plastic bag">
+            </div>
+            <span class="q3-choice-label">Crumpled bag</span>
+          </div>
+        </div>
+        <div class="q3-modal-actions">
+          <button type="button" class="action-btn" onclick="checkAnswerQ3()">
+            <img class="btn-bg-img" src="https://www.figma.com/api/mcp/asset/ec9b7d30-fe2f-45f6-8685-b35463c60a42" alt="">
+            <span>Next</span>
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══ SCREEN Q3-KRAKEN — wrong pick (open bag) ══ -->
+  <div class="screen" id="screen-q3-kraken">
+    <div class="bg-base"></div>
+    <div class="bg-scene bg-scene-2"></div>
+    <img class="sand-floor" src="https://www.figma.com/api/mcp/asset/29ecfdf4-5cb8-43f1-b33d-ffe8f813aee6" alt="">
+
+    <div class="home-btn">
+      <img class="btn-bg"   src="https://www.figma.com/api/mcp/asset/1d306f4a-62b8-4547-9ec5-0e6e55640811" alt="">
+      <img class="btn-logo" src="https://www.figma.com/api/mcp/asset/0f2956f7-18f1-42ef-9702-4e32d8695f79" alt="BAQ">
+    </div>
+
+    <div class="top-nav">
+      <div class="nav-left-btns">
+        <img class="nav-btn-img" src="https://www.figma.com/api/mcp/asset/12a0c4fa-16de-4ffa-afd4-f514ce45ff30" alt="Back">
+        <div class="nav-question-btn">
+          <img src="https://www.figma.com/api/mcp/asset/25b33426-895e-4e76-9509-73ddf17a5931" alt="">
+          <span>?</span>
+        </div>
+      </div>
+      <span class="nav-title">Air Resistance</span>
+      <div class="nav-profile">
+        <img class="nav-avatar" src="assets/avatar.svg" alt="Profile">
+        <div class="nav-profile-info">
+          <span class="nav-username">EnergeticArmadillo35</span>
+          <div class="xp-bar"><div class="xp-bar-fill"></div><span class="xp-bar-label">Lv. 13</span></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="problem-nav">
+      <div class="dot dot-info nav-link" onclick="navTo('screen-info')">
+        <img src="https://www.figma.com/api/mcp/asset/7005b4ae-9b85-47c5-8357-eda5dcf16fee" alt="i">
+      </div>
+      <div class="dot nav-link" style="background:#14ae5c; border:3px solid #22b35f;" onclick="navTo('screen-question')">
+        <img src="https://www.figma.com/api/mcp/asset/6a9ca000-bd0e-4de4-95a1-358153a16940" alt="done" style="width:16px; height:15px;">
+      </div>
+      <div class="dot nav-link" style="background:#14ae5c; border:3px solid #22b35f;" onclick="navTo('screen-q2')">
+        <img src="https://www.figma.com/api/mcp/asset/6a9ca000-bd0e-4de4-95a1-358153a16940" alt="done" style="width:16px; height:15px;">
+      </div>
+      <div class="dot dot-info nav-link" onclick="navTo('screen-info-2')">
+        <img src="https://www.figma.com/api/mcp/asset/7005b4ae-9b85-47c5-8357-eda5dcf16fee" alt="i">
+      </div>
+      <div class="dot dot-current nav-link" style="overflow:hidden;" onclick="navTo('screen-q3')">
+        <img src="https://www.figma.com/api/mcp/asset/675083d8-0c0d-4a45-8757-44c23269443f"
+             alt="" style="position:absolute;left:0;top:-0.5px;width:18px;height:35px;">
+        <span style="position:absolute;left:13px;top:2px;">3</span>
+      </div>
+      <div class="dot dot-locked">4</div>
+    </div>
+
+    <div class="modal-wrap modal-wrap-q3">
+      <div class="modal-card modal-q3">
+        <div class="modal-toolbar">
+          <div class="toolbar-tools">
+            <img class="tool-icon" src="https://www.figma.com/api/mcp/asset/fc32a14d-f236-4dc7-9522-1032f6805343" alt="Undo">
+            <img class="tool-icon" src="https://www.figma.com/api/mcp/asset/293448fc-3e1d-4813-a87a-2a42c639afb3" alt="Redo">
+            <img class="tool-icon" src="https://www.figma.com/api/mcp/asset/ba68bfd1-7dc6-45d8-b43a-1f5a546cd520" alt="Reset">
+          </div>
+          <img class="audio-icon" src="https://www.figma.com/api/mcp/asset/daf4c2ee-667a-4f4c-8e39-595b31189848" alt="Audio">
+        </div>
+        <p class="q3-question">
+          <span class="q3-q-strong">Which object will fall faster?</span>
+          <span class="q3-q-sub"> (Test your guesses by dropping objects like the ones below from the same height.)</span>
+        </p>
+        <div class="q3-choices-row">
+          <div class="q3-choice q3-choice-open wrong-pick" id="q3-kraken-display-open">
+            <div class="q3-choice-img-box">
+              <img src="https://www.figma.com/api/mcp/asset/0c69aaa3-17d4-42a4-b695-d8d85c338706" alt="Open plastic grocery bag">
+            </div>
+            <span class="q3-choice-label">Open bag</span>
+          </div>
+          <div class="q3-choice q3-choice-crumpled" id="q3-kraken-display-crumpled">
+            <div class="q3-choice-img-box">
+              <img src="https://www.figma.com/api/mcp/asset/0bb1ccb9-d30b-4e72-b54d-9d4ec02db9c2" alt="Crumpled plastic bag">
+            </div>
+            <span class="q3-choice-label">Crumpled bag</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="action-btn-wrap">
+      <button class="action-btn" onclick="tryAgainQ3()">
+        <img class="btn-bg-img" src="https://www.figma.com/api/mcp/asset/d1c6e57a-5b6e-4e30-9cee-21bc587850e2" alt="">
+        <span>Try Again</span>
+      </button>
+    </div>
+
+    <div class="kraken-wrap" id="kraken-wrap-3">
+      <img class="kraken-svg" src="assets/Kraken.svg" alt="Kraken">
+      <div class="bubble-wrap">
+        <img class="bubble-img" src="https://www.figma.com/api/mcp/asset/d64ce6c4-cc3a-4c7a-a0d4-703b37a2431f" alt="">
+        <div class="bubble-text bubble-text-q3">
+          <p class="bubble-text-q3-msg">Watch this video to see what happens when you drop both objects.</p>
+          <button type="button" class="action-btn q3-kraken-video-btn" onclick="openQ3VideoOverlay()" aria-label="Watch video: both objects dropping">
+            <img class="btn-bg-img" src="https://www.figma.com/api/mcp/asset/67c150ee-fb2c-4d48-87e5-5822b2aee8c7" alt="">
+            <span>Watch Video</span>
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <div id="q3-video-overlay" class="q3-video-overlay" aria-hidden="true">
+      <div class="q3-video-overlay-backdrop" onclick="closeQ3VideoOverlay()" aria-hidden="true"></div>
+      <div class="q3-video-overlay-dialog" role="dialog" aria-modal="true" aria-labelledby="q3-video-overlay-title" onclick="event.stopPropagation()">
+        <p id="q3-video-overlay-title" class="visually-hidden">Video: dropping both objects</p>
+        <button type="button" class="q3-video-overlay-close" onclick="closeQ3VideoOverlay()" aria-label="Close video">
+          <img src="https://www.figma.com/api/mcp/asset/9037bf79-84c8-4e98-b191-30f4d74763f1" alt="">
+        </button>
+        <div class="q3-video-overlay-card">
+          <video id="q3-video-overlay-player" class="q3-video-overlay-player" controls playsinline preload="metadata"
+                 src="assets/empty-bag-fall.mp4">
+            Your browser does not support video.
+          </video>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══ SCREEN Q4 — follow-up MC (was “part 2” of Q3; own nav bubble) ══ -->
+  <div class="screen" id="screen-q4">
+    <div class="bg-base"></div>
+    <div class="bg-scene"></div>
+    <img class="sand-floor" src="https://www.figma.com/api/mcp/asset/f5a0e650-37e5-46c3-95d4-551d7b16250a" alt="">
+
+    <div class="home-btn">
+      <img class="btn-bg"  src="https://www.figma.com/api/mcp/asset/6b56f2b8-a858-4c60-b144-152398b3ba49" alt="">
+      <img class="btn-logo" src="https://www.figma.com/api/mcp/asset/b7f55f59-95eb-4154-99a9-0a31af4927cf" alt="BAQ">
+    </div>
+
+    <div class="top-nav">
+      <div class="nav-left-btns">
+        <img class="nav-btn-img" src="https://www.figma.com/api/mcp/asset/802d55d7-1403-4edb-bda5-dca001e3716f" alt="Back">
+        <div class="nav-question-btn">
+          <img src="https://www.figma.com/api/mcp/asset/3ba0bca4-dff1-41cd-95e8-5242c93191a7" alt="">
+          <span>?</span>
+        </div>
+      </div>
+      <span class="nav-title">Air Resistance</span>
+      <div class="nav-profile">
+        <img class="nav-avatar" src="assets/avatar.svg" alt="Profile">
+        <div class="nav-profile-info">
+          <span class="nav-username">EnergeticArmadillo35</span>
+          <div class="xp-bar"><div class="xp-bar-fill"></div><span class="xp-bar-label">Lv. 13</span></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="problem-nav">
+      <div class="dot dot-info nav-link" onclick="navTo('screen-info')">
+        <img src="https://www.figma.com/api/mcp/asset/1c80acf8-f527-4803-80ab-b2049571b897" alt="i">
+      </div>
+      <div class="dot nav-link" style="background:#14ae5c; border:3px solid #22b35f;" onclick="navTo('screen-question')">
+        <img src="https://www.figma.com/api/mcp/asset/6a9ca000-bd0e-4de4-95a1-358153a16940" alt="done" style="width:16px; height:15px;">
+      </div>
+      <div class="dot nav-link" style="background:#14ae5c; border:3px solid #22b35f;" onclick="navTo('screen-q2')">
+        <img src="https://www.figma.com/api/mcp/asset/6a9ca000-bd0e-4de4-95a1-358153a16940" alt="done" style="width:16px; height:15px;">
+      </div>
+      <div class="dot dot-info nav-link" onclick="navTo('screen-info-2')">
+        <img src="https://www.figma.com/api/mcp/asset/1c80acf8-f527-4803-80ab-b2049571b897" alt="i">
+      </div>
+      <div class="dot nav-link" style="background:#14ae5c; border:3px solid #22b35f;" onclick="navTo('screen-q3')">
+        <img src="https://www.figma.com/api/mcp/asset/6a9ca000-bd0e-4de4-95a1-358153a16940" alt="done" style="width:16px; height:15px;">
+      </div>
+      <div class="dot dot-current">4</div>
+    </div>
+
+    <div class="modal-wrap">
+      <div class="modal-card">
+        <div class="modal-toolbar">
+          <div class="toolbar-tools">
+            <img class="tool-icon" src="https://www.figma.com/api/mcp/asset/08e00fb7-c7c2-44bd-97ab-5ee7bf176559" alt="Undo">
+            <img class="tool-icon" src="https://www.figma.com/api/mcp/asset/be0e67e7-31fb-4d0c-a0bd-5ec8572ccf21" alt="Redo">
+            <img class="tool-icon" src="https://www.figma.com/api/mcp/asset/1053a414-ec83-47be-8df6-c524bb0aa210" alt="Reset">
+          </div>
+          <img class="audio-icon" src="https://www.figma.com/api/mcp/asset/958374ab-a377-40e4-961e-37dc2e8ae695" alt="Audio">
+        </div>
+        <p class="question-text" style="width:100%; max-width:771px; margin-bottom:32px; text-align:center;">
+          Why do you think the crumpled bag falls faster than the regular bag?
+        </p>
+        <div class="q4-mc-row" id="q4-row" role="group" aria-label="Choose an explanation">
+          <div class="q3-text-choice" id="q4-more" role="button" tabindex="0"
+               onclick="selectQ4Choice('more_weight')" onkeydown="q4Key(event,'more_weight')">More weight</div>
+          <div class="q3-text-choice" id="q4-less" role="button" tabindex="0"
+               onclick="selectQ4Choice('less_air')" onkeydown="q4Key(event,'less_air')">Less Air Resistance</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="action-btn-wrap">
+      <button class="action-btn" onclick="checkAnswerQ4()">
+        <img class="btn-bg-img" src="https://www.figma.com/api/mcp/asset/4b02438f-cba5-4c1b-a856-cb42af5406cb" alt="">
+        <span>Submit</span>
+      </button>
+    </div>
+  </div>
+
+  <!-- ══ SCREEN Q4-KRAKEN ══ -->
+  <div class="screen" id="screen-q4-kraken">
+    <div class="bg-base"></div>
+    <div class="bg-scene bg-scene-2"></div>
+    <img class="sand-floor" src="https://www.figma.com/api/mcp/asset/29ecfdf4-5cb8-43f1-b33d-ffe8f813aee6" alt="">
+
+    <div class="home-btn">
+      <img class="btn-bg"   src="https://www.figma.com/api/mcp/asset/1d306f4a-62b8-4547-9ec5-0e6e55640811" alt="">
+      <img class="btn-logo" src="https://www.figma.com/api/mcp/asset/0f2956f7-18f1-42ef-9702-4e32d8695f79" alt="BAQ">
+    </div>
+
+    <div class="top-nav">
+      <div class="nav-left-btns">
+        <img class="nav-btn-img" src="https://www.figma.com/api/mcp/asset/12a0c4fa-16de-4ffa-afd4-f514ce45ff30" alt="Back">
+        <div class="nav-question-btn">
+          <img src="https://www.figma.com/api/mcp/asset/25b33426-895e-4e76-9509-73ddf17a5931" alt="">
+          <span>?</span>
+        </div>
+      </div>
+      <span class="nav-title">Air Resistance</span>
+      <div class="nav-profile">
+        <img class="nav-avatar" src="assets/avatar.svg" alt="Profile">
+        <div class="nav-profile-info">
+          <span class="nav-username">EnergeticArmadillo35</span>
+          <div class="xp-bar"><div class="xp-bar-fill"></div><span class="xp-bar-label">Lv. 13</span></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="problem-nav">
+      <div class="dot dot-info nav-link" onclick="navTo('screen-info')">
+        <img src="https://www.figma.com/api/mcp/asset/7005b4ae-9b85-47c5-8357-eda5dcf16fee" alt="i">
+      </div>
+      <div class="dot nav-link" style="background:#14ae5c; border:3px solid #22b35f;" onclick="navTo('screen-question')">
+        <img src="https://www.figma.com/api/mcp/asset/6a9ca000-bd0e-4de4-95a1-358153a16940" alt="done" style="width:16px; height:15px;">
+      </div>
+      <div class="dot nav-link" style="background:#14ae5c; border:3px solid #22b35f;" onclick="navTo('screen-q2')">
+        <img src="https://www.figma.com/api/mcp/asset/6a9ca000-bd0e-4de4-95a1-358153a16940" alt="done" style="width:16px; height:15px;">
+      </div>
+      <div class="dot dot-info nav-link" onclick="navTo('screen-info-2')">
+        <img src="https://www.figma.com/api/mcp/asset/7005b4ae-9b85-47c5-8357-eda5dcf16fee" alt="i">
+      </div>
+      <div class="dot nav-link" style="background:#14ae5c; border:3px solid #22b35f;" onclick="navTo('screen-q3')">
+        <img src="https://www.figma.com/api/mcp/asset/6a9ca000-bd0e-4de4-95a1-358153a16940" alt="done" style="width:16px; height:15px;">
+      </div>
+      <div class="dot dot-current nav-link" style="overflow:hidden;" onclick="navTo('screen-q4')">
+        <img src="https://www.figma.com/api/mcp/asset/675083d8-0c0d-4a45-8757-44c23269443f"
+             alt="" style="position:absolute;left:0;top:-0.5px;width:18px;height:35px;">
+        <span style="position:absolute;left:13px;top:2px;">4</span>
+      </div>
+    </div>
+
+    <div class="modal-wrap">
+      <div class="modal-card">
+        <div class="modal-toolbar">
+          <div class="toolbar-tools">
+            <img class="tool-icon" src="https://www.figma.com/api/mcp/asset/fc32a14d-f236-4dc7-9522-1032f6805343" alt="Undo">
+            <img class="tool-icon" src="https://www.figma.com/api/mcp/asset/293448fc-3e1d-4813-a87a-2a42c639afb3" alt="Redo">
+            <img class="tool-icon" src="https://www.figma.com/api/mcp/asset/ba68bfd1-7dc6-45d8-b43a-1f5a546cd520" alt="Reset">
+          </div>
+          <img class="audio-icon" src="https://www.figma.com/api/mcp/asset/daf4c2ee-667a-4f4c-8e39-595b31189848" alt="Audio">
+        </div>
+        <p class="question-text" style="width:100%; max-width:771px; margin-bottom:32px; text-align:center;">
+          Why do you think the crumpled bag falls faster than the regular bag?
+        </p>
+        <div class="q4-mc-row" id="q4-kraken-row">
+          <div class="q3-text-choice" id="q4-k-more">More weight</div>
+          <div class="q3-text-choice" id="q4-k-less">Less Air Resistance</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="action-btn-wrap">
+      <button class="action-btn" onclick="tryAgainQ4()">
+        <img class="btn-bg-img" src="https://www.figma.com/api/mcp/asset/d1c6e57a-5b6e-4e30-9cee-21bc587850e2" alt="">
+        <span>Try Again</span>
+      </button>
+    </div>
+
+    <div class="kraken-wrap" id="kraken-wrap-4">
+      <img class="kraken-svg" src="assets/Kraken.svg" alt="Kraken">
+      <div class="bubble-wrap">
+        <img class="bubble-img" src="https://www.figma.com/api/mcp/asset/d64ce6c4-cc3a-4c7a-a0d4-703b37a2431f" alt="">
+        <div class="bubble-text" id="hint-text-4"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══ SCREEN LESSON FINAL — Figma 4092:18442 ══ -->
+  <div class="screen" id="screen-lesson-final">
+    <div class="bg-base"></div>
+    <div class="bg-scene"></div>
+    <img class="sand-floor" src="https://www.figma.com/api/mcp/asset/f5a0e650-37e5-46c3-95d4-551d7b16250a" alt="">
+    <div class="final-screen-sparkles" aria-hidden="true"></div>
+
+    <div class="home-btn">
+      <img class="btn-bg"   src="https://www.figma.com/api/mcp/asset/6b56f2b8-a858-4c60-b144-152398b3ba49" alt="">
+      <img class="btn-logo" src="https://www.figma.com/api/mcp/asset/b7f55f59-95eb-4154-99a9-0a31af4927cf" alt="BAQ">
+    </div>
+
+    <div class="top-nav">
+      <div class="nav-left-btns">
+        <img class="nav-btn-img" src="https://www.figma.com/api/mcp/asset/802d55d7-1403-4edb-bda5-dca001e3716f" alt="Back">
+        <div class="nav-question-btn">
+          <img src="https://www.figma.com/api/mcp/asset/3ba0bca4-dff1-41cd-95e8-5242c93191a7" alt="">
+          <span>?</span>
+        </div>
+      </div>
+      <span class="nav-title">Air Resistance</span>
+      <div class="nav-profile">
+        <img class="nav-avatar" src="assets/avatar.svg" alt="Profile">
+        <div class="nav-profile-info">
+          <span class="nav-username">EnergeticArmadillo35</span>
+          <div class="xp-bar"><div class="xp-bar-fill"></div><span class="xp-bar-label">Lv. 13</span></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="problem-nav">
+      <div class="dot dot-info nav-link" onclick="navTo('screen-info')">
+        <img src="https://www.figma.com/api/mcp/asset/1c80acf8-f527-4803-80ab-b2049571b897" alt="i">
+      </div>
+      <div class="dot nav-link" style="background:#14ae5c; border:3px solid #22b35f;" onclick="navTo('screen-question')">
+        <img src="https://www.figma.com/api/mcp/asset/6a9ca000-bd0e-4de4-95a1-358153a16940" alt="done" style="width:16px; height:15px;">
+      </div>
+      <div class="dot nav-link" style="background:#14ae5c; border:3px solid #22b35f;" onclick="navTo('screen-q2')">
+        <img src="https://www.figma.com/api/mcp/asset/6a9ca000-bd0e-4de4-95a1-358153a16940" alt="done" style="width:16px; height:15px;">
+      </div>
+      <div class="dot dot-info nav-link" onclick="navTo('screen-info-2')">
+        <img src="https://www.figma.com/api/mcp/asset/1c80acf8-f527-4803-80ab-b2049571b897" alt="i">
+      </div>
+      <div class="dot nav-link" style="background:#14ae5c; border:3px solid #22b35f;" onclick="navTo('screen-q3')">
+        <img src="https://www.figma.com/api/mcp/asset/6a9ca000-bd0e-4de4-95a1-358153a16940" alt="done" style="width:16px; height:15px;">
+      </div>
+      <div class="dot dot-gold nav-link" onclick="navTo('screen-lesson-final')" title="Lesson complete"></div>
+    </div>
+
+    <div class="modal-wrap modal-wrap-final">
+      <div class="final-results-card">
+        <div class="final-results-bg" aria-hidden="true"></div>
+        <div class="final-sparkles" aria-hidden="true"></div>
+        <div id="final-stars-wrap" class="final-stars-wrap">
+          <img class="final-star final-star--1" src="https://www.figma.com/api/mcp/asset/35cef23f-7b28-4732-80a2-e2a37c684df2" alt="">
+          <img class="final-star final-star--2" src="https://www.figma.com/api/mcp/asset/ccc2bd5a-8911-46b2-9585-b246882d923f" alt="">
+          <img class="final-star final-star--3" src="https://www.figma.com/api/mcp/asset/ccc2bd5a-8911-46b2-9585-b246882d923f" alt="">
+        </div>
+        <div class="final-results-white">
+          <div class="final-results-stack">
+            <div class="final-results-banner">You earned 3 stars!</div>
+            <div class="final-results-sub"><p>You answered 5 out of 6 correctly</p></div>
+          </div>
+        </div>
+        <div class="final-results-btn-wrap">
+          <button type="button" class="action-btn" onclick="showScreen('screen-guidebook')">
+            <img class="btn-bg-img" src="https://www.figma.com/api/mcp/asset/7b360d76-a7db-41c1-a7f7-b838b541973a" alt="">
+            <span>Next Lesson</span>
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <div class="kraken-wrap final-success-kraken" id="kraken-wrap-final" aria-hidden="true">
+      <img class="kraken-svg" src="assets/Kraken.svg" alt="">
+      <div class="bubble-wrap">
+        <img class="bubble-img" src="https://www.figma.com/api/mcp/asset/d64ce6c4-cc3a-4c7a-a0d4-703b37a2431f" alt="">
+        <div class="bubble-text">
+          I’ll be runnin’ out o’ gold stars to give if you keep this up!
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══ SCREEN GUIDEBOOK / “Falling” — Figma 4093:18926 ══ -->
+  <div class="screen" id="screen-guidebook">
+    <div class="bg-base"></div>
+    <div class="bg-scene"></div>
+    <img class="sand-floor" src="https://www.figma.com/api/mcp/asset/f5a0e650-37e5-46c3-95d4-551d7b16250a" alt="">
+
+    <div class="home-btn">
+      <img class="btn-bg"   src="https://www.figma.com/api/mcp/asset/6b56f2b8-a858-4c60-b144-152398b3ba49" alt="">
+      <img class="btn-logo" src="https://www.figma.com/api/mcp/asset/b7f55f59-95eb-4154-99a9-0a31af4927cf" alt="BAQ">
+    </div>
+
+    <div class="top-nav">
+      <div class="nav-left-btns">
+        <img class="nav-btn-img" src="https://www.figma.com/api/mcp/asset/802d55d7-1403-4edb-bda5-dca001e3716f" alt="Back">
+        <div class="nav-question-btn">
+          <img src="https://www.figma.com/api/mcp/asset/3ba0bca4-dff1-41cd-95e8-5242c93191a7" alt="">
+          <span>?</span>
+        </div>
+      </div>
+      <span class="nav-title">Falling</span>
+      <div class="nav-profile">
+        <img class="nav-avatar" src="assets/avatar.svg" alt="Profile">
+        <div class="nav-profile-info">
+          <span class="nav-username">EnergeticArmadillo35</span>
+          <div class="xp-bar"><div class="xp-bar-fill"></div><span class="xp-bar-label">Lv. 13</span></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="problem-nav guidebook-nav">
+      <div class="dot dot-info nav-link" onclick="navTo('screen-info')" title="Info">
+        <img src="https://www.figma.com/api/mcp/asset/1c80acf8-f527-4803-80ab-b2049571b897" alt="i">
+      </div>
+      <div class="dot dot-gold dot-guidebook-comic" title="Guidebook">
+        <svg class="guidebook-comic-icon" viewBox="0 0 24 20" aria-hidden="true" focusable="false">
+          <rect x="2" y="1" width="9" height="12" rx="1" fill="currentColor" opacity="0.9"/>
+          <rect x="13" y="1" width="9" height="12" rx="1" fill="currentColor" opacity="0.75"/>
+          <rect x="2" y="14" width="20" height="5" rx="1" fill="currentColor"/>
+          <line x1="6.5" y1="4" x2="6.5" y2="9" stroke="#ffc640" stroke-width="1.2"/>
+          <line x1="17.5" y1="4" x2="17.5" y2="9" stroke="#ffc640" stroke-width="1.2"/>
+        </svg>
+      </div>
+    </div>
+
+    <div class="modal-wrap">
+      <div class="modal-card guidebook-modal-card">
+        <div class="guidebook-video-placeholder">
+          <iframe class="guidebook-iframe" title="Lesson video placeholder" src="about:blank"></iframe>
+        </div>
+      </div>
+    </div>
+
+    <div class="action-btn-wrap">
+      <button type="button" class="action-btn" onclick="showScreen('screen-bottle-drop-info')">
+        <img class="btn-bg-img" src="https://www.figma.com/api/mcp/asset/7b360d76-a7db-41c1-a7f7-b838b541973a" alt="">
+        <span>Next Lesson</span>
+      </button>
+    </div>
+  </div>
+
+  <!-- ══ BOTTLE DROP — info (Figma 4069:17908) ══ -->
+  <div class="screen" id="screen-bottle-drop-info">
+    <div class="bg-base"></div>
+    <div class="bg-scene"></div>
+    <img class="sand-floor" src="https://www.figma.com/api/mcp/asset/f5a0e650-37e5-46c3-95d4-551d7b16250a" alt="">
+
+    <div class="home-btn">
+      <img class="btn-bg"   src="https://www.figma.com/api/mcp/asset/6b56f2b8-a858-4c60-b144-152398b3ba49" alt="">
+      <img class="btn-logo" src="https://www.figma.com/api/mcp/asset/b7f55f59-95eb-4154-99a9-0a31af4927cf" alt="BAQ">
+    </div>
+
+    <div class="top-nav">
+      <div class="nav-left-btns">
+        <img class="nav-btn-img" src="https://www.figma.com/api/mcp/asset/802d55d7-1403-4edb-bda5-dca001e3716f" alt="Back">
+        <div class="nav-question-btn">
+          <img src="https://www.figma.com/api/mcp/asset/3ba0bca4-dff1-41cd-95e8-5242c93191a7" alt="">
+          <span>?</span>
+        </div>
+      </div>
+      <span class="nav-title">Bottle Drop</span>
+      <div class="nav-profile">
+        <img class="nav-avatar" src="assets/avatar.svg" alt="Profile">
+        <div class="nav-profile-info">
+          <span class="nav-username">EnergeticArmadillo35</span>
+          <div class="xp-bar"><div class="xp-bar-fill"></div><span class="xp-bar-label">Lv. 13</span></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="problem-nav problem-nav--bottle-drop">
+      <div class="dot dot-info" style="box-shadow:0 0 0 3px white, 0 0 0 5px #0058a8;">
+        <img src="https://www.figma.com/api/mcp/asset/5452d317-2842-46aa-8bdb-972076175f63" alt="Info">
+      </div>
+      <div class="dot dot-locked">1</div>
+      <div class="dot dot-info">
+        <img src="https://www.figma.com/api/mcp/asset/5452d317-2842-46aa-8bdb-972076175f63" alt="Info">
+      </div>
+      <div class="dot dot-locked">2</div>
+      <div class="dot dot-info">
+        <img src="https://www.figma.com/api/mcp/asset/5452d317-2842-46aa-8bdb-972076175f63" alt="Info">
+      </div>
+      <div class="dot dot-locked">3</div>
+    </div>
+
+    <div class="modal-wrap">
+      <div class="info-card">
+        <div class="info-fixed-header">
+          <div class="info-header">
+            <span class="info-title">Bottle Drop</span>
+            <img style="width:42px;height:42px;cursor:pointer;"
+                 src="https://www.figma.com/api/mcp/asset/f77f325b-dd9a-432c-9800-4c8382563aa8" alt="Audio">
+          </div>
+          <hr class="info-divider">
+        </div>
+        <div class="info-scroll-body">
+          <div class="info-body">
+            <img class="info-character" src="assets/shark-dude.svg" alt="Character">
+            <div class="info-text">
+              <p>Unless you drop the bottles from pretty high up, both bottles probably hit the ground at the same time.</p>
+              <p>Unlike a feather or a balloon, both bottles are heavy enough that the air doesn’t affect them much. For short drops, air doesn’t slow either bottle down enough to notice.</p>
+              <p>Imagine both bottles on a table in the wind. A light breeze wouldn’t do much to either bottle. It would take more wind to blow over the full bottle than the half-empty one. Air affects light objects more than heavy ones.</p>
+              <p>If you drop both bottles from 30 meters, they will begin to speed up. The faster they go, the more the air will push back—like a wind getting stronger and stronger. The air will slow down the half-empty bottle more than it will slow down the full one.</p>
+              <p>So, for longer drops, the difference between when the bottles land may be noticeable.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="action-btn-wrap">
+      <button type="button" class="action-btn" onclick="showScreen('screen-bottle-drop-embed')">
+        <img class="btn-bg-img" src="https://www.figma.com/api/mcp/asset/ec097fce-8ffe-4263-92b2-cb1d7d6f8258" alt="">
+        <span>Next</span>
+      </button>
+    </div>
+  </div>
+
+  <!-- ══ BOTTLE DROP — embedded activity (Figma 4098:19937) ══ -->
+  <div class="screen" id="screen-bottle-drop-embed">
+    <div class="bg-base"></div>
+    <div class="bg-scene"></div>
+    <img class="sand-floor" src="https://www.figma.com/api/mcp/asset/f5a0e650-37e5-46c3-95d4-551d7b16250a" alt="">
+
+    <div class="home-btn">
+      <img class="btn-bg"   src="https://www.figma.com/api/mcp/asset/6b56f2b8-a858-4c60-b144-152398b3ba49" alt="">
+      <img class="btn-logo" src="https://www.figma.com/api/mcp/asset/b7f55f59-95eb-4154-99a9-0a31af4927cf" alt="BAQ">
+    </div>
+
+    <div class="top-nav">
+      <div class="nav-left-btns">
+        <img class="nav-btn-img" src="https://www.figma.com/api/mcp/asset/802d55d7-1403-4edb-bda5-dca001e3716f" alt="Back">
+        <div class="nav-question-btn">
+          <img src="https://www.figma.com/api/mcp/asset/3ba0bca4-dff1-41cd-95e8-5242c93191a7" alt="">
+          <span>?</span>
+        </div>
+      </div>
+      <span class="nav-title">Bottle Drop</span>
+      <div class="nav-profile">
+        <img class="nav-avatar" src="assets/avatar.svg" alt="Profile">
+        <div class="nav-profile-info">
+          <span class="nav-username">EnergeticArmadillo35</span>
+          <div class="xp-bar"><div class="xp-bar-fill"></div><span class="xp-bar-label">Lv. 13</span></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="problem-nav problem-nav--bottle-drop">
+      <div class="dot dot-info nav-link" onclick="navTo('screen-bottle-drop-info')" title="Info">
+        <img src="https://www.figma.com/api/mcp/asset/5452d317-2842-46aa-8bdb-972076175f63" alt="Info">
+      </div>
+      <div class="dot dot-current nav-link" onclick="navTo('screen-bottle-drop-embed')" title="Question 1">1</div>
+      <div class="dot dot-info">
+        <img src="https://www.figma.com/api/mcp/asset/5452d317-2842-46aa-8bdb-972076175f63" alt="Info">
+      </div>
+      <div class="dot dot-locked">2</div>
+      <div class="dot dot-info">
+        <img src="https://www.figma.com/api/mcp/asset/5452d317-2842-46aa-8bdb-972076175f63" alt="Info">
+      </div>
+      <div class="dot dot-locked">3</div>
+    </div>
+
+    <div class="modal-wrap">
+      <div class="modal-card guidebook-modal-card modal-card--bottle-drop-sim">
+        <div class="guidebook-video-placeholder bottle-drop-sim-host">
+          <div class="bottle-drop-sim-clip" id="bottle-drop-sim-clip">
+            <div class="bottle-drop-sim-scale-inner" id="bottle-drop-sim-scale-inner">
+              <iframe class="bottle-drop-sim-iframe" id="bottle-drop-embed-frame" title="Bottle Drop simulation"
+                      src="assets/free_fall_simulation_drag.html"
+                      loading="lazy" onload="scaleBottleDropSimIframe()"></iframe>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="action-btn-wrap action-btn-wrap--pair">
+      <button type="button" class="action-btn" onclick="showScreen('screen-bottle-drop-info')" title="Open lesson instructions">
+        <img class="btn-bg-img" src="https://www.figma.com/api/mcp/asset/ec097fce-8ffe-4263-92b2-cb1d7d6f8258" alt="">
+        <span>Instruction</span>
+      </button>
+      <button type="button" class="action-btn" onclick="showScreen('screen-bottle-drop-q2')">
+        <img class="btn-bg-img" src="https://www.figma.com/api/mcp/asset/3c1fc56c-ae3d-47c6-942f-d80d16b44f37" alt="">
+        <span>Next</span>
+      </button>
+    </div>
+
+    <div id="bottle-drop-intro-overlay" class="bottle-drop-intro-overlay" aria-hidden="true">
+      <div class="bottle-drop-intro-backdrop" onclick="closeBottleDropIntroOverlay()" aria-hidden="true"></div>
+      <div class="bottle-drop-intro-modal" role="dialog" aria-modal="true" aria-labelledby="bottle-drop-intro-title" onclick="event.stopPropagation()">
+        <button type="button" class="bottle-drop-intro-close" onclick="closeBottleDropIntroOverlay()" aria-label="Close introduction">
+          <img src="https://www.figma.com/api/mcp/asset/613c52b6-f11b-4793-8f01-a91b8284cf86" alt="">
+        </button>
+        <div class="bottle-drop-intro-card">
+          <div class="bottle-drop-intro-content">
+            <h2 id="bottle-drop-intro-title" class="bottle-drop-intro-title">Bottle Drop Simulator</h2>
+            <div class="bottle-drop-intro-body">
+              <p>You can adjust the water levels in each bottle to see what effect they have when you drop the bottles.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══ BOTTLE DROP — Q2 placeholder (extend nav / flow) ══ -->
+  <div class="screen" id="screen-bottle-drop-q2">
+    <div class="bg-base"></div>
+    <div class="bg-scene"></div>
+    <img class="sand-floor" src="https://www.figma.com/api/mcp/asset/f5a0e650-37e5-46c3-95d4-551d7b16250a" alt="">
+
+    <div class="home-btn">
+      <img class="btn-bg"   src="https://www.figma.com/api/mcp/asset/6b56f2b8-a858-4c60-b144-152398b3ba49" alt="">
+      <img class="btn-logo" src="https://www.figma.com/api/mcp/asset/b7f55f59-95eb-4154-99a9-0a31af4927cf" alt="BAQ">
+    </div>
+
+    <div class="top-nav">
+      <div class="nav-left-btns">
+        <img class="nav-btn-img" src="https://www.figma.com/api/mcp/asset/802d55d7-1403-4edb-bda5-dca001e3716f" alt="Back">
+        <div class="nav-question-btn">
+          <img src="https://www.figma.com/api/mcp/asset/3ba0bca4-dff1-41cd-95e8-5242c93191a7" alt="">
+          <span>?</span>
+        </div>
+      </div>
+      <span class="nav-title">Bottle Drop</span>
+      <div class="nav-profile">
+        <img class="nav-avatar" src="assets/avatar.svg" alt="Profile">
+        <div class="nav-profile-info">
+          <span class="nav-username">EnergeticArmadillo35</span>
+          <div class="xp-bar"><div class="xp-bar-fill"></div><span class="xp-bar-label">Lv. 13</span></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="problem-nav problem-nav--bottle-drop">
+      <div class="dot dot-info nav-link" onclick="navTo('screen-bottle-drop-info')" title="Info">
+        <img src="https://www.figma.com/api/mcp/asset/5452d317-2842-46aa-8bdb-972076175f63" alt="Info">
+      </div>
+      <div class="dot nav-link" style="background:#14ae5c; border:3px solid #22b35f; box-shadow:2px 2px 0 #777674;" onclick="navTo('screen-bottle-drop-embed')" title="Question 1">
+        <img src="https://www.figma.com/api/mcp/asset/6a9ca000-bd0e-4de4-95a1-358153a16940" alt="done" style="width:16px; height:15px;">
+      </div>
+      <div class="dot dot-info">
+        <img src="https://www.figma.com/api/mcp/asset/5452d317-2842-46aa-8bdb-972076175f63" alt="Info">
+      </div>
+      <div class="dot dot-current nav-link" onclick="navTo('screen-bottle-drop-q2')" title="Question 2">2</div>
+      <div class="dot dot-info">
+        <img src="https://www.figma.com/api/mcp/asset/5452d317-2842-46aa-8bdb-972076175f63" alt="Info">
+      </div>
+      <div class="dot dot-locked">3</div>
+    </div>
+
+    <div class="modal-wrap">
+      <div class="modal-card" style="display:flex; align-items:center; justify-content:center;">
+        <p class="question-text" style="margin:0;">Question 2 — add content from Figma when ready.</p>
+      </div>
+    </div>
+
+    <div class="action-btn-wrap action-btn-wrap--pair">
+      <button type="button" class="action-btn" onclick="showScreen('screen-bottle-drop-info')">
+        <img class="btn-bg-img" src="https://www.figma.com/api/mcp/asset/ec097fce-8ffe-4263-92b2-cb1d7d6f8258" alt="">
+        <span>Instruction</span>
+      </button>
+      <button type="button" class="action-btn" onclick="showScreen('screen-info')">
+        <img class="btn-bg-img" src="https://www.figma.com/api/mcp/asset/3c1fc56c-ae3d-47c6-942f-d80d16b44f37" alt="">
+        <span>Next</span>
+      </button>
+    </div>
+  </div>
+
+</div><!-- /app -->
+
+<script>
+  /* Scale to fill viewport */
+  function scaleApp() {
+    const app = document.getElementById('app');
+    const sx = window.innerWidth  / 1280;
+    const sy = window.innerHeight / 800;
+    const s  = Math.min(sx, sy);
+    app.style.transform       = `scale(${s})`;
+    app.style.transformOrigin = 'top left';
+    app.style.left            = ((window.innerWidth  - 1280 * s) / 2) + 'px';
+    app.style.top             = ((window.innerHeight - 800  * s) / 2) + 'px';
+    scaleBottleDropSimIframe();
+  }
+  window.addEventListener('resize', scaleApp);
+  scaleApp();
+
+  /* Bottle Drop Q1 — scale sim to fit host (width + height); no scroll; flush in modal */
+  const BD_SIM_FALLBACK_W = 920;
+  const BD_SIM_FALLBACK_H = 660;
+  let bottleDropSimResizeObs;
+
+  /** Tight bbox of sim UI (not full body scroll — body can span full iframe width and shrink scale). */
+  function measureBottleDropSimIntrinsic(frame) {
+    try {
+      const fd = frame.contentDocument;
+      if (!fd || !fd.body) return null;
+      const row = fd.getElementById('top-row');
+      const btns = fd.getElementById('btns');
+      if (!row || !btns) return null;
+      const body = fd.body;
+      const st = fd.defaultView.getComputedStyle(body);
+      const padX = (parseFloat(st.paddingLeft) || 0) + (parseFloat(st.paddingRight) || 0);
+      const padY = (parseFloat(st.paddingTop) || 0) + (parseFloat(st.paddingBottom) || 0);
+      let gapY = 0;
+      if (st.gap && st.gap !== 'normal') {
+        gapY = parseFloat(String(st.gap).trim().split(/\s+/)[0]) || 0;
+      }
+      const iw = Math.ceil(Math.max(row.offsetWidth, btns.offsetWidth) + padX);
+      const ih = Math.ceil(btns.offsetHeight + gapY + row.offsetHeight + padY);
+      if (iw < 80 || ih < 80) return null;
+      return { iw, ih };
+    } catch (err) {
+      return null;
+    }
+  }
+
+  function scaleBottleDropSimIframe() {
+    const embedScreen = document.getElementById('screen-bottle-drop-embed');
+    const host = embedScreen && embedScreen.querySelector('.bottle-drop-sim-host');
+    const clip = document.getElementById('bottle-drop-sim-clip');
+    const inner = document.getElementById('bottle-drop-sim-scale-inner');
+    const frame = document.getElementById('bottle-drop-embed-frame');
+    if (!embedScreen || !embedScreen.classList.contains('visible')) return;
+    if (!host || !clip || !inner || !frame) return;
+    const w = host.clientWidth;
+    const h = host.clientHeight;
+    if (w < 8 || h < 8) return;
+
+    let iw = BD_SIM_FALLBACK_W;
+    let ih = BD_SIM_FALLBACK_H;
+    const measured = measureBottleDropSimIntrinsic(frame);
+    if (measured) {
+      iw = measured.iw;
+      ih = measured.ih;
+    }
+
+    const s = Math.min(w / iw, h / ih);
+    frame.style.width = iw + 'px';
+    frame.style.height = ih + 'px';
+    inner.style.width = iw + 'px';
+    inner.style.height = ih + 'px';
+    inner.style.transform = 'scale(' + s + ')';
+    const dispW = iw * s;
+    const dispH = ih * s;
+    clip.style.width = dispW + 'px';
+    clip.style.height = dispH + 'px';
+  }
+
+  function ensureBottleDropSimResizeObserver() {
+    const host = document.querySelector('#screen-bottle-drop-embed .bottle-drop-sim-host');
+    if (!host || bottleDropSimResizeObs || typeof ResizeObserver === 'undefined') return;
+    bottleDropSimResizeObs = new ResizeObserver(() => scaleBottleDropSimIframe());
+    bottleDropSimResizeObs.observe(host);
+  }
+
+  /* Track which screens have been visited */
+  const visited = new Set(['screen-info']);
+
+  /* Screen switching — always records the visit */
+  function showScreen(id) {
+    closeQ3VideoOverlay();
+    closeBottleDropIntroOverlay();
+    visited.add(id);
+    document.querySelectorAll('.screen').forEach(s => s.classList.remove('visible'));
+    document.getElementById(id).classList.add('visible');
+    if (id === 'screen-lesson-final') {
+      requestAnimationFrame(() => {
+        const w = document.getElementById('final-stars-wrap');
+        if (!w) return;
+        w.classList.remove('final-stars--play');
+        void w.offsetWidth;
+        w.classList.add('final-stars--play');
+      });
+    }
+    if (id === 'screen-bottle-drop-embed') {
+      ensureBottleDropSimResizeObserver();
+      requestAnimationFrame(() => {
+        scaleBottleDropSimIframe();
+        const o = document.getElementById('bottle-drop-intro-overlay');
+        if (!o) return;
+        o.classList.add('is-open');
+        o.setAttribute('aria-hidden', 'false');
+      });
+    }
+  }
+
+  function closeBottleDropIntroOverlay() {
+    const o = document.getElementById('bottle-drop-intro-overlay');
+    if (!o) return;
+    o.classList.remove('is-open');
+    o.setAttribute('aria-hidden', 'true');
+    requestAnimationFrame(() => scaleBottleDropSimIframe());
+  }
+
+  /* Nav dot handler — only navigates to screens already seen */
+  function navTo(id) {
+    if (visited.has(id)) showScreen(id);
+  }
+
+  /* ── Answer evaluation ──
+     Must mention air/wind/drag AND a meaningful effect on motion.
+     Requires at least 5 words so one-word guesses can't sneak through. */
+  function isAnswerCorrect(text) {
+    const t = text.toLowerCase();
+    const words = t.trim().split(/\s+/);
+    if (words.length < 5) return false;
+
+    // Core concept: student must reference air, wind, atmosphere, or drag/resistance
+    const mentionsAir = /\bair\b|air resist|drag|\bwind\b|atmospher/.test(t);
+
+    // Must also show understanding of *what* the air does — slows, pushes back,
+    // catches/blocks/resists — requires more than just naming "air"
+    const mentionsEffect = /resist|drag|slow|push.{0,8}(back|against|up|it|you|them)|catch|block|against|friction|surface.{0,6}area|oppose|fight|stop|hold/.test(t);
+
+    return mentionsAir && mentionsEffect;
+  }
+
+  /* ── Personalized hint generator ──
+     Reads what the student actually said, identifies the misconception,
+     and nudges them toward the right idea. */
+  function generateHint(answer) {
+    const t = answer.toLowerCase();
+
+    const hasGravity  = /gravity|gravit|pull.{0,6}down|weight|heavier|lighter|mass/.test(t);
+    const hasSize     = /big|large|huge|wide|spread|surface|open|expan/.test(t);
+    const hasAir      = /\bair\b|wind|atmospher/.test(t);
+    const hasFloat    = /float|fly|flies|glid|hover|soar/.test(t);
+    const hasCushion  = /cushion|soft|land|pillow|bounc|pad/.test(t);
+    // hasSlow: student says the parachute/person slows down (correct direction)
+    const hasSlow     = /slow|decelerat/.test(t);
+    // hasFast: student mentions speed/falling faster — speed comparison, not the mechanism
+    const hasFast     = /\bfast|\bspeed|\bquick/.test(t);
+    const isVeryShort = t.trim().split(/\s+/).length < 4;
+
+    // Gravity misconception — most common wrong idea
+    if (hasGravity && !hasAir) {
+      return "Gravity pulls just as hard with or without a parachute — it doesn't change! Think about what else changes when the parachute opens wide. What does all that fabric push against on the way down?";
+    }
+
+    // Student said "falls faster" or compared speeds but didn't explain why
+    if (hasFast && !hasAir && !hasSlow) {
+      return "You're thinking about speed — good start! But what causes one person to fall faster than the other? When the parachute pops open wide in the sky, what does all that fabric push against? Think about what's all around you up there.";
+    }
+
+    // Cushioning / soft landing idea
+    if (hasCushion) {
+      return "The parachute does help you land safely — nice thinking! But the slowing actually starts way up in the air, not just at the end. What is the open parachute pushing against as you fall through the sky?";
+    }
+
+    // Noticed the size but missed the air connection
+    if (hasSize && !hasAir) {
+      return "You spotted that the parachute is big and open — that's a great clue! But what does that large surface do as you fall? Imagine holding a big flat tray while running really fast. What do you feel pushing back?";
+    }
+
+    // Mentioned air but didn't connect it to slowing/pushing
+    if (hasAir && !hasSlow && !hasFast) {
+      return "You mentioned air — you're on the right track! Now think: when the parachute opens wide into all that air, what does the air do to it? Which direction does it push, and what does that do to your speed?";
+    }
+
+    // Floating / flying idea — close but missing the mechanism
+    if (hasFloat) {
+      return "It does look like floating — great observation! But what's creating that effect? Think about what's all around you in the sky, and what the big open parachute is doing with it.";
+    }
+
+    // Said it slows but didn't explain what's doing the slowing
+    if (hasSlow && !hasAir) {
+      return "You're right that it slows down — but what's doing the slowing? Imagine running as fast as you can while holding a big open umbrella. What do you feel pushing against you? That push has a name!";
+    }
+
+    // Very short / unclear (fewer than 4 words)
+    if (isVeryShort) {
+      return "Let's think together! What's all around you when you're high up in the sky? When the parachute opens big and wide, what does all that fabric push against?";
+    }
+
+    // Default fallback
+    return "Think about what's all around you as you fall through the sky. When the parachute opens wide, what does it push against — and which way does that push go?";
+  }
+
+  /* ── Submit ── */
+  function checkAnswer() {
+    const input = document.getElementById('answer-input');
+    const box   = document.getElementById('answer-box-1');
+    const text  = input.value.trim();
+
+    if (!text) {
+      box.classList.add('shake');
+      input.placeholder = 'Oops — write something first! ✏️';
+      setTimeout(() => {
+        box.classList.remove('shake');
+        input.placeholder = 'Write your answer here…';
+      }, 2000);
+      return;
+    }
+
+    if (isAnswerCorrect(text)) {
+      showScreen('screen-correct');
+    } else {
+      // Mirror student's answer into the read-only display
+      document.getElementById('answer-display').value = text;
+      // Inject personalized hint based on what they wrote
+      document.getElementById('hint-text').textContent = generateHint(text);
+      // Re-trigger Kraken bounce animation
+      const kw = document.getElementById('kraken-wrap');
+      kw.style.animation = 'none';
+      void kw.offsetHeight;
+      kw.style.animation = '';
+      showScreen('screen-kraken');
+    }
+  }
+
+  /* Try Again */
+  function tryAgain() {
+    document.getElementById('answer-input').value = '';
+    showScreen('screen-question');
+    setTimeout(() => document.getElementById('answer-input').focus(), 50);
+  }
+
+  /* Enter to submit (Shift+Enter for newline) */
+  document.getElementById('answer-input').addEventListener('keydown', function(e) {
+    if (e.key === 'Enter' && !e.shiftKey) {
+      e.preventDefault();
+      checkAnswer();
+    }
+  });
+
+  /* ════════════════════════════════════════
+     Q2 — CYCLISTS / DRAFTING
+  ════════════════════════════════════════ */
+
+  /* ── Q2 answer evaluation ──
+     Kids only know: air resistance, drag, things shove air out of the way,
+     narrower = less drag. A good answer shows they understand the front rider
+     deals with the air/drag so riders behind have an easier time.
+     We accept any reasonable expression of that — no fancy vocab needed. */
+  function isAnswerCorrectQ2(text) {
+    const t = text.toLowerCase();
+    if (t.trim().length < 6) return false;
+
+    // Expert terms — instant pass
+    if (/draft|slipstream/.test(t)) return true;
+
+    // "air resistance" or "drag" or "wind" or just "air" (from the reading)
+    const hasAirConcept = /air resist|drag|\bair\b|wind/.test(t);
+
+    // Something about it being less / blocked / easier / taken care of
+    const hasReduction  = /block|less|reduc|lower|easier|not as (hard|much|strong|bad)|shield|protect|break|broke|cut|push.{0,12}(away|out of)|don.?t have to|doesn.?t have to|take.{0,8}(it|the|all|hit)|absorb|deal.{0,6}with|fight.{0,6}through|handle|do.{0,6}(the )?(work|hard)|push.{0,6}(it|through)|already|instead|for them|so (they|the others?|the rest|riders?|people|everyone) (don.?t|doesn.?t|can)/.test(t);
+
+    // Front/back positional understanding
+    const hasPosition   = /front|back|behind|follow|lead|first|second|trail|ahead|after/.test(t);
+
+    // Reference to another person doing the work
+    const hasPerson     = /person|rider|cyclist|\bthey\b|\bthem\b|other|someone|people|one in front|leader/.test(t);
+
+    // PASS if: air concept + any reduction idea  (covers "blocks air resistance for the others")
+    if (hasAirConcept && hasReduction) return true;
+
+    // PASS if: air concept + positional idea  (covers "the front person deals with the air")
+    if (hasAirConcept && hasPosition) return true;
+
+    // PASS if: someone is blocking/reducing something for someone else in a position
+    // (implicit air — e.g. "person in front blocks it so the rest don't have to")
+    if (hasReduction && hasPosition && hasPerson) return true;
+
+    return false;
+  }
+
+  /* ── Q2 personalized hints ──
+     Ground everything in the hand-out-the-car-window analogy the kids just read. */
+  function generateHintQ2(answer) {
+    const t = answer.toLowerCase();
+
+    const hasAir      = /air resist|drag|\bair\b|wind/.test(t);
+    const hasEnergy   = /energy|tired|exhaust|effort|stamina|save|easier/.test(t);
+    const hasSpeed    = /fast|speed|quick|race|win/.test(t);
+    const hasTeamwork = /team|together|cooperat|communic|strateg|help each/.test(t);
+    const hasWheels   = /wheel|tire|tyre|friction|road|ground/.test(t);
+    const hasFront    = /front|lead|first|ahead/.test(t);
+    const hasBehind   = /behind|back|follow|second|trail/.test(t);
+    const isVeryShort = t.trim().length < 20;
+
+    // Pure wheel/road friction misconception
+    if (hasWheels && !hasAir) {
+      return "Road grip is part of cycling — good thinking! But the hardest thing to fight at racing speed is invisible. Remember sticking your hand out a car window? That push you felt is air resistance. Now think: if someone else's hand was right in front of yours, what would happen to that push?";
+    }
+
+    // Teamwork answer with no physics
+    if (hasTeamwork && !hasAir && !hasEnergy) {
+      return "They ARE working as a team — that's true! But what specifically does riding close together help with? Remember from the reading: every moving object has to shove air out of its way. If the person in front already shoved all that air aside... what does that mean for the rider right behind them?";
+    }
+
+    // "They go faster" with no physics
+    if (hasSpeed && !hasAir && !hasEnergy) {
+      return "You're right — it does help them go faster! But think about why. Picture holding your hand flat out a car window — you feel air pushing back hard. Now imagine someone puts their hand right in front of yours. What happens to that push? That's the clue!";
+    }
+
+    // Energy / tired — they're close, just need the mechanism
+    if (hasEnergy && !hasAir) {
+      return "You're onto something — it really does save energy! But what exactly is being reduced? Remember the car window feeling — air pushes back when you move fast. If the front rider is already pushing all that air out of the way, what does the rider right behind have to deal with?";
+    }
+
+    // Mentioned air + front but didn't connect to riders behind
+    if (hasAir && hasFront && !hasBehind) {
+      return "Yes! The front rider is fighting through all that air — great thinking! Now what about everyone else in the line? Once the front person has already shoved the air aside, how much air resistance is left for the rider tucked in right behind them?";
+    }
+
+    // Mentioned air but no front/back connection at all
+    if (hasAir && !hasFront && !hasBehind) {
+      return "Air resistance is exactly the right thing to think about! Now look at the line of riders: who hits all that air first? And once the front rider has pushed through it, what's left for the person right behind them to deal with?";
+    }
+
+    // Very short answer
+    if (isVeryShort) {
+      return "Think about the car window trick from the reading — you stick your hand out and feel air pushing back hard. That's drag! Now imagine someone holds their hand right in front of yours. What happens to the push? That's the secret of riding in a line!";
+    }
+
+    // Default
+    return "You're thinking in the right direction! Imagine the air is like a wall the front cyclist has to punch through. Once they've broken through it, what's the air like for everyone riding right behind them? Less wall to push through — or more?";
+  }
+
+  /* Submit handler for Q2 */
+  function checkAnswerQ2() {
+    const input = document.getElementById('answer-input-2');
+    const box   = document.getElementById('answer-box-2');
+    const text  = input.value.trim();
+
+    if (!text) {
+      box.classList.add('shake');
+      input.placeholder = 'Oops — write something first! ✏️';
+      setTimeout(() => {
+        box.classList.remove('shake');
+        input.placeholder = 'Write your answer here…';
+      }, 2000);
+      return;
+    }
+
+    if (isAnswerCorrectQ2(text)) {
+      showScreen('screen-q2-correct');
+    } else {
+      document.getElementById('answer-display-2').value = text;
+      document.getElementById('hint-text-2').textContent = generateHintQ2(text);
+      const kw = document.getElementById('kraken-wrap-2');
+      kw.style.animation = 'none';
+      void kw.offsetHeight;
+      kw.style.animation = '';
+      showScreen('screen-q2-kraken');
+    }
+  }
+
+  /* Try Again for Q2 */
+  function tryAgainQ2() {
+    document.getElementById('answer-input-2').value = '';
+    showScreen('screen-q2');
+    setTimeout(() => document.getElementById('answer-input-2').focus(), 50);
+  }
+
+  /* Enter to submit on Q2 */
+  document.getElementById('answer-input-2').addEventListener('keydown', function(e) {
+    if (e.key === 'Enter' && !e.shiftKey) {
+      e.preventDefault();
+      checkAnswerQ2();
+    }
+  });
+
+  /* ════════════════════════════════════════
+     Q3 — open vs crumpled bag; Q4 — follow-up MC (own nav dot)
+  ════════════════════════════════════════ */
+
+  let q3ImageChoice = null;       /* 'open' | 'crumpled' */
+  let q4Choice = null;            /* 'more_weight' | 'less_air' */
+
+  function selectQ3ImageChoice(which) {
+    q3ImageChoice = which;
+    document.querySelectorAll('#q3-choice-open, #q3-choice-crumpled').forEach(el => {
+      el.classList.toggle('selected', el.dataset.q3Value === which);
+    });
+  }
+
+  function q3ChoiceKey(e, which) {
+    if (e.key === 'Enter' || e.key === ' ') {
+      e.preventDefault();
+      selectQ3ImageChoice(which);
+    }
+  }
+
+  function checkAnswerQ3() {
+    const row = document.getElementById('q3-choices-row');
+    if (!q3ImageChoice) {
+      row.classList.add('shake');
+      setTimeout(() => row.classList.remove('shake'), 500);
+      return;
+    }
+    if (q3ImageChoice === 'crumpled') {
+      q4Choice = null;
+      document.querySelectorAll('#q4-more, #q4-less').forEach(el => el.classList.remove('selected'));
+      showScreen('screen-q4');
+      return;
+    }
+    const kw = document.getElementById('kraken-wrap-3');
+    kw.style.animation = 'none';
+    void kw.offsetHeight;
+    kw.style.animation = '';
+    showScreen('screen-q3-kraken');
+  }
+
+  function openQ3VideoOverlay() {
+    const o = document.getElementById('q3-video-overlay');
+    if (!o) return;
+    o.classList.add('is-open');
+    o.setAttribute('aria-hidden', 'false');
+    document.addEventListener('keydown', onQ3VideoOverlayKeydown);
+  }
+
+  function closeQ3VideoOverlay() {
+    const o = document.getElementById('q3-video-overlay');
+    if (!o) return;
+    o.classList.remove('is-open');
+    o.setAttribute('aria-hidden', 'true');
+    const v = document.getElementById('q3-video-overlay-player');
+    if (v) v.pause();
+    document.removeEventListener('keydown', onQ3VideoOverlayKeydown);
+  }
+
+  function onQ3VideoOverlayKeydown(e) {
+    if (e.key === 'Escape') closeQ3VideoOverlay();
+  }
+
+  function tryAgainQ3() {
+    closeQ3VideoOverlay();
+    q3ImageChoice = null;
+    document.querySelectorAll('#q3-choice-open, #q3-choice-crumpled').forEach(el => el.classList.remove('selected'));
+    showScreen('screen-q3');
+  }
+
+  function selectQ4Choice(which) {
+    q4Choice = which;
+    document.querySelectorAll('#q4-more, #q4-less').forEach(el => {
+      const v = el.id === 'q4-more' ? 'more_weight' : 'less_air';
+      el.classList.toggle('selected', v === which);
+    });
+  }
+
+  function q4Key(e, which) {
+    if (e.key === 'Enter' || e.key === ' ') {
+      e.preventDefault();
+      selectQ4Choice(which);
+    }
+  }
+
+  function generateHintQ4(selection) {
+    if (selection === 'more_weight') {
+      return "Crumpling paper doesn’t pour a bucket of extra mass into the bag — it’s still mostly the same stuff! So if the weight barely changed, what did change about how the bag catches the air? Think floppy sail vs. tiny paper wad.";
+    }
+    return "You’re close — think about what crumpling does to how much air hits the bag, not how heavy the paper suddenly becomes.";
+  }
+
+  function syncQ4KrakenDisplay() {
+    const more = document.getElementById('q4-k-more');
+    const less = document.getElementById('q4-k-less');
+    more.classList.remove('wrong-pick', 'selected');
+    less.classList.remove('wrong-pick', 'selected');
+    if (q4Choice === 'more_weight') more.classList.add('wrong-pick');
+    else if (q4Choice === 'less_air') less.classList.add('wrong-pick');
+  }
+
+  function checkAnswerQ4() {
+    const row = document.getElementById('q4-row');
+    if (!q4Choice) {
+      row.classList.add('shake');
+      setTimeout(() => row.classList.remove('shake'), 500);
+      return;
+    }
+    if (q4Choice === 'less_air') {
+      showScreen('screen-lesson-final');
+      return;
+    }
+    document.getElementById('hint-text-4').textContent = generateHintQ4(q4Choice);
+    syncQ4KrakenDisplay();
+    const kw = document.getElementById('kraken-wrap-4');
+    kw.style.animation = 'none';
+    void kw.offsetHeight;
+    kw.style.animation = '';
+    showScreen('screen-q4-kraken');
+  }
+
+  function tryAgainQ4() {
+    q4Choice = null;
+    document.querySelectorAll('#q4-more, #q4-less').forEach(el => el.classList.remove('selected'));
+    showScreen('screen-q4');
+  }
+</script>
+</body>
+</html>
