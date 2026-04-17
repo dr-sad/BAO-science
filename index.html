@@ -1066,6 +1066,11 @@
       border: none;
       background: #5a5a5a;
     }
+    video.guidebook-iframe {
+      display: block;
+      object-fit: contain;
+      object-position: center;
+    }
     /* Bottle Drop sim: local HTML iframe scaled from 850×540 design into navy host */
     .bottle-drop-sim-host {
       display: flex;
@@ -4936,7 +4941,9 @@
     <div class="modal-wrap">
       <div class="modal-card guidebook-modal-card">
         <div class="guidebook-video-placeholder">
-          <iframe class="guidebook-iframe" title="Lesson video placeholder" src="about:blank"></iframe>
+          <video class="guidebook-iframe" title="Ms. Y — Falling lesson video" controls playsinline preload="metadata" src="assets/MsY-Falling.mp4">
+            Your browser does not support video.
+          </video>
         </div>
       </div>
     </div>
