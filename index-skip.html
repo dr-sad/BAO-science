@@ -1876,8 +1876,8 @@
       100% { opacity: 0.85; transform: scale(1.02); }
     }
 
-    /* Victory Vault / Arena — full-bleed shop art; cover keeps aspect ratio while filling the stage */
-    :is(#screen-victory-vault, #screen-arena) .victory-vault-bg {
+    /* Victory Vault — full-bleed shop art; cover keeps aspect ratio while filling the stage */
+    #screen-victory-vault .victory-vault-bg {
       position: absolute;
       inset: 0;
       z-index: 0;
@@ -1887,11 +1887,8 @@
       background-repeat: no-repeat;
       background-size: cover;
     }
-    #screen-arena .victory-vault-bg {
-      background-image: url('assets/aops-arena.png');
-    }
     /* Home control — composite art (arrow pentagon + BA + house); scoped so other lessons keep Figma assets */
-    :is(#screen-victory-vault, #screen-arena) .home-btn.victory-vault-home-btn {
+    #screen-victory-vault .home-btn.victory-vault-home-btn {
       width: 112px;
       height: 76px;
       padding: 0;
@@ -1899,12 +1896,12 @@
       background: transparent;
       box-shadow: none;
     }
-    :is(#screen-victory-vault, #screen-arena) .home-btn.victory-vault-home-btn:focus-visible {
+    #screen-victory-vault .home-btn.victory-vault-home-btn:focus-visible {
       outline: 3px solid #fff;
       outline-offset: 3px;
       border-radius: 4px;
     }
-    :is(#screen-victory-vault, #screen-arena) .home-btn.victory-vault-home-btn .victory-vault-home-btn-img {
+    #screen-victory-vault .home-btn.victory-vault-home-btn .victory-vault-home-btn-img {
       position: absolute;
       inset: 0;
       width: 100%;
@@ -1914,7 +1911,7 @@
       display: block;
     }
     /* Right shelf — per-plush links + hover sparkles (tuned for background-size: cover) */
-    :is(#screen-victory-vault, #screen-arena) .victory-vault-stuffy-hits {
+    #screen-victory-vault .victory-vault-stuffy-hits {
       position: absolute;
       z-index: 15;
       top: 12%;
@@ -1923,7 +1920,7 @@
       left: 52%;
       pointer-events: none;
     }
-    :is(#screen-victory-vault, #screen-arena) .victory-vault-stuffy-hit {
+    #screen-victory-vault .victory-vault-stuffy-hit {
       position: absolute;
       display: block;
       pointer-events: auto;
@@ -1935,31 +1932,31 @@
       box-sizing: border-box;
       overflow: visible;
     }
-    :is(#screen-victory-vault, #screen-arena) .victory-vault-stuffy-hit:focus-visible {
+    #screen-victory-vault .victory-vault-stuffy-hit:focus-visible {
       outline: 3px solid #f59e0b;
       outline-offset: 3px;
       border-radius: 12px;
     }
     /* Approximate rows on the right display (percent of shelf region) */
-    :is(#screen-victory-vault, #screen-arena) .victory-vault-stuffy-hit--top {
+    #screen-victory-vault .victory-vault-stuffy-hit--top {
       left: 8%;
       top: 0;
       width: 78%;
       height: 40%;
     }
-    :is(#screen-victory-vault, #screen-arena) .victory-vault-stuffy-hit--mid {
+    #screen-victory-vault .victory-vault-stuffy-hit--mid {
       left: 4%;
       top: 36%;
       width: 84%;
       height: 30%;
     }
-    :is(#screen-victory-vault, #screen-arena) .victory-vault-stuffy-hit--low {
+    #screen-victory-vault .victory-vault-stuffy-hit--low {
       left: 10%;
       top: 64%;
       width: 76%;
       height: 34%;
     }
-    :is(#screen-victory-vault, #screen-arena) .victory-vault-stuffy-sparkles {
+    #screen-victory-vault .victory-vault-stuffy-sparkles {
       position: absolute;
       left: 50%;
       top: 50%;
@@ -1967,7 +1964,7 @@
       height: 0;
       pointer-events: none;
     }
-    :is(#screen-victory-vault, #screen-arena) .victory-vault-stuffy-sparkle {
+    #screen-victory-vault .victory-vault-stuffy-sparkle {
       position: absolute;
       left: 0;
       top: 0;
@@ -1996,41 +1993,41 @@
         transform: rotate(var(--vv-rot, 0deg)) translateX(42px) scale(0.85);
       }
     }
-    :is(#screen-victory-vault, #screen-arena) .victory-vault-stuffy-hit:hover .victory-vault-stuffy-sparkle {
+    #screen-victory-vault .victory-vault-stuffy-hit:hover .victory-vault-stuffy-sparkle {
       animation: victoryVaultStuffySpark 0.72s ease-out forwards;
     }
-    :is(#screen-victory-vault, #screen-arena) .victory-vault-stuffy-hit:hover .victory-vault-stuffy-sparkle:nth-child(1) {
+    #screen-victory-vault .victory-vault-stuffy-hit:hover .victory-vault-stuffy-sparkle:nth-child(1) {
       animation-delay: 0s;
     }
-    :is(#screen-victory-vault, #screen-arena) .victory-vault-stuffy-hit:hover .victory-vault-stuffy-sparkle:nth-child(2) {
+    #screen-victory-vault .victory-vault-stuffy-hit:hover .victory-vault-stuffy-sparkle:nth-child(2) {
       animation-delay: 0.05s;
     }
-    :is(#screen-victory-vault, #screen-arena) .victory-vault-stuffy-hit:hover .victory-vault-stuffy-sparkle:nth-child(3) {
+    #screen-victory-vault .victory-vault-stuffy-hit:hover .victory-vault-stuffy-sparkle:nth-child(3) {
       animation-delay: 0.1s;
     }
-    :is(#screen-victory-vault, #screen-arena) .victory-vault-stuffy-hit:hover .victory-vault-stuffy-sparkle:nth-child(4) {
+    #screen-victory-vault .victory-vault-stuffy-hit:hover .victory-vault-stuffy-sparkle:nth-child(4) {
       animation-delay: 0.03s;
     }
-    :is(#screen-victory-vault, #screen-arena) .victory-vault-stuffy-hit:hover .victory-vault-stuffy-sparkle:nth-child(5) {
+    #screen-victory-vault .victory-vault-stuffy-hit:hover .victory-vault-stuffy-sparkle:nth-child(5) {
       animation-delay: 0.08s;
     }
-    :is(#screen-victory-vault, #screen-arena) .victory-vault-stuffy-hit:hover .victory-vault-stuffy-sparkle:nth-child(6) {
+    #screen-victory-vault .victory-vault-stuffy-hit:hover .victory-vault-stuffy-sparkle:nth-child(6) {
       animation-delay: 0.12s;
     }
-    :is(#screen-victory-vault, #screen-arena) .victory-vault-stuffy-hit:hover .victory-vault-stuffy-sparkle:nth-child(7) {
+    #screen-victory-vault .victory-vault-stuffy-hit:hover .victory-vault-stuffy-sparkle:nth-child(7) {
       animation-delay: 0.06s;
     }
-    :is(#screen-victory-vault, #screen-arena) .victory-vault-stuffy-hit:hover .victory-vault-stuffy-sparkle:nth-child(8) {
+    #screen-victory-vault .victory-vault-stuffy-hit:hover .victory-vault-stuffy-sparkle:nth-child(8) {
       animation-delay: 0.14s;
     }
     @media (prefers-reduced-motion: reduce) {
-      :is(#screen-victory-vault, #screen-arena) .victory-vault-stuffy-hit:hover .victory-vault-stuffy-sparkle {
+      #screen-victory-vault .victory-vault-stuffy-hit:hover .victory-vault-stuffy-sparkle {
         animation: none !important;
         opacity: 0;
       }
     }
     /* Top-right profile + XP bar — same visual weight as campus; flush to right edge of stage */
-    :is(#screen-victory-vault, #screen-arena) .victory-vault-profile-wrap {
+    #screen-victory-vault .victory-vault-profile-wrap {
       position: absolute;
       right: 0;
       top: 1.5%;
@@ -2041,11 +2038,10 @@
       line-height: 0;
     }
     /* Victory Vault welcome — Figma 4219:13788 (Modal) */
-    #screen-victory-vault #victory-vault-welcome-overlay.bottle-drop-intro-overlay,
-    #screen-arena #arena-welcome-overlay.bottle-drop-intro-overlay {
+    #screen-victory-vault #victory-vault-welcome-overlay.bottle-drop-intro-overlay {
       z-index: 65;
     }
-    :is(#screen-victory-vault, #screen-arena) .victory-vault-figma-modal {
+    #screen-victory-vault .victory-vault-figma-modal {
       position: relative;
       width: min(726px, calc(100% - 48px));
       min-height: 455px;
@@ -2053,7 +2049,7 @@
       box-sizing: border-box;
       filter: drop-shadow(0 16px 40px rgba(0, 0, 0, 0.2));
     }
-    :is(#screen-victory-vault, #screen-arena) .victory-vault-figma-modal-surface {
+    #screen-victory-vault .victory-vault-figma-modal-surface {
       position: absolute;
       left: 0;
       top: 21px;
@@ -2063,7 +2059,7 @@
       background: #fff;
       border: 11px solid #4090cd;
     }
-    :is(#screen-victory-vault, #screen-arena) .victory-vault-figma-modal-close {
+    #screen-victory-vault .victory-vault-figma-modal-close {
       position: absolute;
       right: 0;
       top: 0;
@@ -2075,19 +2071,19 @@
       cursor: pointer;
       z-index: 2;
     }
-    :is(#screen-victory-vault, #screen-arena) .victory-vault-figma-modal-close:focus-visible {
+    #screen-victory-vault .victory-vault-figma-modal-close:focus-visible {
       outline: 3px solid #0058a8;
       outline-offset: 3px;
       border-radius: 6px;
     }
-    :is(#screen-victory-vault, #screen-arena) .victory-vault-figma-modal-close img {
+    #screen-victory-vault .victory-vault-figma-modal-close img {
       display: block;
       width: 100%;
       height: 100%;
       object-fit: contain;
       pointer-events: none;
     }
-    :is(#screen-victory-vault, #screen-arena) .victory-vault-figma-modal-body {
+    #screen-victory-vault .victory-vault-figma-modal-body {
       position: absolute;
       left: 92px;
       top: 85px;
@@ -2099,7 +2095,7 @@
       gap: 26px;
       color: #000;
     }
-    :is(#screen-victory-vault, #screen-arena) .victory-vault-figma-modal-title {
+    #screen-victory-vault .victory-vault-figma-modal-title {
       margin: 0;
       font-family: 'Roboto Slab', serif;
       font-weight: 700;
@@ -2107,20 +2103,20 @@
       line-height: 1.5;
       letter-spacing: -0.704px;
     }
-    :is(#screen-victory-vault, #screen-arena) .victory-vault-figma-modal-copy {
+    #screen-victory-vault .victory-vault-figma-modal-copy {
       font-family: 'Roboto Flex', sans-serif;
       font-weight: 400;
       font-size: 20px;
       line-height: 1.5;
       letter-spacing: 0;
     }
-    :is(#screen-victory-vault, #screen-arena) .victory-vault-figma-modal-copy p {
+    #screen-victory-vault .victory-vault-figma-modal-copy p {
       margin: 0;
     }
-    :is(#screen-victory-vault, #screen-arena) .victory-vault-figma-modal-copy p:first-child {
+    #screen-victory-vault .victory-vault-figma-modal-copy p:first-child {
       margin-bottom: 16px;
     }
-    :is(#screen-victory-vault, #screen-arena) .victory-vault-profile-bar-img {
+    #screen-victory-vault .victory-vault-profile-bar-img {
       width: 100%;
       height: auto;
       display: block;
@@ -2252,8 +2248,9 @@
     #screen-campus .hit-math {
       cursor: default;
     }
-    /* Language Loft: decorative campus region only (no navigation). */
-    #screen-campus .hit-lang {
+    /* Language Loft + AoPS Arena: decorative campus regions only (no navigation). */
+    #screen-campus .hit-lang,
+    #screen-campus .hit-arena {
       cursor: default;
     }
     #screen-campus .stage:has(.hit-swag:hover) .glow-swag .glow__blob,
@@ -3089,7 +3086,7 @@
       <a class="hit hit-sci" href="path.html" aria-label="Science Center — learning path"></a>
       <div class="hit hit-math" aria-hidden="true"></div>
       <span class="hit hit-lang" aria-hidden="true"></span>
-      <a class="hit hit-arena" href="#" aria-label="AoPS Arena" onclick="event.preventDefault();showScreen('screen-arena');"></a>
+      <span class="hit hit-arena" aria-hidden="true"></span>
     </div>
   </div>
 
@@ -3359,81 +3356,6 @@
         <div class="victory-vault-figma-modal-body">
           <h2 id="victory-vault-welcome-title" class="victory-vault-figma-modal-title">Welcome to the Victory Vault</h2>
           <div id="victory-vault-welcome-copy" class="victory-vault-figma-modal-copy">
-            <p>Earn rewards as you learn. Trade your progress for digital prizes and real-world items you can actually hold.<br>Some rewards can be found in the real world. Others are rare and can only be earned here.</p>
-            <p><br>New: Check out our Beast Academy stuffies. Click on any one to let us know which ones you’d want to earn.</p>
-          </div>
-        </div>
-      </div>
-    </div>
-
-  </div>
-
-  <!-- ══ SCREEN: ARENA (Victory Vault clone) ══ -->
-  <div class="screen" id="screen-arena">
-
-    <div class="victory-vault-bg" aria-hidden="true"></div>
-
-    <div class="victory-vault-stuffy-hits" role="group" aria-label="Beast Academy stuffies — interest form">
-      <a class="victory-vault-stuffy-hit victory-vault-stuffy-hit--top" href="https://docs.google.com/forms/d/e/1FAIpQLSckoguhKAnMJ-mh7pcWS7jPJQ36MC6BSozLjS8wYjZg21c_aw/viewform?usp=publish-editor" target="_blank" rel="noopener noreferrer" title="BA Squishmallow interest form" aria-label="BA Squishmallow interest form: top shelf plush (opens in new tab)">
-        <span class="victory-vault-stuffy-sparkles" aria-hidden="true">
-          <span class="victory-vault-stuffy-sparkle" style="--vv-rot: -12deg;"></span>
-          <span class="victory-vault-stuffy-sparkle" style="--vv-rot: 38deg;"></span>
-          <span class="victory-vault-stuffy-sparkle" style="--vv-rot: 92deg;"></span>
-          <span class="victory-vault-stuffy-sparkle" style="--vv-rot: 142deg;"></span>
-          <span class="victory-vault-stuffy-sparkle" style="--vv-rot: 198deg;"></span>
-          <span class="victory-vault-stuffy-sparkle" style="--vv-rot: 252deg;"></span>
-          <span class="victory-vault-stuffy-sparkle" style="--vv-rot: 308deg;"></span>
-          <span class="victory-vault-stuffy-sparkle" style="--vv-rot: 22deg;"></span>
-        </span>
-      </a>
-      <a class="victory-vault-stuffy-hit victory-vault-stuffy-hit--mid" href="https://docs.google.com/forms/d/e/1FAIpQLSckoguhKAnMJ-mh7pcWS7jPJQ36MC6BSozLjS8wYjZg21c_aw/viewform?usp=publish-editor" target="_blank" rel="noopener noreferrer" title="BA Squishmallow interest form" aria-label="BA Squishmallow interest form: middle shelf plush (opens in new tab)">
-        <span class="victory-vault-stuffy-sparkles" aria-hidden="true">
-          <span class="victory-vault-stuffy-sparkle" style="--vv-rot: 6deg;"></span>
-          <span class="victory-vault-stuffy-sparkle" style="--vv-rot: 58deg;"></span>
-          <span class="victory-vault-stuffy-sparkle" style="--vv-rot: 112deg;"></span>
-          <span class="victory-vault-stuffy-sparkle" style="--vv-rot: 168deg;"></span>
-          <span class="victory-vault-stuffy-sparkle" style="--vv-rot: 222deg;"></span>
-          <span class="victory-vault-stuffy-sparkle" style="--vv-rot: 278deg;"></span>
-          <span class="victory-vault-stuffy-sparkle" style="--vv-rot: 334deg;"></span>
-          <span class="victory-vault-stuffy-sparkle" style="--vv-rot: 84deg;"></span>
-        </span>
-      </a>
-      <a class="victory-vault-stuffy-hit victory-vault-stuffy-hit--low" href="https://docs.google.com/forms/d/e/1FAIpQLSckoguhKAnMJ-mh7pcWS7jPJQ36MC6BSozLjS8wYjZg21c_aw/viewform?usp=publish-editor" target="_blank" rel="noopener noreferrer" title="BA Squishmallow interest form" aria-label="BA Squishmallow interest form: bottom shelf plush (opens in new tab)">
-        <span class="victory-vault-stuffy-sparkles" aria-hidden="true">
-          <span class="victory-vault-stuffy-sparkle" style="--vv-rot: -28deg;"></span>
-          <span class="victory-vault-stuffy-sparkle" style="--vv-rot: 18deg;"></span>
-          <span class="victory-vault-stuffy-sparkle" style="--vv-rot: 72deg;"></span>
-          <span class="victory-vault-stuffy-sparkle" style="--vv-rot: 128deg;"></span>
-          <span class="victory-vault-stuffy-sparkle" style="--vv-rot: 182deg;"></span>
-          <span class="victory-vault-stuffy-sparkle" style="--vv-rot: 236deg;"></span>
-          <span class="victory-vault-stuffy-sparkle" style="--vv-rot: 292deg;"></span>
-          <span class="victory-vault-stuffy-sparkle" style="--vv-rot: 348deg;"></span>
-        </span>
-      </a>
-    </div>
-
-    <button type="button" class="home-btn victory-vault-home-btn" aria-label="Back to Campus" onclick="showScreen('screen-campus')">
-      <img class="victory-vault-home-btn-img" src="assets/victory-vault-home-btn.png" alt="">
-    </button>
-
-    <div style="position:absolute;top:0;left:25%;right:25%;min-width:600px;background:#f59e0b;border-bottom:8px solid #ba7705;border-bottom-left-radius:60px;border-bottom-right-radius:60px;display:flex;align-items:center;justify-content:center;height:90px;overflow:hidden;z-index:10;">
-      <span style="font-family:'Roboto Slab',serif;font-weight:500;font-size:24px;color:white;letter-spacing:-0.528px;white-space:nowrap;">Victory Vault</span>
-    </div>
-
-    <div class="victory-vault-profile-wrap">
-      <img class="victory-vault-profile-bar-img" src="assets/victory-vault-profile-bar.png" width="529" height="176" alt="EnergeticArmadillo35, level 13">
-    </div>
-
-    <div id="arena-welcome-overlay" class="bottle-drop-intro-overlay" aria-hidden="true">
-      <div class="bottle-drop-intro-backdrop" onclick="closeArenaWelcomeOverlay()" aria-hidden="true"></div>
-      <div class="victory-vault-figma-modal" role="dialog" aria-modal="true" aria-labelledby="arena-welcome-title" aria-describedby="arena-welcome-copy" onclick="event.stopPropagation()">
-        <div class="victory-vault-figma-modal-surface" aria-hidden="true"></div>
-        <button type="button" class="victory-vault-figma-modal-close" onclick="closeArenaWelcomeOverlay()" aria-label="Close">
-          <img src="https://www.figma.com/api/mcp/asset/81ec583d-db1a-4255-a7ed-446bb2c333f5" alt="">
-        </button>
-        <div class="victory-vault-figma-modal-body">
-          <h2 id="arena-welcome-title" class="victory-vault-figma-modal-title">Welcome to the Victory Vault</h2>
-          <div id="arena-welcome-copy" class="victory-vault-figma-modal-copy">
             <p>Earn rewards as you learn. Trade your progress for digital prizes and real-world items you can actually hold.<br>Some rewards can be found in the real world. Others are rare and can only be earned here.</p>
             <p><br>New: Check out our Beast Academy stuffies. Click on any one to let us know which ones you’d want to earn.</p>
           </div>
@@ -3968,7 +3890,7 @@
     </div>
 
     <div class="action-btn-wrap action-btn-wrap--pair">
-      <button type="button" class="action-btn action-btn--skip" onclick="skipAirResistanceFromKraken('screen-q2','screen-lesson-final')">
+      <button type="button" class="action-btn action-btn--skip" onclick="skipAirResistanceFromKraken('screen-q2','screen-q3')">
         <img class="btn-bg-img" src="https://www.figma.com/api/mcp/asset/03d871e1-d648-42b7-8475-4e828673a4e2" alt="">
         <span>Skip</span>
       </button>
@@ -6319,9 +6241,6 @@
         el.classList.remove('selected');
       });
     }
-    if (nextScreenId === 'screen-lesson-final') {
-      lessonFinalSource = 'air';
-    }
     showScreen(nextScreenId);
   }
 
@@ -6462,14 +6381,6 @@
     if (id === 'screen-victory-vault') {
       requestAnimationFrame(() => {
         const o = document.getElementById('victory-vault-welcome-overlay');
-        if (!o) return;
-        o.classList.add('is-open');
-        o.setAttribute('aria-hidden', 'false');
-      });
-    }
-    if (id === 'screen-arena') {
-      requestAnimationFrame(() => {
-        const o = document.getElementById('arena-welcome-overlay');
         if (!o) return;
         o.classList.add('is-open');
         o.setAttribute('aria-hidden', 'false');
@@ -6841,19 +6752,11 @@
     o.setAttribute('aria-hidden', 'true');
   }
 
-  function closeArenaWelcomeOverlay() {
-    const o = document.getElementById('arena-welcome-overlay');
-    if (!o) return;
-    o.classList.remove('is-open');
-    o.setAttribute('aria-hidden', 'true');
-  }
-
   function closeAllBottleDropIntroOverlays() {
     closeBottleDropIntroOverlay();
     closeBottleDropIntroOverlay2();
     closeBottleDropHypothesisIntroOverlay();
     closeVictoryVaultWelcomeOverlay();
-    closeArenaWelcomeOverlay();
     closeBottleDropHypothesisPlaySimOverlay();
     closeBottleDropQ2PlaySimOverlay();
     closeBottleDropQ5PlaySimOverlay();
@@ -6904,7 +6807,6 @@
     const q5Play = document.getElementById('bottle-drop-q5-play-overlay');
     const oHypIntro = document.getElementById('bottle-drop-hypothesis-intro-overlay');
     const oVvWelcome = document.getElementById('victory-vault-welcome-overlay');
-    const oArenaWelcome = document.getElementById('arena-welcome-overlay');
     const hypSuccess = document.getElementById('bottle-drop-hypothesis-success-overlay');
     const hypKraken = document.getElementById('bottle-drop-hypothesis-kraken-wrap');
     const q2Success = document.getElementById('bottle-drop-q2-success-overlay');
@@ -6928,9 +6830,6 @@
     } else if (oVvWelcome && oVvWelcome.classList.contains('is-open')) {
       e.preventDefault();
       closeVictoryVaultWelcomeOverlay();
-    } else if (oArenaWelcome && oArenaWelcome.classList.contains('is-open')) {
-      e.preventDefault();
-      closeArenaWelcomeOverlay();
     } else if (sim1Success && sim1Success.classList.contains('is-visible')) {
       e.preventDefault();
       hideBottleDropSim1SuccessOverlay();
