@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Science Center — Learning Path</title>
+  <link href="https://fonts.googleapis.com/css2?family=Roboto+Slab:wght@400;500;700&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+    .visually-hidden {
+      position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px;
+      overflow: hidden; clip: rect(0, 0, 0, 0); white-space: nowrap; border: 0;
+    }
+    html, body {
+      width: 100%; height: 100%;
+      background: #0a1628;
+      display: flex; align-items: center; justify-content: center;
+      overflow: hidden;
+      font-family: 'Roboto Slab', serif;
+    }
+    #app {
+      position: absolute;
+      width: 1280px;
+      height: 800px;
+      transform-origin: top left;
+      overflow: hidden;
+      background: #c8dde8;
+    }
+    /* Pixel layout matching Figma node 4004:4281 (Path 1), 1280×800 */
+    .ly {
+      position: absolute;
+      display: block;
+      pointer-events: none;
+    }
+    .ly-bg {
+      left: -1px;
+      top: -1px;
+      width: 1280px;
+      height: 800px;
+      object-fit: cover;
+      z-index: 0;
+    }
+    .lbl {
+      position: absolute;
+      font-weight: 500;
+      font-size: 14.548px;
+      line-height: 1.1;
+      letter-spacing: -0.3201px;
+      text-align: center;
+      color: #2d7c24;
+      z-index: 10;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      pointer-events: none;
+    }
+    .lbl-claims {
+      left: 181px;
+      top: 279px;
+      width: 103px;
+      height: 31.424px;
+    }
+    .lbl-air {
+      left: 298px;
+      top: 552px;
+      width: 103px;
+      height: 31.424px;
+    }
+    .lbl-falling { top: 36%; right: 59.61%; bottom: 62%; left: 32.34%; }
+    .lbl-bottle { top: 69%; right: 50.86%; bottom: 29%; left: 41.09%; }
+    /* Figma inset order: top, right, bottom, left */
+    .lbl-revising { top: 35.13%; right: 41.48%; bottom: 60.88%; left: 50.47%; }
+    .lbl-feather { top: 68.75%; right: 32.34%; bottom: 27.25%; left: 59.61%; }
+    .lbl-slow { top: 69.88%; right: 14.3%; bottom: 28.13%; left: 77.66%; }
+    .ly-wedge {
+      left: -16px;
+      top: 737px;
+      width: 215.5px;
+      height: 65px;
+      z-index: 2;
+    }
+    .ly-ch2 {
+      left: 9px;
+      top: 398px;
+      width: 57px;
+      height: 57px;
+      z-index: 3;
+    }
+    .ly-node {
+      width: 58px;
+      height: 58px;
+      object-fit: contain;
+      z-index: 3;
+    }
+    .ly-node-claims { left: 209px; top: 343px; }
+    .ly-node-lock1 { left: 437px; top: 343px; }
+    .ly-node-bottle { left: 550px; top: 453px; }
+    .ly-node-revise { left: 671px; top: 343px; }
+    .ly-node-feather { left: 785px; top: 453px; }
+    .ly-node-lock2 { left: 903px; top: 343px; }
+    .ly-node-split { left: 904px; top: 537px; }
+    .ly-node-lock3 { left: 1133px; top: 343px; }
+    .ly-node-end1 { left: 1243px; top: 453px; }
+    .ly-node-end2 { left: 1250px; top: 266px; }
+    a.ly-air {
+      left: 318px;
+      top: 453px;
+      width: 58px;
+      height: 58px;
+      z-index: 8;
+      pointer-events: auto;
+      cursor: pointer;
+      border-radius: 50%;
+      overflow: hidden;
+      box-shadow: 0 4px 0 rgba(0, 60, 120, 0.35);
+      transition: transform 0.18s ease, filter 0.18s ease;
+      transform-origin: center center;
+    }
+    a.ly-air:hover {
+      transform: scale(1.05);
+      filter: brightness(1.06);
+    }
+    a.ly-air:focus-visible {
+      outline: 3px solid #247baf;
+      outline-offset: 3px;
+    }
+    a.ly-air img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+      pointer-events: none;
+    }
+    .monster {
+      position: absolute;
+      left: 249px;
+      top: 381px;
+      width: 82px;
+      height: 87px;
+      z-index: 7;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: visible;
+      animation: pathMonsterBob 2.75s ease-in-out infinite;
+      filter: drop-shadow(3px 4px 0 rgba(16, 87, 168, 0.28));
+    }
+    @keyframes pathMonsterBob {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-6px); }
+    }
+    /* Blue monster art is 82×87 — letterbox inside Figma frame so nothing stretches */
+    .monster-img {
+      width: 100%;
+      height: 100%;
+      max-width: 82px;
+      max-height: 87px;
+      object-fit: contain;
+      object-position: center;
+      flex-shrink: 0;
+    }
+    .home-btn {
+      position: absolute;
+      left: 0;
+      top: 12px;
+      width: 108px;
+      height: 72px;
+      z-index: 20;
+      pointer-events: auto;
+      display: block;
+      filter: drop-shadow(4px 4px 0 #8b3617);
+    }
+    .home-btn .hb-flip {
+      position: absolute;
+      inset: 0;
+      transform: scaleX(-1);
+    }
+    .home-btn .hb-bg {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+    .home-btn .hb-logo {
+      position: absolute;
+      left: 15px;
+      top: 18px;
+      width: 66.441px;
+      height: 35.639px;
+      object-fit: contain;
+      pointer-events: none;
+    }
+  </style>
+</head>
+<body>
+  <div id="app">
+    <!-- Figma 4004:4281 — asset URLs from design context (refresh from Figma if expired) -->
+    <img class="ly ly-bg" src="https://www.figma.com/api/mcp/asset/6a412934-7205-4a9c-95b6-a7bbc29ca567" alt="" width="1280" height="800" onerror="this.onerror=null;this.src='assets/path-frame-reference.png';">
+
+    <p class="lbl lbl-falling">Falling (comic)</p>
+    <p class="lbl lbl-bottle">Bottle Drop</p>
+    <p class="lbl lbl-revising">Revising a Claim</p>
+    <p class="lbl lbl-feather">A Feather In Your Cup</p>
+    <p class="lbl lbl-slow">Slow Your Roll</p>
+    <p class="lbl lbl-claims">Claims and Evidence</p>
+    <p class="lbl lbl-air">Air Resistance</p>
+
+    <img class="ly ly-wedge" src="https://www.figma.com/api/mcp/asset/7da8b080-2e91-487d-9e4c-ec3a436e3dd1" alt="" width="216" height="65">
+    <img class="ly ly-ch2" src="https://www.figma.com/api/mcp/asset/233b5901-20e8-4f0b-800a-6081161b77cb" alt="" width="57" height="57">
+
+    <img class="ly ly-node ly-node-claims" src="assets/goldcircle.svg" alt="Claims and Evidence completed" width="58" height="58">
+
+    <a class="ly ly-air" href="index.html?start=air-resistance" aria-label="Start Air Resistance lesson">
+      <span class="visually-hidden">Air Resistance</span>
+      <img src="https://www.figma.com/api/mcp/asset/1b26ab5e-9b9e-45b4-961f-ecc5b2567878" alt="" width="58" height="58">
+    </a>
+
+    <img class="ly ly-node ly-node-lock1" src="assets/Lock.svg" alt="" width="58" height="58" aria-hidden="true">
+    <img class="ly ly-node ly-node-bottle" src="assets/Lock.svg" alt="" width="58" height="58" aria-hidden="true">
+    <img class="ly ly-node ly-node-revise" src="assets/Lock.svg" alt="" width="58" height="58" aria-hidden="true">
+    <img class="ly ly-node ly-node-feather" src="assets/Lock.svg" alt="" width="58" height="58" aria-hidden="true">
+    <img class="ly ly-node ly-node-lock2" src="assets/Lock.svg" alt="" width="58" height="58" aria-hidden="true">
+    <img class="ly ly-node ly-node-split" src="assets/Lock.svg" alt="" width="58" height="58" aria-hidden="true">
+    <img class="ly ly-node ly-node-lock3" src="assets/Lock.svg" alt="" width="58" height="58" aria-hidden="true">
+    <img class="ly ly-node ly-node-end1" src="assets/Lock.svg" alt="" width="58" height="58" aria-hidden="true">
+    <img class="ly ly-node ly-node-end2" src="assets/Lock.svg" alt="" width="58" height="58" aria-hidden="true">
+
+    <div class="monster" role="img" aria-label="Character on the path">
+      <img class="monster-img" src="assets/blue-monster.svg" width="82" height="87" alt="" decoding="async">
+    </div>
+
+    <a class="home-btn" href="index.html" aria-label="Back to campus">
+      <span class="hb-flip">
+        <img class="hb-bg" src="https://www.figma.com/api/mcp/asset/d8f0b3f5-5a01-4f88-9fde-6ea1fd0c87c8" alt="" width="108" height="72">
+      </span>
+      <img class="hb-logo" src="https://www.figma.com/api/mcp/asset/4badf277-9b67-428f-8b0a-666b592b7dab" alt="" width="67" height="36">
+    </a>
+  </div>
+  <script>
+    (function scaleApp() {
+      var app = document.getElementById('app');
+      if (!app) return;
+      var s = Math.min(window.innerWidth / 1280, window.innerHeight / 800);
+      app.style.transform = 'scale(' + s + ')';
+      app.style.transformOrigin = 'top left';
+      app.style.left = ((window.innerWidth - 1280 * s) / 2) + 'px';
+      app.style.top = ((window.innerHeight - 800 * s) / 2) + 'px';
+    })();
+    window.addEventListener('resize', function () {
+      var app = document.getElementById('app');
+      if (!app) return;
+      var s = Math.min(window.innerWidth / 1280, window.innerHeight / 800);
+      app.style.transform = 'scale(' + s + ')';
+      app.style.left = ((window.innerWidth - 1280 * s) / 2) + 'px';
+      app.style.top = ((window.innerHeight - 800 * s) / 2) + 'px';
+    });
+  </script>
+</body>
+</html>

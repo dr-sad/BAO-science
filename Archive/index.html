@@ -159,7 +159,7 @@
     .dot.nav-link { cursor:pointer; transition: filter 0.15s, transform 0.15s; }
     .dot.nav-link:hover { filter:brightness(1.2); transform:scale(1.1); }
 
-    /* Bottle Drop lesson nav — (i · 1 · 2 · 3 · 4 · 5); first i opens lesson info */
+    /* Bottle Drop lesson nav — Figma 4098:20146 (i · 1 · i · 2 · i · 3) */
     .problem-nav--bottle-drop {
       gap: 10.5px;
     }
@@ -447,7 +447,7 @@
     /* ════ SUCCESS OVERLAY ════ */
     .success-overlay {
       position:absolute; inset:0;
-      background: rgb(0, 68, 130);
+      background:rgba(0,68,130,.88);
       display:flex; align-items:center; justify-content:center;
       border-radius:8px;
       animation: fadeIn 0.4s ease;
@@ -820,10 +820,6 @@
       opacity: 0.45;
       border-radius: 8px;
     }
-    /* Bottle Drop finale: solid dark blue (hide semi-transparent pattern layer) */
-    #screen-lesson-final.lesson-final--bottle-drop .final-results-bg::after {
-      opacity: 0;
-    }
     .final-sparkles {
       position: absolute;
       inset: 0;
@@ -1161,20 +1157,8 @@
       margin-left: auto;
       margin-right: auto;
     }
-    /* Hypothesis gate — first-visit intro (Figma Hackathon 4217:13532) */
-    #bottle-drop-hypothesis-intro-title {
-      font-size: 28px;
-      line-height: 1.35;
-      letter-spacing: -0.55px;
-      max-width: 620px;
-      margin-left: auto;
-      margin-right: auto;
-    }
     #screen-bottle-drop-embed .kraken-wrap,
-    #screen-bottle-drop-embed-2 .kraken-wrap,
-    #screen-bottle-drop-hypothesis-prompt .kraken-wrap,
-    #screen-bottle-drop-q2 .kraken-wrap,
-    #screen-bottle-drop-q5 .kraken-wrap {
+    #screen-bottle-drop-embed-2 .kraken-wrap {
       top: 96px;
       right: -72px;
     }
@@ -1208,409 +1192,6 @@
       line-height: 1.32;
       padding: 0 2px;
     }
-    /* Hypothesis MC — Kraken on wrong answer (Titan / Same) */
-    #bottle-drop-hypothesis-kraken-wrap {
-      animation: none;
-      opacity: 0;
-      visibility: hidden;
-      pointer-events: none;
-    }
-    #bottle-drop-hypothesis-kraken-wrap.is-revealed {
-      opacity: 1;
-      visibility: visible;
-      pointer-events: auto;
-      animation: krakenIn 0.55s cubic-bezier(0.34, 1.56, 0.64, 1) both;
-    }
-    #bottle-drop-hypothesis-kraken-wrap .bubble-text {
-      font-size: 12px;
-      line-height: 1.32;
-      padding: 0 2px;
-    }
-    #bottle-drop-hypothesis-success-overlay {
-      display: none;
-      z-index: 25;
-      border-radius: 8px;
-    }
-    #bottle-drop-hypothesis-success-overlay.is-visible {
-      display: flex;
-    }
-    #bottle-drop-hypothesis-success-overlay .success-inner {
-      max-width: 640px;
-      padding: 0 24px;
-    }
-    #bottle-drop-hypothesis-kraken-actions {
-      display: none;
-    }
-    #bottle-drop-hypothesis-kraken-actions.is-visible {
-      display: block;
-    }
-    /* Error (Kraken) or success: hide in-card Submit so Try Again / overlay aren’t stacked */
-    #screen-bottle-drop-hypothesis-prompt:has(#bottle-drop-hypothesis-kraken-wrap.is-revealed) #bottle-drop-hypothesis-submit-actions,
-    #screen-bottle-drop-hypothesis-prompt:has(#bottle-drop-hypothesis-success-overlay.is-visible) #bottle-drop-hypothesis-submit-actions {
-      visibility: hidden;
-      pointer-events: none;
-      opacity: 0;
-    }
-    /* Q4 — Titan / balloon vs bowling ball height (open response; same shell as hypothesis) */
-    #screen-bottle-drop-q2 .modal-card.modal-q3.bottle-drop-q2-modal {
-      height: 540px;
-      padding-bottom: 72px;
-    }
-    #screen-bottle-drop-q2 .bottle-drop-q2-question {
-      font-family: 'Roboto Slab', serif;
-      font-weight: 500;
-      font-size: 24px;
-      color: #2c2b2f;
-      text-align: center;
-      letter-spacing: -0.264px;
-      line-height: 1.5;
-      width: 100%;
-      max-width: 771px;
-      margin: 0 auto 24px;
-      flex-shrink: 0;
-    }
-    #screen-bottle-drop-q2 .bottle-drop-q2-answer-wrap {
-      width: 100%;
-      max-width: 771px;
-      margin: 0 auto 20px;
-      flex-shrink: 0;
-    }
-    #screen-bottle-drop-q2 .bottle-drop-q2-answer-input {
-      display: block;
-      width: 100%;
-      box-sizing: border-box;
-      border: 1.5px solid #bebbb4;
-      border-radius: 6px;
-      padding: 14px 18px;
-      font-family: 'Roboto Slab', serif;
-      font-size: 17px;
-      color: #2c2b2f;
-      line-height: 1.4;
-      background: #fff;
-      transition: border-color 0.2s, box-shadow 0.2s;
-    }
-    #screen-bottle-drop-q2 .bottle-drop-q2-answer-input:focus {
-      outline: none;
-      border-color: #0058a8;
-      box-shadow: 0 0 0 3px rgba(0, 88, 168, 0.15);
-    }
-    #screen-bottle-drop-q2 .bottle-drop-q2-answer-wrap.shake {
-      animation: shake 0.4s ease;
-    }
-    #screen-bottle-drop-q2 #bottle-drop-q2-kraken-wrap {
-      animation: none;
-      opacity: 0;
-      visibility: hidden;
-      pointer-events: none;
-    }
-    #screen-bottle-drop-q2 #bottle-drop-q2-kraken-wrap.is-revealed {
-      opacity: 1;
-      visibility: visible;
-      pointer-events: auto;
-      animation: krakenIn 0.55s cubic-bezier(0.34, 1.56, 0.64, 1) both;
-    }
-    #screen-bottle-drop-q2 #bottle-drop-q2-kraken-wrap .bubble-text {
-      font-size: 12px;
-      line-height: 1.32;
-      padding: 0 2px;
-    }
-    #screen-bottle-drop-q2 #bottle-drop-q2-success-overlay {
-      display: none;
-      z-index: 25;
-      border-radius: 8px;
-    }
-    #screen-bottle-drop-q2 #bottle-drop-q2-success-overlay.is-visible {
-      display: flex;
-    }
-    #screen-bottle-drop-q2 #bottle-drop-q2-success-overlay .success-inner {
-      max-width: 640px;
-      padding: 0 24px;
-    }
-    #screen-bottle-drop-q2 #bottle-drop-q2-kraken-actions {
-      display: none;
-    }
-    #screen-bottle-drop-q2 #bottle-drop-q2-kraken-actions.is-visible {
-      display: block;
-    }
-    #screen-bottle-drop-q2:has(#bottle-drop-q2-kraken-wrap.is-revealed) #bottle-drop-q2-submit-actions,
-    #screen-bottle-drop-q2:has(#bottle-drop-q2-success-overlay.is-visible) #bottle-drop-q2-submit-actions {
-      visibility: hidden;
-      pointer-events: none;
-      opacity: 0;
-    }
-    #screen-bottle-drop-q2 #bottle-drop-q2-play-overlay.bottle-drop-intro-overlay {
-      z-index: 70;
-    }
-    #screen-bottle-drop-q2 .bottle-drop-q2-play-modal {
-      position: relative;
-      z-index: 1;
-      flex-shrink: 0;
-      box-sizing: border-box;
-      filter: drop-shadow(0 16px 40px rgba(0, 0, 0, 0.22));
-    }
-    #screen-bottle-drop-q2 .bottle-drop-q2-play-card {
-      position: relative;
-      width: 852px;
-      max-width: calc(100vw - 48px);
-      height: 540px;
-      box-sizing: border-box;
-      background: #fff;
-      border: 11px solid #e9e9e9;
-      border-radius: 16px;
-      padding: 0;
-      display: flex;
-      flex-direction: column;
-      overflow: visible;
-    }
-    #screen-bottle-drop-q2 .bottle-drop-q2-play-close-x {
-      position: absolute;
-      right: 8px;
-      top: 8px;
-      width: 61px;
-      height: 62px;
-      padding: 0;
-      border: none;
-      background: none;
-      cursor: pointer;
-      z-index: 8;
-    }
-    #screen-bottle-drop-q2 .bottle-drop-q2-play-close-x img {
-      display: block;
-      width: 100%;
-      height: 100%;
-      object-fit: contain;
-      pointer-events: none;
-    }
-    #screen-bottle-drop-q2 .bottle-drop-q2-play-close-x:focus-visible {
-      outline: 3px solid #0058a8;
-      outline-offset: 2px;
-      border-radius: 8px;
-    }
-    #screen-bottle-drop-q2 .bottle-drop-q2-play-iframe-host {
-      flex: 1;
-      min-height: 0;
-      width: 100%;
-      position: relative;
-      background: #1a2e44;
-      border-radius: 0;
-      overflow: hidden;
-    }
-    #screen-bottle-drop-q2 .bottle-drop-q2-play-iframe-host iframe {
-      position: absolute;
-      left: 0;
-      top: 0;
-      width: 100%;
-      height: 100%;
-      border: 0;
-      background: #1a2e44;
-    }
-    #screen-bottle-drop-q2 .bottle-drop-q2-play-actions {
-      position: absolute;
-      left: 50%;
-      bottom: -22px;
-      transform: translateX(-50%);
-      z-index: 10;
-    }
-    #screen-bottle-drop-q2 .bottle-drop-q2-play-actions .action-btn {
-      filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.12));
-    }
-    #screen-bottle-drop-q2 .bottle-drop-hypothesis-toolbar-right {
-      display: flex;
-      align-items: center;
-      gap: 12px;
-      flex-shrink: 0;
-    }
-    #screen-bottle-drop-q2 .bottle-drop-hypothesis-toolbar-right .bottle-drop-hypothesis-play-btn {
-      position: relative;
-      width: 176px;
-      height: 50px;
-      flex-shrink: 0;
-    }
-    #screen-bottle-drop-q2 .bottle-drop-hypothesis-play-btn .btn-bg-img {
-      object-fit: fill;
-    }
-    #screen-bottle-drop-q2 .bottle-drop-hypothesis-play-btn span {
-      font-family: 'Roboto Slab', serif;
-      font-weight: 500;
-      font-size: 15.088px;
-      line-height: 1.5;
-      color: #1359a6;
-      letter-spacing: -0.166px;
-      text-transform: uppercase;
-      white-space: nowrap;
-    }
-    /* Q5 — Moon parachute short answer (textarea + dictation; same shell as Q4) */
-    #screen-bottle-drop-q5 .modal-card.modal-q3.bottle-drop-q5-modal {
-      height: 540px;
-      padding-bottom: 72px;
-    }
-    #screen-bottle-drop-q5 .bottle-drop-q5-question {
-      font-family: 'Roboto Slab', serif;
-      font-weight: 500;
-      font-size: 24px;
-      color: #2c2b2f;
-      text-align: center;
-      letter-spacing: -0.264px;
-      line-height: 1.5;
-      width: 100%;
-      max-width: 771px;
-      margin: 0 auto 20px;
-      flex-shrink: 0;
-    }
-    #screen-bottle-drop-q5 .bottle-drop-q5-answer-box {
-      width: 100%;
-      max-width: 771px;
-      height: 150px;
-      min-height: 150px;
-      margin: 0 auto 16px;
-      flex-shrink: 0;
-      box-sizing: border-box;
-    }
-    #screen-bottle-drop-q5 .bottle-drop-q5-answer-box.shake {
-      animation: shake 0.4s ease;
-    }
-    #screen-bottle-drop-q5 #bottle-drop-q5-kraken-wrap {
-      animation: none;
-      opacity: 0;
-      visibility: hidden;
-      pointer-events: none;
-    }
-    #screen-bottle-drop-q5 #bottle-drop-q5-kraken-wrap.is-revealed {
-      opacity: 1;
-      visibility: visible;
-      pointer-events: auto;
-      animation: krakenIn 0.55s cubic-bezier(0.34, 1.56, 0.64, 1) both;
-    }
-    #screen-bottle-drop-q5 #bottle-drop-q5-kraken-wrap .bubble-text {
-      font-size: 12px;
-      line-height: 1.32;
-      padding: 0 2px;
-    }
-    #screen-bottle-drop-q5 #bottle-drop-q5-success-overlay {
-      display: none;
-      z-index: 25;
-      border-radius: 8px;
-    }
-    #screen-bottle-drop-q5 #bottle-drop-q5-success-overlay.is-visible {
-      display: flex;
-    }
-    #screen-bottle-drop-q5 #bottle-drop-q5-success-overlay .success-inner {
-      max-width: 640px;
-      padding: 0 24px;
-    }
-    #screen-bottle-drop-q5 #bottle-drop-q5-kraken-actions {
-      display: none;
-    }
-    #screen-bottle-drop-q5 #bottle-drop-q5-kraken-actions.is-visible {
-      display: block;
-    }
-    #screen-bottle-drop-q5:has(#bottle-drop-q5-kraken-wrap.is-revealed) #bottle-drop-q5-submit-actions,
-    #screen-bottle-drop-q5:has(#bottle-drop-q5-success-overlay.is-visible) #bottle-drop-q5-submit-actions {
-      visibility: hidden;
-      pointer-events: none;
-      opacity: 0;
-    }
-    #screen-bottle-drop-q5 #bottle-drop-q5-play-overlay.bottle-drop-intro-overlay {
-      z-index: 70;
-    }
-    #screen-bottle-drop-q5 .bottle-drop-q5-play-modal {
-      position: relative;
-      z-index: 1;
-      flex-shrink: 0;
-      box-sizing: border-box;
-      filter: drop-shadow(0 16px 40px rgba(0, 0, 0, 0.22));
-    }
-    #screen-bottle-drop-q5 .bottle-drop-q5-play-card {
-      position: relative;
-      width: 852px;
-      max-width: calc(100vw - 48px);
-      height: 540px;
-      box-sizing: border-box;
-      background: #fff;
-      border: 11px solid #e9e9e9;
-      border-radius: 16px;
-      padding: 0;
-      display: flex;
-      flex-direction: column;
-      overflow: visible;
-    }
-    #screen-bottle-drop-q5 .bottle-drop-q5-play-close-x {
-      position: absolute;
-      right: 8px;
-      top: 8px;
-      width: 61px;
-      height: 62px;
-      padding: 0;
-      border: none;
-      background: none;
-      cursor: pointer;
-      z-index: 8;
-    }
-    #screen-bottle-drop-q5 .bottle-drop-q5-play-close-x img {
-      display: block;
-      width: 100%;
-      height: 100%;
-      object-fit: contain;
-      pointer-events: none;
-    }
-    #screen-bottle-drop-q5 .bottle-drop-q5-play-close-x:focus-visible {
-      outline: 3px solid #0058a8;
-      outline-offset: 2px;
-      border-radius: 8px;
-    }
-    #screen-bottle-drop-q5 .bottle-drop-q5-play-iframe-host {
-      flex: 1;
-      min-height: 0;
-      width: 100%;
-      position: relative;
-      background: #1a2e44;
-      border-radius: 0;
-      overflow: hidden;
-    }
-    #screen-bottle-drop-q5 .bottle-drop-q5-play-iframe-host iframe {
-      position: absolute;
-      left: 0;
-      top: 0;
-      width: 100%;
-      height: 100%;
-      border: 0;
-      background: #1a2e44;
-    }
-    #screen-bottle-drop-q5 .bottle-drop-q5-play-actions {
-      position: absolute;
-      left: 50%;
-      bottom: -22px;
-      transform: translateX(-50%);
-      z-index: 10;
-    }
-    #screen-bottle-drop-q5 .bottle-drop-q5-play-actions .action-btn {
-      filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.12));
-    }
-    #screen-bottle-drop-q5 .bottle-drop-hypothesis-toolbar-right {
-      display: flex;
-      align-items: center;
-      gap: 12px;
-      flex-shrink: 0;
-    }
-    #screen-bottle-drop-q5 .bottle-drop-hypothesis-toolbar-right .bottle-drop-hypothesis-play-btn {
-      position: relative;
-      width: 176px;
-      height: 50px;
-      flex-shrink: 0;
-    }
-    #screen-bottle-drop-q5 .bottle-drop-hypothesis-play-btn .btn-bg-img {
-      object-fit: fill;
-    }
-    #screen-bottle-drop-q5 .bottle-drop-hypothesis-play-btn span {
-      font-family: 'Roboto Slab', serif;
-      font-weight: 500;
-      font-size: 15.088px;
-      line-height: 1.5;
-      color: #1359a6;
-      letter-spacing: -0.166px;
-      text-transform: uppercase;
-      white-space: nowrap;
-    }
     /* Sim 2: tap-to-dismiss Kraken after a non-30m drop (captures clicks over iframe) */
     #bottle-drop-sim2-kraken-dismiss-layer {
       display: none;
@@ -1622,173 +1203,35 @@
     #bottle-drop-sim2-kraken-dismiss-layer.is-active {
       display: block;
     }
-    /* Sim 1 — success overlay after first drop (replaces Kraken) */
-    #screen-bottle-drop-embed #bottle-drop-sim1-success-overlay {
-      display: none;
-      z-index: 25;
-      border-radius: 4px;
+    /* Hypothesis gate (Figma 4217:13389) — three stacked prompts before sim 3 */
+    #screen-bottle-drop-hypothesis-prompt .modal-card.modal-q3.bottle-drop-hypothesis-modal {
+      height: auto;
+      min-height: 440px;
+      max-height: 540px;
+      padding-bottom: 40px;
     }
-    #screen-bottle-drop-embed #bottle-drop-sim1-success-overlay.is-visible {
-      display: flex;
-    }
-    #screen-bottle-drop-embed #bottle-drop-sim1-success-overlay .success-inner {
-      max-width: 640px;
-      padding: 0 20px;
-    }
-    #screen-bottle-drop-embed #bottle-drop-sim1-success-overlay .bottle-drop-sim1-success-next-btn.action-btn {
-      width: 252px;
-    }
-    #screen-bottle-drop-embed #bottle-drop-sim1-success-overlay .bottle-drop-sim1-success-next-btn .btn-bg-img {
-      object-fit: fill;
-    }
-    #screen-bottle-drop-embed #bottle-drop-sim1-success-overlay .bottle-drop-sim1-success-next-btn span {
-      text-transform: none;
-      letter-spacing: -0.12px;
-      font-size: 15px;
-    }
-    /* Sim 2 — success overlay (30 m correct drop); replaces Kraken for success path */
-    #screen-bottle-drop-embed-2 #bottle-drop-sim2-success-overlay {
-      display: none;
-      z-index: 25;
-      border-radius: 4px;
-    }
-    #screen-bottle-drop-embed-2 #bottle-drop-sim2-success-overlay.is-visible {
-      display: flex;
-    }
-    #screen-bottle-drop-embed-2 #bottle-drop-sim2-success-overlay .success-inner {
-      max-width: 560px;
-      padding: 0 20px;
-    }
-    /* Hypothesis gate — Play simulation control (Figma 4219:13755) */
-    #screen-bottle-drop-hypothesis-prompt .bottle-drop-hypothesis-toolbar-right {
-      display: flex;
-      align-items: center;
-      gap: 12px;
-      flex-shrink: 0;
-    }
-    #screen-bottle-drop-hypothesis-prompt .bottle-drop-hypothesis-toolbar-right .bottle-drop-hypothesis-play-btn {
-      position: relative;
-      width: 176px;
-      height: 50px;
-      flex-shrink: 0;
-    }
-    #screen-bottle-drop-hypothesis-prompt .bottle-drop-hypothesis-play-btn .btn-bg-img {
-      object-fit: fill;
-    }
-    #screen-bottle-drop-hypothesis-prompt .bottle-drop-hypothesis-play-btn span {
-      font-family: 'Roboto Slab', serif;
-      font-weight: 500;
-      font-size: 15.088px;
-      line-height: 1.5;
-      color: #1359a6;
-      letter-spacing: -0.166px;
-      text-transform: uppercase;
-      white-space: nowrap;
-    }
-    /* Play simulation — full modal (Figma 4219:13730), iframe to Hackathon-Sims */
-    #screen-bottle-drop-hypothesis-prompt #bottle-drop-hypothesis-play-overlay.bottle-drop-intro-overlay {
-      z-index: 70;
-    }
-    #screen-bottle-drop-hypothesis-prompt .bottle-drop-hypothesis-play-modal {
-      position: relative;
-      z-index: 1;
-      flex-shrink: 0;
-      box-sizing: border-box;
-      filter: drop-shadow(0 16px 40px rgba(0, 0, 0, 0.22));
-    }
-    #screen-bottle-drop-hypothesis-prompt .bottle-drop-hypothesis-play-card {
-      position: relative;
-      width: 852px;
-      max-width: calc(100vw - 48px);
-      height: 540px;
-      box-sizing: border-box;
-      background: #fff;
-      border: 11px solid #e9e9e9;
-      border-radius: 16px;
-      padding: 0;
+    #screen-bottle-drop-hypothesis-prompt .bottle-drop-hypothesis-stack {
       display: flex;
       flex-direction: column;
-      overflow: visible;
-    }
-    #screen-bottle-drop-hypothesis-prompt .bottle-drop-hypothesis-play-close-x {
-      position: absolute;
-      right: 8px;
-      top: 8px;
-      width: 61px;
-      height: 62px;
-      padding: 0;
-      border: none;
-      background: none;
-      cursor: pointer;
-      z-index: 8;
-    }
-    #screen-bottle-drop-hypothesis-prompt .bottle-drop-hypothesis-play-close-x img {
-      display: block;
+      gap: 26px;
+      align-items: stretch;
       width: 100%;
-      height: 100%;
-      object-fit: contain;
-      pointer-events: none;
-    }
-    #screen-bottle-drop-hypothesis-prompt .bottle-drop-hypothesis-play-close-x:focus-visible {
-      outline: 3px solid #0058a8;
-      outline-offset: 2px;
-      border-radius: 8px;
-    }
-    #screen-bottle-drop-hypothesis-prompt .bottle-drop-hypothesis-play-iframe-host {
+      max-width: 771px;
+      margin: 0 auto;
       flex: 1;
+      justify-content: center;
       min-height: 0;
-      width: 100%;
-      position: relative;
-      background: #1a2e44;
-      border-radius: 0;
-      overflow: hidden;
+      padding: 4px 0 8px;
     }
-    #screen-bottle-drop-hypothesis-prompt .bottle-drop-hypothesis-play-iframe-host iframe {
-      position: absolute;
-      left: 0;
-      top: 0;
-      width: 100%;
-      height: 100%;
-      border: 0;
-      background: #1a2e44;
-    }
-    #screen-bottle-drop-hypothesis-prompt .bottle-drop-hypothesis-play-actions {
-      position: absolute;
-      left: 50%;
-      bottom: -22px;
-      transform: translateX(-50%);
-      z-index: 10;
-    }
-    #screen-bottle-drop-hypothesis-prompt .bottle-drop-hypothesis-play-actions .action-btn {
-      filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.12));
-    }
-    #screen-bottle-drop-hypothesis-prompt .modal-card.modal-q3.bottle-drop-hypothesis-modal {
-      height: 540px;
-    }
-    #screen-bottle-drop-hypothesis-prompt .bottle-drop-hypothesis-question {
+    #screen-bottle-drop-hypothesis-prompt .bottle-drop-hypothesis-q {
       font-family: 'Roboto Slab', serif;
       font-weight: 500;
-      font-size: 24px;
+      font-size: 22px;
       color: #2c2b2f;
       text-align: center;
       letter-spacing: -0.264px;
-      line-height: 1.5;
-      width: 100%;
-      max-width: 771px;
-      margin: 0 auto 32px;
-      flex-shrink: 0;
-    }
-    #screen-bottle-drop-hypothesis-prompt #bottle-drop-hypothesis-mc-row {
-      gap: 24px;
-      margin-bottom: 16px;
-    }
-    #screen-bottle-drop-hypothesis-prompt #bottle-drop-hypothesis-mc-row .q3-text-choice {
-      width: 212px;
-      min-height: 237px;
-      height: 237px;
-      font-size: 24px;
-      letter-spacing: -0.264px;
-      line-height: 1.5;
+      line-height: 1.45;
+      margin: 0;
     }
     .guidebook-comic-icon {
       width: 22px;
@@ -1814,252 +1257,6 @@
     @keyframes finalScreenSparkle {
       0%   { opacity: 0.2; transform: scale(1); }
       100% { opacity: 0.85; transform: scale(1.02); }
-    }
-
-    /* Victory Vault — full-bleed shop art; cover keeps aspect ratio while filling the stage */
-    #screen-victory-vault .victory-vault-bg {
-      position: absolute;
-      inset: 0;
-      z-index: 0;
-      background-color: #5c5661;
-      background-image: url('assets/victory-vault-bg.png');
-      background-position: center center;
-      background-repeat: no-repeat;
-      background-size: cover;
-    }
-    /* Home control — composite art (arrow pentagon + BA + house); scoped so other lessons keep Figma assets */
-    #screen-victory-vault .home-btn.victory-vault-home-btn {
-      width: 112px;
-      height: 76px;
-      padding: 0;
-      border: none;
-      background: transparent;
-      box-shadow: none;
-    }
-    #screen-victory-vault .home-btn.victory-vault-home-btn:focus-visible {
-      outline: 3px solid #fff;
-      outline-offset: 3px;
-      border-radius: 4px;
-    }
-    #screen-victory-vault .home-btn.victory-vault-home-btn .victory-vault-home-btn-img {
-      position: absolute;
-      inset: 0;
-      width: 100%;
-      height: 100%;
-      object-fit: contain;
-      pointer-events: none;
-      display: block;
-    }
-    /* Right shelf — per-plush links + hover sparkles (tuned for background-size: cover) */
-    #screen-victory-vault .victory-vault-stuffy-hits {
-      position: absolute;
-      z-index: 15;
-      top: 12%;
-      right: 0.5%;
-      bottom: 20%;
-      left: 52%;
-      pointer-events: none;
-    }
-    #screen-victory-vault .victory-vault-stuffy-hit {
-      position: absolute;
-      display: block;
-      pointer-events: auto;
-      cursor: pointer;
-      text-decoration: none;
-      background: transparent;
-      border: none;
-      padding: 0;
-      box-sizing: border-box;
-      overflow: visible;
-    }
-    #screen-victory-vault .victory-vault-stuffy-hit:focus-visible {
-      outline: 3px solid #f59e0b;
-      outline-offset: 3px;
-      border-radius: 12px;
-    }
-    /* Approximate rows on the right display (percent of shelf region) */
-    #screen-victory-vault .victory-vault-stuffy-hit--top {
-      left: 8%;
-      top: 0;
-      width: 78%;
-      height: 40%;
-    }
-    #screen-victory-vault .victory-vault-stuffy-hit--mid {
-      left: 4%;
-      top: 36%;
-      width: 84%;
-      height: 30%;
-    }
-    #screen-victory-vault .victory-vault-stuffy-hit--low {
-      left: 10%;
-      top: 64%;
-      width: 76%;
-      height: 34%;
-    }
-    #screen-victory-vault .victory-vault-stuffy-sparkles {
-      position: absolute;
-      left: 50%;
-      top: 50%;
-      width: 0;
-      height: 0;
-      pointer-events: none;
-    }
-    #screen-victory-vault .victory-vault-stuffy-sparkle {
-      position: absolute;
-      left: 0;
-      top: 0;
-      width: 10px;
-      height: 10px;
-      margin: -5px 0 0 -5px;
-      border-radius: 50%;
-      background: #fff;
-      box-shadow:
-        0 0 4px 2px #fff6a8,
-        0 0 10px 3px rgba(255, 210, 90, 0.95),
-        0 0 18px 6px rgba(255, 160, 60, 0.45);
-      opacity: 0;
-      transform: rotate(var(--vv-rot, 0deg)) translateX(6px) scale(0.25);
-    }
-    @keyframes victoryVaultStuffySpark {
-      0% {
-        opacity: 0;
-        transform: rotate(var(--vv-rot, 0deg)) translateX(4px) scale(0.2);
-      }
-      35% {
-        opacity: 1;
-      }
-      100% {
-        opacity: 0;
-        transform: rotate(var(--vv-rot, 0deg)) translateX(42px) scale(0.85);
-      }
-    }
-    #screen-victory-vault .victory-vault-stuffy-hit:hover .victory-vault-stuffy-sparkle {
-      animation: victoryVaultStuffySpark 0.72s ease-out forwards;
-    }
-    #screen-victory-vault .victory-vault-stuffy-hit:hover .victory-vault-stuffy-sparkle:nth-child(1) {
-      animation-delay: 0s;
-    }
-    #screen-victory-vault .victory-vault-stuffy-hit:hover .victory-vault-stuffy-sparkle:nth-child(2) {
-      animation-delay: 0.05s;
-    }
-    #screen-victory-vault .victory-vault-stuffy-hit:hover .victory-vault-stuffy-sparkle:nth-child(3) {
-      animation-delay: 0.1s;
-    }
-    #screen-victory-vault .victory-vault-stuffy-hit:hover .victory-vault-stuffy-sparkle:nth-child(4) {
-      animation-delay: 0.03s;
-    }
-    #screen-victory-vault .victory-vault-stuffy-hit:hover .victory-vault-stuffy-sparkle:nth-child(5) {
-      animation-delay: 0.08s;
-    }
-    #screen-victory-vault .victory-vault-stuffy-hit:hover .victory-vault-stuffy-sparkle:nth-child(6) {
-      animation-delay: 0.12s;
-    }
-    #screen-victory-vault .victory-vault-stuffy-hit:hover .victory-vault-stuffy-sparkle:nth-child(7) {
-      animation-delay: 0.06s;
-    }
-    #screen-victory-vault .victory-vault-stuffy-hit:hover .victory-vault-stuffy-sparkle:nth-child(8) {
-      animation-delay: 0.14s;
-    }
-    @media (prefers-reduced-motion: reduce) {
-      #screen-victory-vault .victory-vault-stuffy-hit:hover .victory-vault-stuffy-sparkle {
-        animation: none !important;
-        opacity: 0;
-      }
-    }
-    /* Top-right profile + XP bar — same visual weight as campus; flush to right edge of stage */
-    #screen-victory-vault .victory-vault-profile-wrap {
-      position: absolute;
-      right: 0;
-      top: 1.5%;
-      z-index: 30;
-      pointer-events: none;
-      width: 270px;
-      max-width: calc(100% - 130px);
-      line-height: 0;
-    }
-    /* Victory Vault welcome — Figma 4219:13788 (Modal) */
-    #screen-victory-vault #victory-vault-welcome-overlay.bottle-drop-intro-overlay {
-      z-index: 65;
-    }
-    #screen-victory-vault .victory-vault-figma-modal {
-      position: relative;
-      width: min(726px, calc(100% - 48px));
-      min-height: 455px;
-      flex-shrink: 0;
-      box-sizing: border-box;
-      filter: drop-shadow(0 16px 40px rgba(0, 0, 0, 0.2));
-    }
-    #screen-victory-vault .victory-vault-figma-modal-surface {
-      position: absolute;
-      left: 0;
-      top: 21px;
-      width: 100%;
-      height: 434px;
-      box-sizing: border-box;
-      background: #fff;
-      border: 11px solid #4090cd;
-    }
-    #screen-victory-vault .victory-vault-figma-modal-close {
-      position: absolute;
-      right: 0;
-      top: 0;
-      width: 61px;
-      height: 62px;
-      padding: 0;
-      border: none;
-      background: none;
-      cursor: pointer;
-      z-index: 2;
-    }
-    #screen-victory-vault .victory-vault-figma-modal-close:focus-visible {
-      outline: 3px solid #0058a8;
-      outline-offset: 3px;
-      border-radius: 6px;
-    }
-    #screen-victory-vault .victory-vault-figma-modal-close img {
-      display: block;
-      width: 100%;
-      height: 100%;
-      object-fit: contain;
-      pointer-events: none;
-    }
-    #screen-victory-vault .victory-vault-figma-modal-body {
-      position: absolute;
-      left: 92px;
-      top: 85px;
-      width: 542px;
-      max-width: calc(100% - 184px);
-      box-sizing: border-box;
-      display: flex;
-      flex-direction: column;
-      gap: 26px;
-      color: #000;
-    }
-    #screen-victory-vault .victory-vault-figma-modal-title {
-      margin: 0;
-      font-family: 'Roboto Slab', serif;
-      font-weight: 700;
-      font-size: 32px;
-      line-height: 1.5;
-      letter-spacing: -0.704px;
-    }
-    #screen-victory-vault .victory-vault-figma-modal-copy {
-      font-family: 'Roboto Flex', sans-serif;
-      font-weight: 400;
-      font-size: 20px;
-      line-height: 1.5;
-      letter-spacing: 0;
-    }
-    #screen-victory-vault .victory-vault-figma-modal-copy p {
-      margin: 0;
-    }
-    #screen-victory-vault .victory-vault-figma-modal-copy p:first-child {
-      margin-bottom: 16px;
-    }
-    #screen-victory-vault .victory-vault-profile-bar-img {
-      width: 100%;
-      height: auto;
-      display: block;
     }
 
     /* ══ Campus home map (Figma 4116:4390) — scoped so lesson UI is unchanged ══ */
@@ -2231,11 +1428,6 @@
     #screen-campus .hit-math {
       cursor: default;
     }
-    /* Language Loft + AoPS Arena: decorative campus regions only (no navigation). */
-    #screen-campus .hit-lang,
-    #screen-campus .hit-arena {
-      cursor: default;
-    }
     #screen-campus .stage:has(.hit-swag:hover) .glow-swag .glow__blob,
     #screen-campus .stage:has(.hit-swag:focus-visible) .glow-swag .glow__blob,
     #screen-campus .stage:has(.hit-sci:hover) .glow-sci .glow__blob,
@@ -2341,557 +1533,6 @@
     #screen-campus .layer-arena img {
       object-fit: contain;
       object-position: center bottom;
-    }
-
-    /* Language Loft — under construction (Figma 4198:11888)
-       https://www.figma.com/design/FH1ei8HwUvRzFvnpQ5cBfd/Hackathon?node-id=4198-11888 */
-    #screen-language-loft {
-      font-family: 'Roboto Flex', 'Roboto Slab', sans-serif;
-      background: #9ed4ef;
-    }
-    #screen-language-loft .lang-loft-page {
-      position: absolute;
-      inset: 0;
-      display: flex;
-      flex-direction: column;
-      background: #9ed4ef;
-      overflow: hidden;
-    }
-    #screen-language-loft .lang-loft-header {
-      flex-shrink: 0;
-      display: flex;
-      align-items: flex-start;
-      justify-content: space-between;
-      gap: 10px;
-      padding: 8px 8px 0 2px;
-      min-height: 86px;
-      background: linear-gradient(180deg, #e42d45 0%, #c41e3a 100%);
-      border-bottom: 2px solid #8b1426;
-      box-shadow: 0 2px 10px rgba(90, 10, 22, 0.25);
-      z-index: 20;
-    }
-    #screen-language-loft .lang-loft-header-left {
-      display: flex;
-      flex-direction: row;
-      align-items: flex-start;
-      gap: 10px;
-      max-width: 42%;
-    }
-    #screen-language-loft .lang-loft-header .home-btn {
-      position: relative;
-      left: 0;
-      top: 0;
-      flex-shrink: 0;
-      z-index: 25;
-      cursor: default;
-      pointer-events: none;
-    }
-    #screen-language-loft .lang-loft-soon-pill {
-      margin-top: 18px;
-      display: inline-flex;
-      align-items: center;
-      gap: 6px;
-      padding: 5px 12px 5px 8px;
-      background: rgba(255, 255, 255, 0.14);
-      border: 1px solid rgba(255, 255, 255, 0.32);
-      border-radius: 6px;
-      font-size: 12.5px;
-      font-weight: 500;
-      color: #fff;
-      white-space: nowrap;
-    }
-    #screen-language-loft .lang-loft-soon-pill span[aria-hidden="true"] {
-      width: 15px;
-      height: 15px;
-      border-radius: 50%;
-      background: #ffe566;
-      color: #8b1426;
-      font-size: 10px;
-      font-weight: 800;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      line-height: 1;
-      flex-shrink: 0;
-    }
-    #screen-language-loft .lang-loft-header-center {
-      flex: 1;
-      display: flex;
-      justify-content: center;
-      padding-top: 2px;
-    }
-    #screen-language-loft .lang-loft-title-banner {
-      padding: 12px 56px 16px;
-      background: #7a1224;
-      border-radius: 0 0 26px 26px;
-      border: 2px solid #5c0d18;
-      border-top: none;
-      box-shadow: 0 4px 14px rgba(0, 0, 0, 0.28);
-    }
-    #screen-language-loft .lang-loft-title-banner h1 {
-      font-family: 'Roboto Slab', serif;
-      font-weight: 600;
-      font-size: 25px;
-      color: #fff;
-      text-align: center;
-      letter-spacing: -0.35px;
-      line-height: 1.2;
-    }
-    #screen-language-loft .lang-loft-header-right {
-      display: flex;
-      flex-direction: column;
-      align-items: flex-end;
-      gap: 2px;
-      padding: 2px 4px 0 0;
-    }
-    #screen-language-loft .lang-loft-profile-label {
-      font-size: 10px;
-      font-weight: 700;
-      letter-spacing: 0.08em;
-      color: rgba(255, 255, 255, 0.88);
-      text-transform: uppercase;
-    }
-    #screen-language-loft .lang-loft-profile-card {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      background: linear-gradient(180deg, #2f93d8 0%, #247baf 100%);
-      padding: 5px 12px 5px 6px;
-      border-radius: 10px;
-      border: 1px solid #1a5f8a;
-      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.22);
-    }
-    #screen-language-loft .lang-loft-profile-card img {
-      width: 44px;
-      height: 44px;
-      border-radius: 50%;
-      border: 2px solid rgba(255, 255, 255, 0.4);
-      object-fit: cover;
-      background: #fff;
-    }
-    #screen-language-loft .lang-loft-profile-meta .lang-loft-profile-name {
-      font-size: 14px;
-      font-weight: 600;
-      color: #fff;
-      display: block;
-      line-height: 1.2;
-    }
-    #screen-language-loft .lang-loft-profile-meta .lang-loft-profile-level {
-      margin-top: 4px;
-      display: inline-block;
-      padding: 2px 10px;
-      border-radius: 4px;
-      background: linear-gradient(180deg, #ffe566 0%, #f5c542 100%);
-      border: 1px solid #d9a82e;
-      font-size: 12px;
-      font-weight: 700;
-      color: #4a3b10;
-    }
-    #screen-language-loft .lang-loft-main {
-      flex: 1;
-      min-height: 0;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      padding: 24px 16px 40px;
-      background:
-        radial-gradient(ellipse 120% 80% at 50% 0%, rgba(255, 255, 255, 0.35) 0%, transparent 55%),
-        linear-gradient(180deg, #b8e4fb 0%, #9ed4ef 45%, #8ec9e8 100%);
-    }
-    #screen-language-loft .lang-loft-sign {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      filter: drop-shadow(0 12px 24px rgba(0, 0, 0, 0.18));
-    }
-    #screen-language-loft .lang-loft-planks {
-      position: relative;
-      width: min(420px, 88vw);
-      padding: 14px 18px 18px;
-      background:
-        repeating-linear-gradient(
-          90deg,
-          #c4956a 0px,
-          #c4956a 2px,
-          #b88458 2px,
-          #b88458 4px
-        );
-      border: 4px solid #6b4423;
-      border-radius: 6px;
-      box-shadow:
-        inset 0 1px 0 rgba(255, 255, 255, 0.25),
-        0 3px 0 #4a2d18;
-    }
-    #screen-language-loft .lang-loft-plank-row {
-      display: flex;
-      flex-direction: column;
-      gap: 6px;
-    }
-    #screen-language-loft .lang-loft-plank {
-      height: 14px;
-      border-radius: 2px;
-      background: linear-gradient(180deg, #e8c9a8 0%, #d4a574 50%, #c4956a 100%);
-      border: 1px solid #8b5a32;
-    }
-    #screen-language-loft .lang-loft-plank--text {
-      height: auto;
-      min-height: 72px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      padding: 16px 12px;
-      background: linear-gradient(180deg, #deb887 0%, #c9a06a 55%, #b88458 100%);
-    }
-    #screen-language-loft .lang-loft-plank--text span {
-      font-family: 'Roboto Slab', serif;
-      font-weight: 800;
-      font-size: clamp(22px, 4.2vw, 32px);
-      color: #3d2914;
-      text-align: center;
-      text-transform: uppercase;
-      letter-spacing: 0.04em;
-      text-shadow:
-        0 1px 0 rgba(255, 255, 255, 0.35),
-        0 2px 0 rgba(0, 0, 0, 0.12);
-    }
-    #screen-language-loft .lang-loft-posts {
-      display: flex;
-      justify-content: space-between;
-      width: min(380px, 82vw);
-      margin-top: -2px;
-      gap: 48px;
-    }
-    #screen-language-loft .lang-loft-post {
-      flex: 1;
-      max-width: 44px;
-      height: 100px;
-      border-radius: 0 0 4px 4px;
-      border: 3px solid #1a1a1a;
-      border-top: none;
-      background: repeating-linear-gradient(
-        -55deg,
-        #1a1a1a 0px,
-        #1a1a1a 8px,
-        #f4d03f 8px,
-        #f4d03f 16px
-      );
-      box-shadow: 0 4px 0 rgba(0, 0, 0, 0.15);
-    }
-
-    /* AoPS Arena — live classroom (Figma 4198:11856)
-       https://www.figma.com/design/FH1ei8HwUvRzFvnpQ5cBfd/Hackathon?node-id=4198-11856 */
-    #screen-aops-arena {
-      font-family: 'Roboto Flex', 'Roboto Slab', sans-serif;
-      background: #e6ebf0;
-    }
-    #screen-aops-arena .aops-arena-page {
-      position: absolute;
-      inset: 0;
-      display: flex;
-      flex-direction: column;
-      background: #e6ebf0;
-      overflow: hidden;
-    }
-    #screen-aops-arena .aops-arena-header {
-      flex-shrink: 0;
-      display: flex;
-      align-items: flex-start;
-      justify-content: space-between;
-      gap: 10px;
-      padding: 8px 8px 0 2px;
-      min-height: 86px;
-      background: linear-gradient(180deg, #dce6f0 0%, #e6ebf0 100%);
-      border-bottom: 1px solid #b8cadc;
-      z-index: 20;
-    }
-    #screen-aops-arena .aops-arena-header-left {
-      display: flex;
-      flex-direction: row;
-      align-items: flex-start;
-      gap: 10px;
-      max-width: 42%;
-    }
-    #screen-aops-arena .aops-arena-header .home-btn {
-      position: relative;
-      left: 0;
-      top: 0;
-      flex-shrink: 0;
-      z-index: 25;
-      cursor: default;
-      pointer-events: none;
-    }
-    #screen-aops-arena .aops-arena-moderation {
-      margin-top: 18px;
-      display: inline-flex;
-      align-items: center;
-      gap: 6px;
-      padding: 5px 12px 5px 8px;
-      background: #cfe8fc;
-      border: 1px solid #8ec8f0;
-      border-radius: 6px;
-      font-size: 12.5px;
-      font-weight: 500;
-      color: #154d72;
-      white-space: nowrap;
-    }
-    #screen-aops-arena .aops-arena-moderation-info {
-      width: 15px;
-      height: 15px;
-      border-radius: 50%;
-      background: #247baf;
-      color: #fff;
-      font-size: 10px;
-      font-weight: 800;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      line-height: 1;
-      flex-shrink: 0;
-    }
-    #screen-aops-arena .aops-arena-header-center {
-      flex: 1;
-      display: flex;
-      justify-content: center;
-      padding-top: 2px;
-    }
-    #screen-aops-arena .aops-arena-title-banner {
-      padding: 12px 56px 16px;
-      background: #0d3e73;
-      border-radius: 0 0 26px 26px;
-      border: 2px solid #1f5f94;
-      border-top: none;
-      box-shadow: 0 4px 14px rgba(13, 62, 115, 0.28);
-    }
-    #screen-aops-arena .aops-arena-title-banner h1 {
-      font-family: 'Roboto Slab', serif;
-      font-weight: 600;
-      font-size: 25px;
-      color: #fff;
-      text-align: center;
-      letter-spacing: -0.35px;
-      line-height: 1.2;
-    }
-    #screen-aops-arena .aops-arena-header-right {
-      display: flex;
-      flex-direction: column;
-      align-items: flex-end;
-      gap: 2px;
-      padding: 2px 4px 0 0;
-    }
-    #screen-aops-arena .aops-arena-instructor-label {
-      font-size: 10px;
-      font-weight: 700;
-      letter-spacing: 0.08em;
-      color: #247baf;
-      text-transform: uppercase;
-    }
-    #screen-aops-arena .aops-arena-instructor-card {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      background: #fff;
-      padding: 5px 12px 5px 6px;
-      border-radius: 10px;
-      border: 1px solid #bcd6eb;
-      box-shadow: 0 1px 4px rgba(0, 0, 0, 0.07);
-    }
-    #screen-aops-arena .aops-arena-instructor-card .aops-instructor-avatar {
-      width: 44px;
-      height: 44px;
-      border-radius: 50%;
-      border: 2px solid #d4e8f7;
-      object-fit: cover;
-    }
-    #screen-aops-arena .aops-instructor-meta .aops-instructor-name {
-      font-size: 14px;
-      font-weight: 600;
-      color: #247baf;
-      display: block;
-      line-height: 1.2;
-    }
-    #screen-aops-arena .aops-instructor-meta .aops-instructor-level {
-      margin-top: 4px;
-      display: inline-block;
-      padding: 2px 10px;
-      border-radius: 4px;
-      background: linear-gradient(180deg, #ffe566 0%, #f5c542 100%);
-      border: 1px solid #d9a82e;
-      font-size: 12px;
-      font-weight: 700;
-      color: #4a3b10;
-    }
-    #screen-aops-arena .aops-arena-main {
-      flex: 1;
-      min-height: 0;
-      display: flex;
-      flex-direction: row;
-    }
-    #screen-aops-arena .aops-arena-chat {
-      flex: 1;
-      min-width: 0;
-      overflow-y: auto;
-      overflow-x: hidden;
-      background: #fff;
-      border-right: 1px solid #bcd6eb;
-    }
-    #screen-aops-arena .aops-chat-band {
-      padding: 12px 16px 14px;
-      border-bottom: 1px solid #d4e8f7;
-      background: #fff;
-    }
-    #screen-aops-arena .aops-chat-band--alt {
-      background: #f5f8fc;
-    }
-    #screen-aops-arena .aops-chat-band--students {
-      background: #e2e6ed;
-      border-bottom: 1px solid #c9d0db;
-    }
-    #screen-aops-arena .aops-post-head {
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      margin-bottom: 8px;
-    }
-    #screen-aops-arena .aops-cube {
-      width: 16px;
-      height: 16px;
-      flex-shrink: 0;
-      border-radius: 3px;
-      transform: rotate(-6deg);
-      box-shadow: 1px 2px 0 rgba(0, 0, 0, 0.12);
-    }
-    #screen-aops-arena .aops-cube--instructor { background: linear-gradient(135deg, #7ec8ff 0%, #247baf 100%); }
-    #screen-aops-arena .aops-cube--purple { background: linear-gradient(135deg, #c9a8ff 0%, #7b4dbf 100%); }
-    #screen-aops-arena .aops-cube--c1 { background: linear-gradient(135deg, #ffb88c 0%, #e86a3a 100%); }
-    #screen-aops-arena .aops-cube--c2 { background: linear-gradient(135deg, #8ce8c4 0%, #2a9d6a 100%); }
-    #screen-aops-arena .aops-cube--c3 { background: linear-gradient(135deg, #a8d4ff 0%, #3d7fc9 100%); }
-    #screen-aops-arena .aops-cube--c4 { background: linear-gradient(135deg, #ffe08c 0%, #d4a017 100%); }
-    #screen-aops-arena .aops-post-role {
-      font-weight: 700;
-      font-size: 13px;
-      color: #247baf;
-    }
-    #screen-aops-arena .aops-post-role--me {
-      color: #14ae5c;
-    }
-    #screen-aops-arena .aops-post-body {
-      font-family: 'Roboto Slab', serif;
-      font-size: 15px;
-      line-height: 1.5;
-      color: #2c2b2f;
-      padding-left: 24px;
-    }
-    #screen-aops-arena .aops-post-body strong {
-      font-weight: 700;
-    }
-    #screen-aops-arena .aops-diagram-box {
-      display: inline-block;
-      margin: 6px 0 4px 24px;
-      padding: 14px 18px;
-      border: 2px solid #8ec8f0;
-      border-radius: 8px;
-      background: #f5fbff;
-    }
-    #screen-aops-arena .aops-diagram-box svg {
-      display: block;
-    }
-    #screen-aops-arena .aops-caption {
-      font-size: 13px;
-      color: #5a6270;
-      margin-top: 6px;
-      max-width: 520px;
-    }
-    #screen-aops-arena .aops-student-row {
-      display: grid;
-      grid-template-columns: repeat(4, minmax(0, 1fr));
-      gap: 10px;
-      padding: 4px 4px 2px;
-    }
-    #screen-aops-arena .aops-student-bubble {
-      display: flex;
-      gap: 6px;
-      align-items: flex-start;
-      font-size: 12.5px;
-      line-height: 1.35;
-      color: #2c2b2f;
-    }
-    #screen-aops-arena .aops-student-bubble .aops-student-name {
-      font-weight: 700;
-      color: #1a4a6e;
-      flex-shrink: 0;
-    }
-    #screen-aops-arena .aops-answer-chip {
-      display: inline-block;
-      margin-left: 4px;
-      padding: 1px 7px;
-      border: 1.5px solid #2c2b2f;
-      border-radius: 3px;
-      background: #fff;
-      font-weight: 700;
-      font-size: 0.95em;
-    }
-    #screen-aops-arena .aops-roster {
-      width: 208px;
-      flex-shrink: 0;
-      overflow-y: auto;
-      padding: 10px 8px 16px;
-      background-color: #eef1f4;
-      background-image:
-        linear-gradient(30deg, rgba(255, 255, 255, 0.35) 12%, transparent 12.5%),
-        linear-gradient(-30deg, rgba(255, 255, 255, 0.35) 12%, transparent 12.5%),
-        linear-gradient(30deg, transparent 87%, rgba(200, 210, 220, 0.2) 87.5%),
-        linear-gradient(-30deg, transparent 87%, rgba(200, 210, 220, 0.2) 87.5%);
-      background-size: 20px 35px;
-      border-left: 1px solid #dbe3ea;
-    }
-    #screen-aops-arena .aops-roster-me {
-      font-weight: 700;
-      font-size: 13px;
-      color: #14ae5c;
-      margin-bottom: 8px;
-      padding: 0 4px 8px;
-      border-bottom: 1px solid #d5dde5;
-    }
-    #screen-aops-arena .aops-roster-row {
-      display: flex;
-      align-items: center;
-      gap: 7px;
-      padding: 3px 4px;
-      font-size: 12.5px;
-      color: #3d4450;
-    }
-    #screen-aops-arena .aops-arena-footer {
-      flex-shrink: 0;
-      height: 40px;
-      background: #0d3e73;
-      display: flex;
-      align-items: center;
-      padding: 0 8px;
-      border-top: 2px solid #082a4d;
-    }
-    #screen-aops-arena .aops-arena-eye {
-      width: 34px;
-      height: 34px;
-      border: none;
-      border-radius: 4px;
-      background: #124472;
-      cursor: pointer;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      color: #fff;
-      padding: 0;
-    }
-    #screen-aops-arena .aops-arena-eye:focus-visible {
-      outline: 2px solid #fff;
-      outline-offset: 2px;
-    }
-    #screen-aops-arena .aops-arena-eye svg {
-      width: 18px;
-      height: 18px;
-      fill: none;
-      stroke: currentColor;
-      stroke-width: 2;
     }
 
     /* ══ Mathnasium lesson pathway (Figma 4004:4281) ══ */
@@ -3035,7 +1676,7 @@
       <div class="layer layer-sci-b"><img src="https://www.figma.com/api/mcp/asset/292f535f-4a75-4904-bd7c-7c790ae6351e" alt=""></div>
       <div class="layer layer-math-b"><img src="https://www.figma.com/api/mcp/asset/2ba2e55a-18ab-47dd-a91e-51bf3f0ab651" alt=""></div>
       <div class="layer layer-lang-b"><img src="https://www.figma.com/api/mcp/asset/eade48ff-61a2-4738-84eb-f7cea8cc9b1b" alt=""></div>
-      <div class="layer layer-arena"><img src="assets/aopsarena.svg" alt="AoPS Arena"></div>
+      <div class="layer layer-arena"><img src="https://www.figma.com/api/mcp/asset/cf334d22-cd2c-4e75-b4d5-e2ef95bb255a" alt=""></div>
       <div class="layer layer-swag-m"><img src="https://www.figma.com/api/mcp/asset/ae9167f6-7647-457a-b233-044a944f65e3" alt=""></div>
       <div class="layer layer-sci-m"><img src="https://www.figma.com/api/mcp/asset/4613dfea-df2c-44cd-8898-531819cb51be" alt=""></div>
       <div class="layer layer-math-m"><img src="https://www.figma.com/api/mcp/asset/ca249f38-6423-4d2a-9be4-e6209212416b" alt=""></div>
@@ -3057,7 +1698,7 @@
       </div>
       <div class="layer layer-lang-i"><img src="https://www.figma.com/api/mcp/asset/5f1fcf45-410b-489c-a79a-ac51125c5846" alt=""></div>
       <div class="layer layer-lang-s"><img src="https://www.figma.com/api/mcp/asset/07362f99-a20b-46e5-8970-79503effd538" alt=""></div>
-      <div class="layer layer-lang-label">LANGUAGE LOFT</div>
+      <div class="layer layer-lang-label">LANGUAGE LODGE</div>
       <button type="button" class="home-btn" aria-label="Home">
         <img class="btn-bg" src="https://www.figma.com/api/mcp/asset/80d14835-dea8-4542-970a-15519717eae7" alt="">
         <img class="btn-logo" src="https://www.figma.com/api/mcp/asset/6da4976c-1ad1-4529-9f43-4555ffe88593" alt="">
@@ -3072,255 +1713,21 @@
       <a class="hit hit-swag" href="#" aria-label="Victory Vault" onclick="event.preventDefault();showScreen('screen-victory-vault');"></a>
       <a class="hit hit-sci" href="path.html" aria-label="Science Center — learning path"></a>
       <div class="hit hit-math" aria-hidden="true"></div>
-      <span class="hit hit-lang" aria-hidden="true"></span>
-      <span class="hit hit-arena" aria-hidden="true"></span>
-    </div>
-  </div>
-
-  <!-- ══ Language Loft — under construction (Figma 4198:11888) ══ -->
-  <div class="screen" id="screen-language-loft">
-    <div class="lang-loft-page">
-      <header class="lang-loft-header">
-        <div class="lang-loft-header-left">
-          <div class="home-btn" aria-hidden="true">
-            <img class="btn-bg"   src="https://www.figma.com/api/mcp/asset/6b56f2b8-a858-4c60-b144-152398b3ba49" alt="">
-            <img class="btn-logo" src="https://www.figma.com/api/mcp/asset/b7f55f59-95eb-4154-99a9-0a31af4927cf" alt="BAQ">
-          </div>
-          <div class="lang-loft-soon-pill">
-            <span aria-hidden="true">!</span>
-            <span>New lessons coming soon</span>
-          </div>
-        </div>
-        <div class="lang-loft-header-center">
-          <div class="lang-loft-title-banner">
-            <h1>Language Loft</h1>
-          </div>
-        </div>
-        <div class="lang-loft-header-right">
-          <span class="lang-loft-profile-label">Profile</span>
-          <div class="lang-loft-profile-card">
-            <img src="assets/blue-monster.svg" alt="">
-            <div class="lang-loft-profile-meta">
-              <span class="lang-loft-profile-name">EnergeticArmadillo35</span>
-              <span class="lang-loft-profile-level">Lv. 13</span>
-            </div>
-          </div>
-        </div>
-      </header>
-      <main class="lang-loft-main" aria-label="Language Loft work in progress">
-        <div class="lang-loft-sign">
-          <div class="lang-loft-planks">
-            <div class="lang-loft-plank-row">
-              <div class="lang-loft-plank" aria-hidden="true"></div>
-              <div class="lang-loft-plank lang-loft-plank--text">
-                <span>Under Construction</span>
-              </div>
-              <div class="lang-loft-plank" aria-hidden="true"></div>
-            </div>
-          </div>
-          <div class="lang-loft-posts" aria-hidden="true">
-            <div class="lang-loft-post"></div>
-            <div class="lang-loft-post"></div>
-          </div>
-        </div>
-      </main>
-    </div>
-  </div>
-
-  <!-- ══ AoPS Arena — live classroom (Figma 4198:11856) ══ -->
-  <div class="screen" id="screen-aops-arena">
-    <div class="aops-arena-page">
-      <header class="aops-arena-header">
-        <div class="aops-arena-header-left">
-          <div class="home-btn" aria-hidden="true">
-            <img class="btn-bg"   src="https://www.figma.com/api/mcp/asset/6b56f2b8-a858-4c60-b144-152398b3ba49" alt="">
-            <img class="btn-logo" src="https://www.figma.com/api/mcp/asset/b7f55f59-95eb-4154-99a9-0a31af4927cf" alt="BAQ">
-          </div>
-          <div class="aops-arena-moderation">
-            <span class="aops-arena-moderation-info" aria-hidden="true">i</span>
-            <span>Classroom is moderated</span>
-          </div>
-        </div>
-        <div class="aops-arena-header-center">
-          <div class="aops-arena-title-banner">
-            <h1>AoPS Arena</h1>
-          </div>
-        </div>
-        <div class="aops-arena-header-right">
-          <span class="aops-arena-instructor-label">Instructor</span>
-          <div class="aops-arena-instructor-card">
-            <img class="aops-instructor-avatar" src="assets/avatar.svg" alt="">
-            <div class="aops-instructor-meta">
-              <span class="aops-instructor-name">EnergeticArmadillo35</span>
-              <span class="aops-instructor-level">Lv. 13</span>
-            </div>
-          </div>
-        </div>
-      </header>
-
-      <div class="aops-arena-main">
-        <div class="aops-arena-chat" role="log" aria-label="Classroom discussion">
-          <div class="aops-chat-band">
-            <div class="aops-post-head">
-              <span class="aops-cube aops-cube--instructor" aria-hidden="true"></span>
-              <span class="aops-post-role">Instructor</span>
-            </div>
-            <p class="aops-caption" style="padding-left:24px;margin-bottom:6px;">Think about how to find the area of the original trapezoid using what you know about triangles and rectangles.</p>
-            <div class="aops-diagram-box">
-              <svg width="200" height="100" viewBox="0 0 200 100" aria-hidden="true">
-                <polygon points="70,15 110,15 168,85 32,85" fill="#fcd74a" stroke="#c9a020" stroke-width="2"/>
-                <text x="88" y="12" font-size="11" font-family="Roboto Slab,serif" fill="#2c2b2f">4</text>
-                <text x="92" y="98" font-size="11" font-family="Roboto Slab,serif" fill="#2c2b2f">16</text>
-                <text x="172" y="52" font-size="11" font-family="Roboto Slab,serif" fill="#2c2b2f">5</text>
-              </svg>
-            </div>
-          </div>
-          <div class="aops-chat-band aops-chat-band--alt">
-            <div class="aops-post-head">
-              <span class="aops-cube aops-cube--instructor" aria-hidden="true"></span>
-              <span class="aops-post-role">Instructor</span>
-            </div>
-            <p class="aops-post-body">Finally, what is the area of the original trapezoid?</p>
-          </div>
-          <div class="aops-chat-band aops-chat-band--students">
-            <div class="aops-student-row">
-              <div class="aops-student-bubble">
-                <span class="aops-cube aops-cube--c1" aria-hidden="true"></span>
-                <span><span class="aops-student-name">student2:</span> the area of the rectangle is 20</span>
-              </div>
-              <div class="aops-student-bubble">
-                <span class="aops-cube aops-cube--c2" aria-hidden="true"></span>
-                <span><span class="aops-student-name">student15:</span> 30+4*5=30+20=50</span>
-              </div>
-              <div class="aops-student-bubble">
-                <span class="aops-cube aops-cube--c3" aria-hidden="true"></span>
-                <span><span class="aops-student-name">student9:</span> 30 (triangles) + 20 (rectangles) = 50 (total area)</span>
-              </div>
-              <div class="aops-student-bubble">
-                <span class="aops-cube aops-cube--c4" aria-hidden="true"></span>
-                <span><span class="aops-student-name">student4:</span> 50, triangle plus rectangle</span>
-              </div>
-            </div>
-          </div>
-          <div class="aops-chat-band">
-            <div class="aops-post-head">
-              <span class="aops-cube aops-cube--instructor" aria-hidden="true"></span>
-              <span class="aops-post-role">Instructor</span>
-            </div>
-            <p class="aops-post-body"><strong>Great explanations!</strong></p>
-            <p class="aops-post-body" style="margin-top:8px;">The original trapezoid is divided into two triangles of combined area 30 and one 4-by-5 rectangle of area 20. So, its total area is 30 + 20 = <span class="aops-answer-chip">50</span>.</p>
-          </div>
-          <div class="aops-chat-band aops-chat-band--alt">
-            <div class="aops-post-head">
-              <span class="aops-cube aops-cube--purple" aria-hidden="true"></span>
-              <span class="aops-post-role aops-post-role--me">my_username</span>
-            </div>
-            <p class="aops-post-body">What if we draw a line parallel to the right leg?</p>
-          </div>
-          <div class="aops-chat-band">
-            <div class="aops-post-head">
-              <span class="aops-cube aops-cube--instructor" aria-hidden="true"></span>
-              <span class="aops-post-role">Instructor</span>
-            </div>
-            <p class="aops-post-body">That's another approach we might have taken!</p>
-            <div class="aops-diagram-box">
-              <svg width="220" height="110" viewBox="0 0 220 110" aria-hidden="true">
-                <polygon points="75,18 115,18 178,92 37,92" fill="#fcd74a" stroke="#c9a020" stroke-width="2"/>
-                <polygon points="115,18 178,92 132,92" fill="#c75b1a" opacity="0.92"/>
-                <line x1="115" y1="18" x2="132" y2="92" stroke="#2c2b2f" stroke-width="1.5" stroke-dasharray="5 4"/>
-                <text x="94" y="14" font-size="11" font-family="Roboto Slab,serif" fill="#2c2b2f">4</text>
-                <text x="184" y="58" font-size="11" font-family="Roboto Slab,serif" fill="#2c2b2f">5</text>
-              </svg>
-            </div>
-            <p class="aops-post-body" style="margin-top:10px;">What can we say about the dark orange region?</p>
-          </div>
-        </div>
-
-        <aside class="aops-roster" aria-label="Participants">
-          <div class="aops-roster-me">my_username</div>
-          <div class="aops-roster-row"><span class="aops-cube aops-cube--c1" aria-hidden="true"></span>student1</div>
-          <div class="aops-roster-row"><span class="aops-cube aops-cube--c2" aria-hidden="true"></span>student2</div>
-          <div class="aops-roster-row"><span class="aops-cube aops-cube--c3" aria-hidden="true"></span>student3</div>
-          <div class="aops-roster-row"><span class="aops-cube aops-cube--c4" aria-hidden="true"></span>student4</div>
-          <div class="aops-roster-row"><span class="aops-cube aops-cube--c1" aria-hidden="true"></span>student5</div>
-          <div class="aops-roster-row"><span class="aops-cube aops-cube--c2" aria-hidden="true"></span>student6</div>
-          <div class="aops-roster-row"><span class="aops-cube aops-cube--c3" aria-hidden="true"></span>student7</div>
-          <div class="aops-roster-row"><span class="aops-cube aops-cube--c4" aria-hidden="true"></span>student8</div>
-          <div class="aops-roster-row"><span class="aops-cube aops-cube--c1" aria-hidden="true"></span>student9</div>
-          <div class="aops-roster-row"><span class="aops-cube aops-cube--c2" aria-hidden="true"></span>student10</div>
-          <div class="aops-roster-row"><span class="aops-cube aops-cube--c3" aria-hidden="true"></span>student11</div>
-          <div class="aops-roster-row"><span class="aops-cube aops-cube--c4" aria-hidden="true"></span>student12</div>
-          <div class="aops-roster-row"><span class="aops-cube aops-cube--c1" aria-hidden="true"></span>student13</div>
-          <div class="aops-roster-row"><span class="aops-cube aops-cube--c2" aria-hidden="true"></span>student14</div>
-          <div class="aops-roster-row"><span class="aops-cube aops-cube--c3" aria-hidden="true"></span>student15</div>
-          <div class="aops-roster-row"><span class="aops-cube aops-cube--c4" aria-hidden="true"></span>student16</div>
-          <div class="aops-roster-row"><span class="aops-cube aops-cube--c1" aria-hidden="true"></span>student17</div>
-          <div class="aops-roster-row"><span class="aops-cube aops-cube--c2" aria-hidden="true"></span>student18</div>
-          <div class="aops-roster-row"><span class="aops-cube aops-cube--c3" aria-hidden="true"></span>student19</div>
-          <div class="aops-roster-row"><span class="aops-cube aops-cube--c4" aria-hidden="true"></span>student20</div>
-          <div class="aops-roster-row"><span class="aops-cube aops-cube--c1" aria-hidden="true"></span>student21</div>
-          <div class="aops-roster-row"><span class="aops-cube aops-cube--c2" aria-hidden="true"></span>student22</div>
-          <div class="aops-roster-row"><span class="aops-cube aops-cube--c3" aria-hidden="true"></span>student23</div>
-          <div class="aops-roster-row"><span class="aops-cube aops-cube--c4" aria-hidden="true"></span>student24</div>
-          <div class="aops-roster-row"><span class="aops-cube aops-cube--c1" aria-hidden="true"></span>student25</div>
-        </aside>
-      </div>
-
-      <footer class="aops-arena-footer">
-        <button type="button" class="aops-arena-eye" aria-label="Visibility" title="Visibility">
-          <svg viewBox="0 0 24 24" aria-hidden="true"><ellipse cx="12" cy="12" rx="9" ry="6"/><circle cx="12" cy="12" r="2.5" fill="currentColor" stroke="none"/></svg>
-        </button>
-      </footer>
+      <a class="hit hit-lang" href="#" aria-label="Language Lodge" onclick="event.preventDefault();"></a>
+      <a class="hit hit-arena" href="#" aria-label="AoPS Arena" onclick="event.preventDefault();"></a>
     </div>
   </div>
 
   <!-- ══ SCREEN: VICTORY VAULT (placeholder) ══ -->
   <div class="screen" id="screen-victory-vault">
 
-    <div class="victory-vault-bg" aria-hidden="true"></div>
+    <!-- Gray placeholder background -->
+    <div style="position:absolute;inset:0;background:#d9d9d9;"></div>
 
-    <div class="victory-vault-stuffy-hits" role="group" aria-label="Beast Academy stuffies — interest form">
-      <a class="victory-vault-stuffy-hit victory-vault-stuffy-hit--top" href="https://docs.google.com/forms/d/e/1FAIpQLSckoguhKAnMJ-mh7pcWS7jPJQ36MC6BSozLjS8wYjZg21c_aw/viewform?usp=publish-editor" target="_blank" rel="noopener noreferrer" title="BA Squishmallow interest form" aria-label="BA Squishmallow interest form: top shelf plush (opens in new tab)">
-        <span class="victory-vault-stuffy-sparkles" aria-hidden="true">
-          <span class="victory-vault-stuffy-sparkle" style="--vv-rot: -12deg;"></span>
-          <span class="victory-vault-stuffy-sparkle" style="--vv-rot: 38deg;"></span>
-          <span class="victory-vault-stuffy-sparkle" style="--vv-rot: 92deg;"></span>
-          <span class="victory-vault-stuffy-sparkle" style="--vv-rot: 142deg;"></span>
-          <span class="victory-vault-stuffy-sparkle" style="--vv-rot: 198deg;"></span>
-          <span class="victory-vault-stuffy-sparkle" style="--vv-rot: 252deg;"></span>
-          <span class="victory-vault-stuffy-sparkle" style="--vv-rot: 308deg;"></span>
-          <span class="victory-vault-stuffy-sparkle" style="--vv-rot: 22deg;"></span>
-        </span>
-      </a>
-      <a class="victory-vault-stuffy-hit victory-vault-stuffy-hit--mid" href="https://docs.google.com/forms/d/e/1FAIpQLSckoguhKAnMJ-mh7pcWS7jPJQ36MC6BSozLjS8wYjZg21c_aw/viewform?usp=publish-editor" target="_blank" rel="noopener noreferrer" title="BA Squishmallow interest form" aria-label="BA Squishmallow interest form: middle shelf plush (opens in new tab)">
-        <span class="victory-vault-stuffy-sparkles" aria-hidden="true">
-          <span class="victory-vault-stuffy-sparkle" style="--vv-rot: 6deg;"></span>
-          <span class="victory-vault-stuffy-sparkle" style="--vv-rot: 58deg;"></span>
-          <span class="victory-vault-stuffy-sparkle" style="--vv-rot: 112deg;"></span>
-          <span class="victory-vault-stuffy-sparkle" style="--vv-rot: 168deg;"></span>
-          <span class="victory-vault-stuffy-sparkle" style="--vv-rot: 222deg;"></span>
-          <span class="victory-vault-stuffy-sparkle" style="--vv-rot: 278deg;"></span>
-          <span class="victory-vault-stuffy-sparkle" style="--vv-rot: 334deg;"></span>
-          <span class="victory-vault-stuffy-sparkle" style="--vv-rot: 84deg;"></span>
-        </span>
-      </a>
-      <a class="victory-vault-stuffy-hit victory-vault-stuffy-hit--low" href="https://docs.google.com/forms/d/e/1FAIpQLSckoguhKAnMJ-mh7pcWS7jPJQ36MC6BSozLjS8wYjZg21c_aw/viewform?usp=publish-editor" target="_blank" rel="noopener noreferrer" title="BA Squishmallow interest form" aria-label="BA Squishmallow interest form: bottom shelf plush (opens in new tab)">
-        <span class="victory-vault-stuffy-sparkles" aria-hidden="true">
-          <span class="victory-vault-stuffy-sparkle" style="--vv-rot: -28deg;"></span>
-          <span class="victory-vault-stuffy-sparkle" style="--vv-rot: 18deg;"></span>
-          <span class="victory-vault-stuffy-sparkle" style="--vv-rot: 72deg;"></span>
-          <span class="victory-vault-stuffy-sparkle" style="--vv-rot: 128deg;"></span>
-          <span class="victory-vault-stuffy-sparkle" style="--vv-rot: 182deg;"></span>
-          <span class="victory-vault-stuffy-sparkle" style="--vv-rot: 236deg;"></span>
-          <span class="victory-vault-stuffy-sparkle" style="--vv-rot: 292deg;"></span>
-          <span class="victory-vault-stuffy-sparkle" style="--vv-rot: 348deg;"></span>
-        </span>
-      </a>
-    </div>
-
-    <!-- Home → campus map (composite button art) -->
-    <button type="button" class="home-btn victory-vault-home-btn" aria-label="Back to Campus" onclick="showScreen('screen-campus')">
-      <img class="victory-vault-home-btn-img" src="assets/victory-vault-home-btn.png" alt="">
+    <!-- BAQ home button → back to campus map -->
+    <button type="button" class="home-btn" aria-label="Back to Campus" onclick="showScreen('screen-campus')" style="box-shadow:4px 4px 0 #8b3617;">
+      <img class="btn-bg" src="https://www.figma.com/api/mcp/asset/5a550232-c7b7-4498-9614-0cce537fbcb6" alt="">
+      <img class="btn-logo" src="https://www.figma.com/api/mcp/asset/f6d797e3-4918-49e6-be65-1cfb71e772bc" alt="BAQ">
     </button>
 
     <!-- Amber top nav bar -->
@@ -3328,24 +1735,14 @@
       <span style="font-family:'Roboto Slab',serif;font-weight:500;font-size:24px;color:white;letter-spacing:-0.528px;white-space:nowrap;">Victory Vault</span>
     </div>
 
-    <!-- Profile + level bar (Figma asset) -->
-    <div class="victory-vault-profile-wrap">
-      <img class="victory-vault-profile-bar-img" src="assets/victory-vault-profile-bar.png" width="529" height="176" alt="EnergeticArmadillo35, level 13">
-    </div>
-
-    <div id="victory-vault-welcome-overlay" class="bottle-drop-intro-overlay" aria-hidden="true">
-      <div class="bottle-drop-intro-backdrop" onclick="closeVictoryVaultWelcomeOverlay()" aria-hidden="true"></div>
-      <div class="victory-vault-figma-modal" role="dialog" aria-modal="true" aria-labelledby="victory-vault-welcome-title" aria-describedby="victory-vault-welcome-copy" onclick="event.stopPropagation()">
-        <div class="victory-vault-figma-modal-surface" aria-hidden="true"></div>
-        <button type="button" class="victory-vault-figma-modal-close" onclick="closeVictoryVaultWelcomeOverlay()" aria-label="Close">
-          <img src="https://www.figma.com/api/mcp/asset/81ec583d-db1a-4255-a7ed-446bb2c333f5" alt="">
-        </button>
-        <div class="victory-vault-figma-modal-body">
-          <h2 id="victory-vault-welcome-title" class="victory-vault-figma-modal-title">Welcome to the Victory Vault</h2>
-          <div id="victory-vault-welcome-copy" class="victory-vault-figma-modal-copy">
-            <p>Earn rewards as you learn. Trade your progress for digital prizes and real-world items you can actually hold.<br>Some rewards can be found in the real world. Others are rare and can only be earned here.</p>
-            <p><br>New: Check out our Beast Academy stuffies. Click on any one to let us know which ones you’d want to earn.</p>
-          </div>
+    <!-- Profile (top-right) -->
+    <div style="position:absolute;right:0.9375%;top:1.5%;display:flex;flex-direction:row-reverse;align-items:flex-start;z-index:30;pointer-events:none;">
+      <img src="assets/avatar.svg" alt="" style="width:58px;height:56px;box-shadow:2.667px 2.667px 0 #1057a8;flex-shrink:0;">
+      <div style="background:#0759a6;border-top:4px solid #4292ce;border-bottom:4px solid #4292ce;border-radius:10px 0 0 10px;padding:8px 20px 12px 50px;margin-right:-36px;margin-top:2px;display:flex;flex-direction:column;align-items:flex-end;gap:4px;">
+        <span style="font-family:'Roboto Slab',serif;font-weight:500;font-size:14px;color:white;text-shadow:1px 1px 0 #053564;letter-spacing:-0.154px;white-space:nowrap;">EnergeticArmadillo35</span>
+        <div style="position:relative;width:146px;height:22px;border-radius:10px;background:#bf9414;overflow:hidden;">
+          <div style="width:84px;height:100%;background:#ffc640;border-radius:10px;box-shadow:2px 1px 0 rgba(0,0,0,.25);"></div>
+          <span style="position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);font-family:'Roboto Slab',serif;font-weight:700;font-size:14px;color:white;white-space:nowrap;">Lv. 13</span>
         </div>
       </div>
     </div>
@@ -3959,7 +2356,7 @@
     </div>
 
     <div class="action-btn-wrap">
-      <button class="action-btn" onclick="goToAirResistanceLessonFinal()">
+      <button class="action-btn" onclick="showScreen('screen-lesson-final')">
         <img class="btn-bg-img" src="https://www.figma.com/api/mcp/asset/ec097fce-8ffe-4263-92b2-cb1d7d6f8258" alt="">
         <span>Next</span>
       </button>
@@ -4809,7 +3206,7 @@
           </div>
         </div>
         <div class="final-results-btn-wrap">
-          <button type="button" class="action-btn" id="lesson-final-primary-btn">
+          <button type="button" class="action-btn" onclick="showScreen('screen-guidebook')">
             <img class="btn-bg-img" src="https://www.figma.com/api/mcp/asset/7b360d76-a7db-41c1-a7f7-b838b541973a" alt="">
             <span>Next Lesson</span>
           </button>
@@ -4907,10 +3304,14 @@
         <img src="https://www.figma.com/api/mcp/asset/5452d317-2842-46aa-8bdb-972076175f63" alt="Info">
       </div>
       <div class="dot dot-locked">1</div>
+      <div class="dot dot-info">
+        <img src="https://www.figma.com/api/mcp/asset/5452d317-2842-46aa-8bdb-972076175f63" alt="Info">
+      </div>
       <div class="dot dot-locked">2</div>
+      <div class="dot dot-info">
+        <img src="https://www.figma.com/api/mcp/asset/5452d317-2842-46aa-8bdb-972076175f63" alt="Info">
+      </div>
       <div class="dot dot-locked">3</div>
-      <div class="dot dot-locked">4</div>
-      <div class="dot dot-locked">5</div>
     </div>
 
     <div class="modal-wrap">
@@ -4980,10 +3381,14 @@
         <img src="https://www.figma.com/api/mcp/asset/5452d317-2842-46aa-8bdb-972076175f63" alt="Info">
       </div>
       <div class="dot dot-current nav-link" onclick="navTo('screen-bottle-drop-embed')" title="Question 1">1</div>
+      <div class="dot dot-info">
+        <img src="https://www.figma.com/api/mcp/asset/5452d317-2842-46aa-8bdb-972076175f63" alt="Info">
+      </div>
       <div class="dot dot-locked">2</div>
+      <div class="dot dot-info">
+        <img src="https://www.figma.com/api/mcp/asset/5452d317-2842-46aa-8bdb-972076175f63" alt="Info">
+      </div>
       <div class="dot dot-locked">3</div>
-      <div class="dot dot-locked">4</div>
-      <div class="dot dot-locked">5</div>
     </div>
 
     <div class="modal-wrap">
@@ -4998,21 +3403,24 @@
             </div>
           </div>
         </div>
-        <div id="bottle-drop-sim1-success-overlay" class="success-overlay" aria-hidden="true">
-          <div class="success-inner">
-            <div class="success-title">Hmm...Both bottles landed at the same time.</div>
-            <p class="success-msg">
-              But heavy objects usually fall faster. What’s going on here?
-            </p>
-            <div style="margin-top:28px; display:flex; justify-content:center;">
-              <button type="button" class="action-btn bottle-drop-sim1-success-next-btn" onclick="onBottleDropSim1NextClick()">
-                <img class="btn-bg-img" src="https://www.figma.com/api/mcp/asset/96df872c-ec37-4128-9b19-b4ba537c1b5b" alt="">
-                <span>Let’s Investigate</span>
-              </button>
-            </div>
-          </div>
+      </div>
+    </div>
+
+    <div class="kraken-wrap" id="bottle-drop-kraken-wrap" aria-live="polite" aria-hidden="true">
+      <img class="kraken-svg" src="assets/Kraken.svg" alt="">
+      <div class="bubble-wrap">
+        <img class="bubble-img" src="https://www.figma.com/api/mcp/asset/d64ce6c4-cc3a-4c7a-a0d4-703b37a2431f" alt="">
+        <div class="bubble-text">
+          From a low drop, both bottles speed up only a little, so air barely changes what you see. Think about what might change from much higher up.
         </div>
       </div>
+    </div>
+
+    <div class="action-btn-wrap">
+      <button type="button" class="action-btn" id="bottle-drop-next-btn" disabled onclick="showScreen('screen-bottle-drop-q1-30m')">
+        <img class="btn-bg-img" src="https://www.figma.com/api/mcp/asset/3c1fc56c-ae3d-47c6-942f-d80d16b44f37" alt="">
+        <span>Next</span>
+      </button>
     </div>
 
     <div id="bottle-drop-intro-overlay" class="bottle-drop-intro-overlay" aria-hidden="true">
@@ -5065,10 +3473,14 @@
       <div class="dot nav-link" style="background:#14ae5c; border:3px solid #22b35f; box-shadow:2px 2px 0 #777674;" onclick="navTo('screen-bottle-drop-embed')" title="Question 1">
         <img src="https://www.figma.com/api/mcp/asset/6a9ca000-bd0e-4de4-95a1-358153a16940" alt="done" style="width:16px; height:15px;">
       </div>
+      <div class="dot dot-info">
+        <img src="https://www.figma.com/api/mcp/asset/5452d317-2842-46aa-8bdb-972076175f63" alt="Info">
+      </div>
       <div class="dot dot-current nav-link" onclick="navTo('screen-bottle-drop-q1-30m')" title="Question 2">2</div>
+      <div class="dot dot-info">
+        <img src="https://www.figma.com/api/mcp/asset/5452d317-2842-46aa-8bdb-972076175f63" alt="Info">
+      </div>
       <div class="dot dot-locked">3</div>
-      <div class="dot dot-locked">4</div>
-      <div class="dot dot-locked">5</div>
     </div>
 
     <div class="modal-wrap modal-wrap-q3">
@@ -5134,10 +3546,14 @@
       <div class="dot nav-link" style="background:#14ae5c; border:3px solid #22b35f; box-shadow:2px 2px 0 #777674;" onclick="navTo('screen-bottle-drop-embed')" title="Question 1">
         <img src="https://www.figma.com/api/mcp/asset/6a9ca000-bd0e-4de4-95a1-358153a16940" alt="done" style="width:16px; height:15px;">
       </div>
+      <div class="dot dot-info">
+        <img src="https://www.figma.com/api/mcp/asset/5452d317-2842-46aa-8bdb-972076175f63" alt="Info">
+      </div>
       <div class="dot dot-current nav-link" onclick="navTo('screen-bottle-drop-embed-2')" title="Question 2">2</div>
+      <div class="dot dot-info">
+        <img src="https://www.figma.com/api/mcp/asset/5452d317-2842-46aa-8bdb-972076175f63" alt="Info">
+      </div>
       <div class="dot dot-locked">3</div>
-      <div class="dot dot-locked">4</div>
-      <div class="dot dot-locked">5</div>
     </div>
 
     <div class="modal-wrap">
@@ -5153,20 +3569,6 @@
             </div>
           </div>
         </div>
-        <div id="bottle-drop-sim2-success-overlay" class="success-overlay" aria-hidden="true">
-          <div class="success-inner">
-            <div class="success-title">From a higher fall, the full bottle did land first.</div>
-            <p class="success-msg">
-              A higher fall gives the bottles more time to speed up. The faster they fall, the more the air pushes back. The partially-filled bottle is slowed by the air more than the full bottle.
-            </p>
-            <div style="margin-top:28px; display:flex; justify-content:center;">
-              <button type="button" class="action-btn" onclick="onBottleDropSim2NextClick()">
-                <img class="btn-bg-img" src="https://www.figma.com/api/mcp/asset/96df872c-ec37-4128-9b19-b4ba537c1b5b" alt="">
-                <span>Next</span>
-              </button>
-            </div>
-          </div>
-        </div>
       </div>
     </div>
 
@@ -5176,6 +3578,13 @@
         <img class="bubble-img" src="https://www.figma.com/api/mcp/asset/d64ce6c4-cc3a-4c7a-a0d4-703b37a2431f" alt="">
         <div class="bubble-text" id="bottle-drop-kraken-bubble-2"></div>
       </div>
+    </div>
+
+    <div class="action-btn-wrap">
+      <button type="button" class="action-btn" id="bottle-drop-next-btn-2" disabled onclick="showScreen('screen-bottle-drop-hypothesis-prompt')">
+        <img class="btn-bg-img" src="https://www.figma.com/api/mcp/asset/3c1fc56c-ae3d-47c6-942f-d80d16b44f37" alt="">
+        <span>Next</span>
+      </button>
     </div>
 
     <div id="bottle-drop-intro-overlay-2" class="bottle-drop-intro-overlay" aria-hidden="true">
@@ -5228,27 +3637,16 @@
       <div class="dot nav-link" style="background:#14ae5c; border:3px solid #22b35f; box-shadow:2px 2px 0 #777674;" onclick="navTo('screen-bottle-drop-embed')" title="Question 1">
         <img src="https://www.figma.com/api/mcp/asset/6a9ca000-bd0e-4de4-95a1-358153a16940" alt="done" style="width:16px; height:15px;">
       </div>
+      <div class="dot dot-info">
+        <img src="https://www.figma.com/api/mcp/asset/5452d317-2842-46aa-8bdb-972076175f63" alt="Info">
+      </div>
       <div class="dot nav-link" style="background:#14ae5c; border:3px solid #22b35f; box-shadow:2px 2px 0 #777674;" onclick="navTo('screen-bottle-drop-q1-30m')" title="Question 2">
         <img src="https://www.figma.com/api/mcp/asset/6a9ca000-bd0e-4de4-95a1-358153a16940" alt="done" style="width:16px; height:15px;">
       </div>
-      <div class="dot dot-current nav-link" onclick="navTo('screen-bottle-drop-hypothesis-prompt')" title="Question 3">3</div>
-      <div class="dot dot-locked">4</div>
-      <div class="dot dot-locked">5</div>
-    </div>
-
-    <div id="bottle-drop-hypothesis-intro-overlay" class="bottle-drop-intro-overlay" aria-hidden="true">
-      <div class="bottle-drop-intro-backdrop" onclick="closeBottleDropHypothesisIntroOverlay()" aria-hidden="true"></div>
-      <div class="bottle-drop-intro-modal" role="dialog" aria-modal="true" aria-labelledby="bottle-drop-hypothesis-intro-title" onclick="event.stopPropagation()">
-        <div class="bottle-drop-intro-modal-inner">
-          <h2 id="bottle-drop-hypothesis-intro-title" class="bottle-drop-intro-figma-title">
-            For the next questions, you can open the Simulation any time by clicking the button in the menu.
-          </h2>
-          <button type="button" class="bottle-drop-intro-start-btn" onclick="closeBottleDropHypothesisIntroOverlay()">
-            <img class="bottle-drop-intro-start-btn-bg" src="https://www.figma.com/api/mcp/asset/2331997a-7873-44c5-aa3c-add9eaecd2aa" alt="">
-            <span class="bottle-drop-intro-start-btn-label">Continue</span>
-          </button>
-        </div>
+      <div class="dot dot-info">
+        <img src="https://www.figma.com/api/mcp/asset/5452d317-2842-46aa-8bdb-972076175f63" alt="Info">
       </div>
+      <div class="dot dot-current nav-link" onclick="navTo('screen-bottle-drop-hypothesis-prompt')" title="Question 3">3</div>
     </div>
 
     <div class="modal-wrap modal-wrap-q3">
@@ -5257,86 +3655,21 @@
           <div class="toolbar-tools">
             <img class="tool-icon" src="https://www.figma.com/api/mcp/asset/1053a414-ec83-47be-8df6-c524bb0aa210" alt="Reset">
           </div>
-          <div class="bottle-drop-hypothesis-toolbar-right">
-            <button type="button" class="action-btn bottle-drop-hypothesis-play-btn" onclick="openBottleDropHypothesisPlaySimOverlay()" title="Open simulation in a window">
-              <img class="btn-bg-img" src="https://www.figma.com/api/mcp/asset/8d287e28-9fcc-4135-b3d6-ccc82489f086" alt="">
-              <span>Play Simulation</span>
-            </button>
-            <img class="audio-icon" src="https://www.figma.com/api/mcp/asset/958374ab-a377-40e4-961e-37dc2e8ae695" alt="Audio">
-          </div>
+          <img class="audio-icon" src="https://www.figma.com/api/mcp/asset/958374ab-a377-40e4-961e-37dc2e8ae695" alt="Audio">
         </div>
-        <p class="bottle-drop-hypothesis-question">
-          If dropped from the same height, would a bowling ball fall faster on Earth or on Titan (Saturn’s largest moon)?
-        </p>
-        <div class="q4-mc-row" id="bottle-drop-hypothesis-mc-row" role="group" aria-label="Choose where the ball falls faster">
-          <div class="q3-text-choice" id="bd-hyp-choice-earth" role="button" tabindex="0"
-               onclick="selectBottleDropHypothesisChoice('earth')" onkeydown="bottleDropHypothesisMcKey(event,'earth')">Earth</div>
-          <div class="q3-text-choice" id="bd-hyp-choice-titan" role="button" tabindex="0"
-               onclick="selectBottleDropHypothesisChoice('titan')" onkeydown="bottleDropHypothesisMcKey(event,'titan')">Titan</div>
-          <div class="q3-text-choice" id="bd-hyp-choice-same" role="button" tabindex="0"
-               onclick="selectBottleDropHypothesisChoice('same')" onkeydown="bottleDropHypothesisMcKey(event,'same')">Same</div>
-        </div>
-        <div class="q3-modal-actions" id="bottle-drop-hypothesis-submit-actions">
-          <button type="button" class="action-btn" onclick="submitBottleDropHypothesisMC()">
-            <img class="btn-bg-img" src="https://www.figma.com/api/mcp/asset/4b02438f-cba5-4c1b-a856-cb42af5406cb" alt="">
-            <span>Submit</span>
-          </button>
-        </div>
-        <div id="bottle-drop-hypothesis-success-overlay" class="success-overlay" aria-hidden="true">
-          <div class="success-inner">
-            <div class="success-title">You got it!</div>
-            <p class="success-msg">
-              Titan has a <strong>THICK</strong> atmosphere that slows falling objects even more than on Earth.
-            </p>
-            <div style="margin-top:32px; display:flex; justify-content:center;">
-              <button type="button" class="action-btn" onclick="onBottleDropHypothesisSuccessNext()">
-                <img class="btn-bg-img" src="https://www.figma.com/api/mcp/asset/96df872c-ec37-4128-9b19-b4ba537c1b5b" alt="">
-                <span>Next</span>
-              </button>
-            </div>
-          </div>
+        <div class="bottle-drop-hypothesis-stack" role="region" aria-label="Reflection before the next simulation">
+          <p class="bottle-drop-hypothesis-q">Was your hypothesis correct?</p>
+          <p class="bottle-drop-hypothesis-q">What did you notice when both bottles were dropped from 30&nbsp;m?</p>
+          <p class="bottle-drop-hypothesis-q">How does what you saw compare with what you expected?</p>
         </div>
       </div>
     </div>
 
-    <div class="kraken-wrap" id="bottle-drop-hypothesis-kraken-wrap" aria-live="polite" aria-hidden="true">
-      <img class="kraken-svg" src="assets/Kraken.svg" alt="">
-      <div class="bubble-wrap">
-        <img class="bubble-img" src="https://www.figma.com/api/mcp/asset/d64ce6c4-cc3a-4c7a-a0d4-703b37a2431f" alt="">
-        <div class="bubble-text" id="bottle-drop-hypothesis-kraken-bubble"></div>
-      </div>
-    </div>
-
-    <div class="action-btn-wrap" id="bottle-drop-hypothesis-kraken-actions" aria-hidden="true">
-      <button type="button" class="action-btn" onclick="dismissBottleDropHypothesisKraken()">
-        <img class="btn-bg-img" src="https://www.figma.com/api/mcp/asset/d1c6e57a-5b6e-4e30-9cee-21bc587850e2" alt="">
-        <span>Try Again</span>
+    <div class="action-btn-wrap">
+      <button type="button" class="action-btn" onclick="showScreen('screen-bottle-drop-embed-3')">
+        <img class="btn-bg-img" src="https://www.figma.com/api/mcp/asset/3c1fc56c-ae3d-47c6-942f-d80d16b44f37" alt="">
+        <span>Run Simulation</span>
       </button>
-    </div>
-
-    <div id="bottle-drop-hypothesis-play-overlay" class="bottle-drop-intro-overlay bottle-drop-hypothesis-play-overlay" aria-hidden="true">
-      <div class="bottle-drop-intro-backdrop" onclick="closeBottleDropHypothesisPlaySimOverlay()" aria-hidden="true"></div>
-      <div class="bottle-drop-hypothesis-play-modal" role="dialog" aria-modal="true" aria-labelledby="bottle-drop-hypothesis-play-title" onclick="event.stopPropagation()">
-        <p id="bottle-drop-hypothesis-play-title" class="visually-hidden">Bottle drop simulation</p>
-        <div class="bottle-drop-hypothesis-play-card">
-          <button type="button" class="bottle-drop-hypothesis-play-close-x" onclick="closeBottleDropHypothesisPlaySimOverlay()" aria-label="Close simulation">
-            <img src="https://www.figma.com/api/mcp/asset/ad18d1ee-8d51-4abf-b03e-b48f8f4f3e32" alt="">
-          </button>
-          <div class="bottle-drop-hypothesis-play-iframe-host">
-            <iframe id="bottle-drop-hypothesis-play-iframe"
-                    title="Bottle drop simulation (Earth, Titan, Moon)"
-                    loading="lazy"
-                    referrerpolicy="strict-origin-when-cross-origin"
-                    allowfullscreen></iframe>
-          </div>
-          <div class="bottle-drop-hypothesis-play-actions">
-            <button type="button" class="action-btn" onclick="closeBottleDropHypothesisPlaySimOverlay()">
-              <img class="btn-bg-img" src="https://www.figma.com/api/mcp/asset/dead448e-d37a-48a5-8f9d-94f04b9de3cb" alt="">
-              <span>Close</span>
-            </button>
-          </div>
-        </div>
-      </div>
     </div>
   </div>
 
@@ -5376,14 +3709,16 @@
       <div class="dot nav-link" style="background:#14ae5c; border:3px solid #22b35f; box-shadow:2px 2px 0 #777674;" onclick="navTo('screen-bottle-drop-embed')" title="Question 1">
         <img src="https://www.figma.com/api/mcp/asset/6a9ca000-bd0e-4de4-95a1-358153a16940" alt="done" style="width:16px; height:15px;">
       </div>
+      <div class="dot dot-info">
+        <img src="https://www.figma.com/api/mcp/asset/5452d317-2842-46aa-8bdb-972076175f63" alt="Info">
+      </div>
       <div class="dot nav-link" style="background:#14ae5c; border:3px solid #22b35f; box-shadow:2px 2px 0 #777674;" onclick="navTo('screen-bottle-drop-q1-30m')" title="Question 2">
         <img src="https://www.figma.com/api/mcp/asset/6a9ca000-bd0e-4de4-95a1-358153a16940" alt="done" style="width:16px; height:15px;">
       </div>
-      <div class="dot nav-link" style="background:#14ae5c; border:3px solid #22b35f; box-shadow:2px 2px 0 #777674;" onclick="navTo('screen-bottle-drop-hypothesis-prompt')" title="Question 3">
-        <img src="https://www.figma.com/api/mcp/asset/6a9ca000-bd0e-4de4-95a1-358153a16940" alt="done" style="width:16px; height:15px;">
+      <div class="dot dot-info">
+        <img src="https://www.figma.com/api/mcp/asset/5452d317-2842-46aa-8bdb-972076175f63" alt="Info">
       </div>
-      <div class="dot dot-locked">4</div>
-      <div class="dot dot-locked">5</div>
+      <div class="dot dot-current nav-link" onclick="navTo('screen-bottle-drop-embed-3')" title="Question 3">3</div>
     </div>
 
     <div class="modal-wrap">
@@ -5409,7 +3744,7 @@
     </div>
   </div>
 
-  <!-- ══ BOTTLE DROP — Q4 (Titan balloon vs bowling ball; open response) ══ -->
+  <!-- ══ BOTTLE DROP — Q3 (placeholder) ══ -->
   <div class="screen" id="screen-bottle-drop-q2">
     <div class="bg-base"></div>
     <div class="bg-scene"></div>
@@ -5445,232 +3780,33 @@
       <div class="dot nav-link" style="background:#14ae5c; border:3px solid #22b35f; box-shadow:2px 2px 0 #777674;" onclick="navTo('screen-bottle-drop-embed')" title="Question 1">
         <img src="https://www.figma.com/api/mcp/asset/6a9ca000-bd0e-4de4-95a1-358153a16940" alt="done" style="width:16px; height:15px;">
       </div>
-      <div class="dot nav-link" style="background:#14ae5c; border:3px solid #22b35f; box-shadow:2px 2px 0 #777674;" onclick="navTo('screen-bottle-drop-q1-30m')" title="Question 2">
-        <img src="https://www.figma.com/api/mcp/asset/6a9ca000-bd0e-4de4-95a1-358153a16940" alt="done" style="width:16px; height:15px;">
-      </div>
-      <div class="dot nav-link" style="background:#14ae5c; border:3px solid #22b35f; box-shadow:2px 2px 0 #777674;" onclick="navTo('screen-bottle-drop-hypothesis-prompt')" title="Question 3">
-        <img src="https://www.figma.com/api/mcp/asset/6a9ca000-bd0e-4de4-95a1-358153a16940" alt="done" style="width:16px; height:15px;">
-      </div>
-      <div class="dot dot-current nav-link" onclick="navTo('screen-bottle-drop-q2')" title="Question 4">4</div>
-      <div class="dot dot-locked">5</div>
-    </div>
-
-    <div class="modal-wrap modal-wrap-q3">
-      <div class="modal-card modal-q3 bottle-drop-hypothesis-modal bottle-drop-q2-modal">
-        <div class="modal-toolbar">
-          <div class="toolbar-tools">
-            <img class="tool-icon" src="https://www.figma.com/api/mcp/asset/1053a414-ec83-47be-8df6-c524bb0aa210" alt="Reset">
-          </div>
-          <div class="bottle-drop-hypothesis-toolbar-right">
-            <button type="button" class="action-btn bottle-drop-hypothesis-play-btn" onclick="openBottleDropQ2PlaySimOverlay()" title="Open simulation in a window">
-              <img class="btn-bg-img" src="https://www.figma.com/api/mcp/asset/8d287e28-9fcc-4135-b3d6-ccc82489f086" alt="">
-              <span>Play Simulation</span>
-            </button>
-            <img class="audio-icon" src="https://www.figma.com/api/mcp/asset/958374ab-a377-40e4-961e-37dc2e8ae695" alt="Audio">
-          </div>
-        </div>
-        <p class="bottle-drop-q2-question">
-          If you drop a balloon from 3m off the ground on Titan, how high would you need to drop a bowling ball so that the two land at the exact same time?
-        </p>
-        <div class="bottle-drop-q2-answer-wrap" id="bottle-drop-q2-answer-wrap">
-          <input type="text" id="bottle-drop-q2-answer-input" class="bottle-drop-q2-answer-input" placeholder="Type your answer (e.g. 5m)" autocomplete="off" aria-label="Your answer in meters" onkeydown="bottleDropQ2AnswerKeydown(event)">
-        </div>
-        <div class="q3-modal-actions" id="bottle-drop-q2-submit-actions">
-          <button type="button" class="action-btn" onclick="submitBottleDropQ2Answer()">
-            <img class="btn-bg-img" src="https://www.figma.com/api/mcp/asset/4b02438f-cba5-4c1b-a856-cb42af5406cb" alt="">
-            <span>Submit</span>
-          </button>
-        </div>
-        <div id="bottle-drop-q2-success-overlay" class="success-overlay" aria-hidden="true">
-          <div class="success-inner">
-            <div class="success-title">Correct!</div>
-            <p class="success-msg">
-              If you dropped a bowling ball from 25 m and a balloon from 3 m off the ground on Titan, they would land at the same time.
-            </p>
-            <div style="margin-top:32px; display:flex; justify-content:center;">
-              <button type="button" class="action-btn" onclick="onBottleDropQ2SuccessNext()">
-                <img class="btn-bg-img" src="https://www.figma.com/api/mcp/asset/96df872c-ec37-4128-9b19-b4ba537c1b5b" alt="">
-                <span>Next</span>
-              </button>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <div class="kraken-wrap" id="bottle-drop-q2-kraken-wrap" aria-live="polite" aria-hidden="true">
-      <img class="kraken-svg" src="assets/Kraken.svg" alt="">
-      <div class="bubble-wrap">
-        <img class="bubble-img" src="https://www.figma.com/api/mcp/asset/d64ce6c4-cc3a-4c7a-a0d4-703b37a2431f" alt="">
-        <div class="bubble-text" id="bottle-drop-q2-kraken-bubble"></div>
-      </div>
-    </div>
-
-    <div class="action-btn-wrap" id="bottle-drop-q2-kraken-actions" aria-hidden="true">
-      <button type="button" class="action-btn" onclick="dismissBottleDropQ2Kraken()">
-        <img class="btn-bg-img" src="https://www.figma.com/api/mcp/asset/d1c6e57a-5b6e-4e30-9cee-21bc587850e2" alt="">
-        <span>Try Again</span>
-      </button>
-    </div>
-
-    <div id="bottle-drop-q2-play-overlay" class="bottle-drop-intro-overlay" aria-hidden="true">
-      <div class="bottle-drop-intro-backdrop" onclick="closeBottleDropQ2PlaySimOverlay()" aria-hidden="true"></div>
-      <div class="bottle-drop-q2-play-modal" role="dialog" aria-modal="true" aria-labelledby="bottle-drop-q2-play-title" onclick="event.stopPropagation()">
-        <p id="bottle-drop-q2-play-title" class="visually-hidden">Bottle drop simulation</p>
-        <div class="bottle-drop-q2-play-card">
-          <button type="button" class="bottle-drop-q2-play-close-x" onclick="closeBottleDropQ2PlaySimOverlay()" aria-label="Close simulation">
-            <img src="https://www.figma.com/api/mcp/asset/ad18d1ee-8d51-4abf-b03e-b48f8f4f3e32" alt="">
-          </button>
-          <div class="bottle-drop-q2-play-iframe-host">
-            <iframe id="bottle-drop-q2-play-iframe"
-                    title="Bottle drop simulation (Earth, Titan, Moon)"
-                    loading="lazy"
-                    referrerpolicy="strict-origin-when-cross-origin"
-                    allowfullscreen></iframe>
-          </div>
-          <div class="bottle-drop-q2-play-actions">
-            <button type="button" class="action-btn" onclick="closeBottleDropQ2PlaySimOverlay()">
-              <img class="btn-bg-img" src="https://www.figma.com/api/mcp/asset/dead448e-d37a-48a5-8f9d-94f04b9de3cb" alt="">
-              <span>Close</span>
-            </button>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <!-- ══ BOTTLE DROP — Q5 (Moon parachute short answer) ══ -->
-  <div class="screen" id="screen-bottle-drop-q5">
-    <div class="bg-base"></div>
-    <div class="bg-scene"></div>
-    <img class="sand-floor" src="https://www.figma.com/api/mcp/asset/f5a0e650-37e5-46c3-95d4-551d7b16250a" alt="">
-
-    <div class="home-btn">
-      <img class="btn-bg"   src="https://www.figma.com/api/mcp/asset/6b56f2b8-a858-4c60-b144-152398b3ba49" alt="">
-      <img class="btn-logo" src="https://www.figma.com/api/mcp/asset/b7f55f59-95eb-4154-99a9-0a31af4927cf" alt="BAQ">
-    </div>
-
-    <div class="top-nav">
-      <div class="nav-left-btns">
-        <img class="nav-btn-img" src="https://www.figma.com/api/mcp/asset/802d55d7-1403-4edb-bda5-dca001e3716f" alt="Back">
-        <div class="nav-question-btn">
-          <img src="https://www.figma.com/api/mcp/asset/3ba0bca4-dff1-41cd-95e8-5242c93191a7" alt="">
-          <span>?</span>
-        </div>
-      </div>
-      <span class="nav-title">Bottle Drop</span>
-      <div class="nav-profile">
-        <img class="nav-avatar" src="assets/avatar.svg" alt="Profile">
-        <div class="nav-profile-info">
-          <span class="nav-username">EnergeticArmadillo35</span>
-          <div class="xp-bar"><div class="xp-bar-fill"></div><span class="xp-bar-label">Lv. 13</span></div>
-        </div>
-      </div>
-    </div>
-
-    <div class="problem-nav problem-nav--bottle-drop">
-      <div class="dot dot-info nav-link" onclick="navTo('screen-bottle-drop-info')" title="Info">
+      <div class="dot dot-info">
         <img src="https://www.figma.com/api/mcp/asset/5452d317-2842-46aa-8bdb-972076175f63" alt="Info">
       </div>
-      <div class="dot nav-link" style="background:#14ae5c; border:3px solid #22b35f; box-shadow:2px 2px 0 #777674;" onclick="navTo('screen-bottle-drop-embed')" title="Question 1">
-        <img src="https://www.figma.com/api/mcp/asset/6a9ca000-bd0e-4de4-95a1-358153a16940" alt="done" style="width:16px; height:15px;">
-      </div>
       <div class="dot nav-link" style="background:#14ae5c; border:3px solid #22b35f; box-shadow:2px 2px 0 #777674;" onclick="navTo('screen-bottle-drop-q1-30m')" title="Question 2">
         <img src="https://www.figma.com/api/mcp/asset/6a9ca000-bd0e-4de4-95a1-358153a16940" alt="done" style="width:16px; height:15px;">
       </div>
-      <div class="dot nav-link" style="background:#14ae5c; border:3px solid #22b35f; box-shadow:2px 2px 0 #777674;" onclick="navTo('screen-bottle-drop-hypothesis-prompt')" title="Question 3">
-        <img src="https://www.figma.com/api/mcp/asset/6a9ca000-bd0e-4de4-95a1-358153a16940" alt="done" style="width:16px; height:15px;">
+      <div class="dot dot-info">
+        <img src="https://www.figma.com/api/mcp/asset/5452d317-2842-46aa-8bdb-972076175f63" alt="Info">
       </div>
-      <div class="dot nav-link" style="background:#14ae5c; border:3px solid #22b35f; box-shadow:2px 2px 0 #777674;" onclick="navTo('screen-bottle-drop-q2')" title="Question 4">
-        <img src="https://www.figma.com/api/mcp/asset/6a9ca000-bd0e-4de4-95a1-358153a16940" alt="done" style="width:16px; height:15px;">
-      </div>
-      <div class="dot dot-current nav-link" onclick="navTo('screen-bottle-drop-q5')" title="Question 5">5</div>
+      <div class="dot dot-current nav-link" onclick="navTo('screen-bottle-drop-q2')" title="Question 3">3</div>
     </div>
 
-    <div class="modal-wrap modal-wrap-q3">
-      <div class="modal-card modal-q3 bottle-drop-hypothesis-modal bottle-drop-q5-modal">
-        <div class="modal-toolbar">
-          <div class="toolbar-tools">
-            <img class="tool-icon" src="https://www.figma.com/api/mcp/asset/1053a414-ec83-47be-8df6-c524bb0aa210" alt="Reset">
-          </div>
-          <div class="bottle-drop-hypothesis-toolbar-right">
-            <button type="button" class="action-btn bottle-drop-hypothesis-play-btn" onclick="openBottleDropQ5PlaySimOverlay()" title="Open simulation in a window">
-              <img class="btn-bg-img" src="https://www.figma.com/api/mcp/asset/8d287e28-9fcc-4135-b3d6-ccc82489f086" alt="">
-              <span>Play Simulation</span>
-            </button>
-            <img class="audio-icon" src="https://www.figma.com/api/mcp/asset/958374ab-a377-40e4-961e-37dc2e8ae695" alt="Audio">
-          </div>
-        </div>
-        <p class="bottle-drop-q5-question">
-          Would a parachute help slow down a rocket landing on the moon?
-        </p>
-        <div class="answer-box answer-box--with-mic bottle-drop-q5-answer-box" id="bottle-drop-q5-answer-box">
-          <textarea id="bottle-drop-q5-answer-textarea" class="answer-textarea" placeholder="Write your answer here…" style="height:100%;" aria-label="Your answer"></textarea>
-          <button type="button" class="answer-mic-btn" id="bottle-drop-q5-answer-mic" aria-pressed="false" aria-label="Voice typing: tap to speak your answer. Tap again to stop.">
-            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 14a3 3 0 003-3V5a3 3 0 10-6 0v6a3 3 0 003 3zm5-3a5 5 0 01-10 0H5a7 7 0 006 6.92V20H8v2h8v-2h-3v-2.08A7 7 0 0019 11h-2z"/></svg>
-          </button>
-        </div>
-        <div class="q3-modal-actions" id="bottle-drop-q5-submit-actions">
-          <button type="button" class="action-btn" onclick="submitBottleDropQ5Answer()">
-            <img class="btn-bg-img" src="https://www.figma.com/api/mcp/asset/4b02438f-cba5-4c1b-a856-cb42af5406cb" alt="">
-            <span>Submit</span>
-          </button>
-        </div>
-        <div id="bottle-drop-q5-success-overlay" class="success-overlay" aria-hidden="true">
-          <div class="success-inner">
-            <div class="success-title">Amazing!</div>
-            <p class="success-msg">
-              That's right. Since there is no air to push out of the way, a parachute would not slow down a falling object on the Moon.
-            </p>
-            <div style="margin-top:32px; display:flex; justify-content:center;">
-              <button type="button" class="action-btn" onclick="onBottleDropQ5SuccessNext()">
-                <img class="btn-bg-img" src="https://www.figma.com/api/mcp/asset/96df872c-ec37-4128-9b19-b4ba537c1b5b" alt="">
-                <span>Next</span>
-              </button>
-            </div>
-          </div>
-        </div>
+    <div class="modal-wrap">
+      <div class="modal-card" style="display:flex; align-items:center; justify-content:center;">
+        <p class="question-text" style="margin:0;">Question 3 — add content from Figma when ready.</p>
       </div>
     </div>
 
-    <div class="kraken-wrap" id="bottle-drop-q5-kraken-wrap" aria-live="polite" aria-hidden="true">
-      <img class="kraken-svg" src="assets/Kraken.svg" alt="">
-      <div class="bubble-wrap">
-        <img class="bubble-img" src="https://www.figma.com/api/mcp/asset/d64ce6c4-cc3a-4c7a-a0d4-703b37a2431f" alt="">
-        <div class="bubble-text" id="bottle-drop-q5-kraken-bubble"></div>
-      </div>
-    </div>
-
-    <div class="action-btn-wrap" id="bottle-drop-q5-kraken-actions" aria-hidden="true">
-      <button type="button" class="action-btn" onclick="dismissBottleDropQ5Kraken()">
-        <img class="btn-bg-img" src="https://www.figma.com/api/mcp/asset/d1c6e57a-5b6e-4e30-9cee-21bc587850e2" alt="">
-        <span>Try Again</span>
+    <div class="action-btn-wrap action-btn-wrap--pair">
+      <button type="button" class="action-btn" onclick="showScreen('screen-bottle-drop-info')">
+        <img class="btn-bg-img" src="https://www.figma.com/api/mcp/asset/ec097fce-8ffe-4263-92b2-cb1d7d6f8258" alt="">
+        <span>Instruction</span>
       </button>
-    </div>
-
-    <div id="bottle-drop-q5-play-overlay" class="bottle-drop-intro-overlay" aria-hidden="true">
-      <div class="bottle-drop-intro-backdrop" onclick="closeBottleDropQ5PlaySimOverlay()" aria-hidden="true"></div>
-      <div class="bottle-drop-q5-play-modal" role="dialog" aria-modal="true" aria-labelledby="bottle-drop-q5-play-title" onclick="event.stopPropagation()">
-        <p id="bottle-drop-q5-play-title" class="visually-hidden">Bottle drop simulation</p>
-        <div class="bottle-drop-q5-play-card">
-          <button type="button" class="bottle-drop-q5-play-close-x" onclick="closeBottleDropQ5PlaySimOverlay()" aria-label="Close simulation">
-            <img src="https://www.figma.com/api/mcp/asset/ad18d1ee-8d51-4abf-b03e-b48f8f4f3e32" alt="">
-          </button>
-          <div class="bottle-drop-q5-play-iframe-host">
-            <iframe id="bottle-drop-q5-play-iframe"
-                    title="Bottle drop simulation (Earth, Titan, Moon)"
-                    loading="lazy"
-                    referrerpolicy="strict-origin-when-cross-origin"
-                    allowfullscreen></iframe>
-          </div>
-          <div class="bottle-drop-q5-play-actions">
-            <button type="button" class="action-btn" onclick="closeBottleDropQ5PlaySimOverlay()">
-              <img class="btn-bg-img" src="https://www.figma.com/api/mcp/asset/dead448e-d37a-48a5-8f9d-94f04b9de3cb" alt="">
-              <span>Close</span>
-            </button>
-          </div>
-        </div>
-      </div>
+      <button type="button" class="action-btn" onclick="showScreen('screen-info-2')">
+        <img class="btn-bg-img" src="https://www.figma.com/api/mcp/asset/3c1fc56c-ae3d-47c6-942f-d80d16b44f37" alt="">
+        <span>Next</span>
+      </button>
     </div>
   </div>
 
@@ -5696,10 +3832,7 @@
 
   /* Home control: return to campus map from any lesson screen */
   document.getElementById('app').addEventListener('click', function (e) {
-    const home = e.target.closest('.home-btn');
-    if (!home) return;
-    const hostScreen = home.closest('.screen');
-    if (hostScreen && (hostScreen.id === 'screen-language-loft' || hostScreen.id === 'screen-aops-arena')) return;
+    if (!e.target.closest('.home-btn')) return;
     const campus = document.getElementById('screen-campus');
     if (campus && campus.classList.contains('visible')) return;
     showScreen('screen-campus');
@@ -5713,10 +3846,7 @@
   let bottleDropSimResizeObs3;
   let bottleDropSim1Complete = false;
   let bottleDropSim3Complete = false;
-  let bottleDropSim1SuccessTimeoutId = null;
-  let bottleDropSim2SuccessTimeoutId = null;
   let bottleDropEmptyMcSelection = null;
-  let bottleDropHypothesisMcSelection = null;
   let bottleDropSim2KrakenAwaitTapDismiss = false;
 
   function scaleBottleDropSimIframe() {
@@ -5818,26 +3948,10 @@
     bottleDropSimResizeObs3.observe(host);
   }
 
-  function hideBottleDropSim1SuccessOverlay() {
-    if (bottleDropSim1SuccessTimeoutId != null) {
-      clearTimeout(bottleDropSim1SuccessTimeoutId);
-      bottleDropSim1SuccessTimeoutId = null;
-    }
-    const ov = document.getElementById('bottle-drop-sim1-success-overlay');
-    if (ov) {
-      ov.classList.remove('is-visible');
-      ov.setAttribute('aria-hidden', 'true');
-    }
-  }
-
-  function onBottleDropSim1NextClick() {
-    hideBottleDropSim1SuccessOverlay();
-    showScreen('screen-bottle-drop-q1-30m');
-  }
-
   function resetBottleDropEmbed1() {
     bottleDropSim1Complete = false;
-    hideBottleDropSim1SuccessOverlay();
+    const btn = document.getElementById('bottle-drop-next-btn');
+    if (btn) btn.disabled = true;
     const kw = document.getElementById('bottle-drop-kraken-wrap');
     if (kw) {
       kw.classList.remove('is-revealed');
@@ -5871,27 +3985,11 @@
     if (bubble) bubble.textContent = '';
   }
 
-  function hideBottleDropSim2SuccessOverlay() {
-    if (bottleDropSim2SuccessTimeoutId != null) {
-      clearTimeout(bottleDropSim2SuccessTimeoutId);
-      bottleDropSim2SuccessTimeoutId = null;
-    }
-    const ov = document.getElementById('bottle-drop-sim2-success-overlay');
-    if (ov) {
-      ov.classList.remove('is-visible');
-      ov.setAttribute('aria-hidden', 'true');
-    }
-  }
-
-  function onBottleDropSim2NextClick() {
-    hideBottleDropSim2SuccessOverlay();
-    showScreen('screen-bottle-drop-hypothesis-prompt');
-  }
-
   function resetBottleDropEmbed2() {
     bottleDropSim2KrakenAwaitTapDismiss = false;
     setBottleDropSim2KrakenDismissLayer(false);
-    hideBottleDropSim2SuccessOverlay();
+    const btn = document.getElementById('bottle-drop-next-btn-2');
+    if (btn) btn.disabled = true;
     const kw = document.getElementById('bottle-drop-kraken-wrap-2');
     const bubble = document.getElementById('bottle-drop-kraken-bubble-2');
     if (kw) {
@@ -5922,62 +4020,24 @@
   function onBottleDropSimComplete1() {
     if (bottleDropSim1Complete) return;
     bottleDropSim1Complete = true;
+    const btn = document.getElementById('bottle-drop-next-btn');
+    if (btn) btn.disabled = false;
     const kw = document.getElementById('bottle-drop-kraken-wrap');
     if (kw) {
-      kw.classList.remove('is-revealed');
-      kw.setAttribute('aria-hidden', 'true');
+      void kw.offsetWidth;
+      kw.classList.add('is-revealed');
+      kw.setAttribute('aria-hidden', 'false');
     }
-    if (bottleDropSim1SuccessTimeoutId != null) {
-      clearTimeout(bottleDropSim1SuccessTimeoutId);
-      bottleDropSim1SuccessTimeoutId = null;
-    }
-    bottleDropSim1SuccessTimeoutId = setTimeout(function () {
-      bottleDropSim1SuccessTimeoutId = null;
-      const embedScreen = document.getElementById('screen-bottle-drop-embed');
-      if (!embedScreen || !embedScreen.classList.contains('visible')) return;
-      const ov = document.getElementById('bottle-drop-sim1-success-overlay');
-      if (ov) {
-        ov.classList.add('is-visible');
-        ov.setAttribute('aria-hidden', 'false');
-      }
-    }, 2000);
   }
 
   function onBottleDropSim2DropComplete(atTarget30m) {
     const hint = 'Try moving the bottle up to 30m and then dropping it.';
+    const okMsg = 'A higher fall gives the bottles more time to speed up. The faster they fall, the more the air pushes back. The partially-filled bottle is slowed by the air more than the full bottle.';
+    bottleDropSim2KrakenAwaitTapDismiss = !atTarget30m;
+    setBottleDropSim2KrakenDismissLayer(!atTarget30m);
     const bubble = document.getElementById('bottle-drop-kraken-bubble-2');
     const kw = document.getElementById('bottle-drop-kraken-wrap-2');
-    if (atTarget30m) {
-      bottleDropSim2KrakenAwaitTapDismiss = false;
-      setBottleDropSim2KrakenDismissLayer(false);
-      if (bubble) bubble.textContent = '';
-      if (kw) {
-        kw.classList.remove('is-revealed');
-        kw.setAttribute('aria-hidden', 'true');
-      }
-      if (bottleDropSim2SuccessTimeoutId != null) {
-        clearTimeout(bottleDropSim2SuccessTimeoutId);
-        bottleDropSim2SuccessTimeoutId = null;
-      }
-      bottleDropSim2SuccessTimeoutId = setTimeout(function () {
-        bottleDropSim2SuccessTimeoutId = null;
-        const embedScreen = document.getElementById('screen-bottle-drop-embed-2');
-        if (!embedScreen || !embedScreen.classList.contains('visible')) return;
-        const ov = document.getElementById('bottle-drop-sim2-success-overlay');
-        if (ov) {
-          ov.classList.add('is-visible');
-          ov.setAttribute('aria-hidden', 'false');
-        }
-      }, 2000);
-      return;
-    }
-    if (bottleDropSim2SuccessTimeoutId != null) {
-      clearTimeout(bottleDropSim2SuccessTimeoutId);
-      bottleDropSim2SuccessTimeoutId = null;
-    }
-    bottleDropSim2KrakenAwaitTapDismiss = true;
-    setBottleDropSim2KrakenDismissLayer(true);
-    if (bubble) bubble.textContent = hint;
+    if (bubble) bubble.textContent = atTarget30m ? okMsg : hint;
     if (kw) {
       if (!kw.classList.contains('is-revealed')) {
         void kw.offsetWidth;
@@ -5985,6 +4045,8 @@
       }
       kw.setAttribute('aria-hidden', 'false');
     }
+    const btn = document.getElementById('bottle-drop-next-btn-2');
+    if (btn) btn.disabled = !atTarget30m;
   }
 
   function onBottleDropSimComplete3() {
@@ -6010,105 +4072,6 @@
     selectBottleDropEmptyChoice(which);
   }
 
-  function hideBottleDropHypothesisFeedback() {
-    const ov = document.getElementById('bottle-drop-hypothesis-success-overlay');
-    if (ov) {
-      ov.classList.remove('is-visible');
-      ov.setAttribute('aria-hidden', 'true');
-    }
-    const kw = document.getElementById('bottle-drop-hypothesis-kraken-wrap');
-    if (kw) {
-      kw.classList.remove('is-revealed');
-      kw.setAttribute('aria-hidden', 'true');
-    }
-    const bubble = document.getElementById('bottle-drop-hypothesis-kraken-bubble');
-    if (bubble) bubble.textContent = '';
-    const ka = document.getElementById('bottle-drop-hypothesis-kraken-actions');
-    if (ka) {
-      ka.classList.remove('is-visible');
-      ka.setAttribute('aria-hidden', 'true');
-    }
-    document.querySelectorAll('#bottle-drop-hypothesis-mc-row .q3-text-choice').forEach(function (el) {
-      el.classList.remove('wrong-pick');
-    });
-  }
-
-  function dismissBottleDropHypothesisKraken() {
-    hideBottleDropHypothesisFeedback();
-  }
-
-  function onBottleDropHypothesisSuccessNext() {
-    hideBottleDropHypothesisFeedback();
-    showScreen('screen-bottle-drop-q2');
-  }
-
-  function resetBottleDropHypothesisScreen() {
-    bottleDropHypothesisMcSelection = null;
-    document.querySelectorAll('#bottle-drop-hypothesis-mc-row .q3-text-choice').forEach(function (el) {
-      el.classList.remove('selected');
-    });
-    closeBottleDropHypothesisPlaySimOverlay();
-    hideBottleDropHypothesisFeedback();
-  }
-
-  function selectBottleDropHypothesisChoice(which) {
-    const kw = document.getElementById('bottle-drop-hypothesis-kraken-wrap');
-    if (kw && kw.classList.contains('is-revealed')) dismissBottleDropHypothesisKraken();
-    bottleDropHypothesisMcSelection = which;
-    document.querySelectorAll('#bottle-drop-hypothesis-mc-row .q3-text-choice').forEach(function (el) {
-      el.classList.remove('selected');
-    });
-    const id = which === 'earth' ? 'bd-hyp-choice-earth' : which === 'titan' ? 'bd-hyp-choice-titan' : 'bd-hyp-choice-same';
-    const n = document.getElementById(id);
-    if (n) n.classList.add('selected');
-  }
-
-  function bottleDropHypothesisMcKey(e, which) {
-    if (e.key !== 'Enter' && e.key !== ' ') return;
-    e.preventDefault();
-    selectBottleDropHypothesisChoice(which);
-  }
-
-  function submitBottleDropHypothesisMC() {
-    if (!bottleDropHypothesisMcSelection) {
-      const row = document.getElementById('bottle-drop-hypothesis-mc-row');
-      if (row) {
-        row.classList.add('shake');
-        setTimeout(function () { row.classList.remove('shake'); }, 400);
-      }
-      return;
-    }
-    hideBottleDropHypothesisFeedback();
-    const sel = bottleDropHypothesisMcSelection;
-    if (sel === 'earth') {
-      const ov = document.getElementById('bottle-drop-hypothesis-success-overlay');
-      if (ov) {
-        ov.classList.add('is-visible');
-        ov.setAttribute('aria-hidden', 'false');
-      }
-      return;
-    }
-    document.querySelectorAll('#bottle-drop-hypothesis-mc-row .q3-text-choice').forEach(function (el) {
-      if (sel === 'titan' && el.id === 'bd-hyp-choice-titan') el.classList.add('wrong-pick');
-      if (sel === 'same' && el.id === 'bd-hyp-choice-same') el.classList.add('wrong-pick');
-    });
-    const bubble = document.getElementById('bottle-drop-hypothesis-kraken-bubble');
-    if (bubble) {
-      bubble.textContent = 'Try changing the air density in the simulation and see what happens. You can make the air as thick as Titan’s.';
-    }
-    const kw = document.getElementById('bottle-drop-hypothesis-kraken-wrap');
-    if (kw) {
-      if (!kw.classList.contains('is-revealed')) void kw.offsetWidth;
-      kw.classList.add('is-revealed');
-      kw.setAttribute('aria-hidden', 'false');
-    }
-    const ka = document.getElementById('bottle-drop-hypothesis-kraken-actions');
-    if (ka) {
-      ka.classList.add('is-visible');
-      ka.setAttribute('aria-hidden', 'false');
-    }
-  }
-
   function submitBottleDropEmptyMC() {
     if (!bottleDropEmptyMcSelection) {
       const row = document.getElementById('bottle-drop-empty-mc-row');
@@ -6123,44 +4086,6 @@
 
   /* Track which screens have been visited */
   const visited = new Set(['screen-campus']);
-
-  /* Shared lesson-complete screen: Air vs Bottle Drop chrome */
-  let lessonFinalSource = 'air';
-
-  function applyLessonFinalChrome() {
-    const screen = document.getElementById('screen-lesson-final');
-    if (!screen) return;
-    const title = screen.querySelector('.nav-title');
-    const subP = screen.querySelector('.final-results-sub p');
-    const btn = document.getElementById('lesson-final-primary-btn');
-    const btnLabel = btn && btn.querySelector('span');
-    if (lessonFinalSource === 'bottle-drop') {
-      screen.classList.add('lesson-final--bottle-drop');
-      if (title) title.textContent = 'Bottle Drop';
-      if (subP) subP.textContent = 'You finished the Bottle Drop lesson!';
-      if (btnLabel) btnLabel.textContent = 'Back to Map';
-      if (btn) {
-        btn.onclick = function () {
-          showScreen('screen-campus');
-        };
-      }
-    } else {
-      screen.classList.remove('lesson-final--bottle-drop');
-      if (title) title.textContent = 'Air Resistance';
-      if (subP) subP.textContent = 'You finished the Air Resistance lesson!';
-      if (btnLabel) btnLabel.textContent = 'Next Lesson';
-      if (btn) {
-        btn.onclick = function () {
-          showScreen('screen-guidebook');
-        };
-      }
-    }
-  }
-
-  function goToAirResistanceLessonFinal() {
-    lessonFinalSource = 'air';
-    showScreen('screen-lesson-final');
-  }
 
   /* Screen switching — always records the visit */
   function showScreen(id) {
@@ -6179,7 +4104,6 @@
     document.querySelectorAll('.screen').forEach(s => s.classList.remove('visible'));
     document.getElementById(id).classList.add('visible');
     if (id === 'screen-lesson-final') {
-      applyLessonFinalChrome();
       requestAnimationFrame(() => {
         const w = document.getElementById('final-stars-wrap');
         if (!w) return;
@@ -6216,33 +4140,10 @@
         el.classList.remove('selected');
       });
     }
-    if (id === 'screen-bottle-drop-hypothesis-prompt') {
-      resetBottleDropHypothesisScreen();
-      requestAnimationFrame(() => {
-        const o = document.getElementById('bottle-drop-hypothesis-intro-overlay');
-        if (!o) return;
-        o.classList.add('is-open');
-        o.setAttribute('aria-hidden', 'false');
-      });
-    }
     if (id === 'screen-bottle-drop-embed-3') {
       ensureBottleDropSimResizeObserver3();
       resetBottleDropEmbed3();
       requestAnimationFrame(() => scaleBottleDropSimIframe3());
-    }
-    if (id === 'screen-bottle-drop-q2') {
-      resetBottleDropQ2Screen();
-    }
-    if (id === 'screen-bottle-drop-q5') {
-      resetBottleDropQ5Screen();
-    }
-    if (id === 'screen-victory-vault') {
-      requestAnimationFrame(() => {
-        const o = document.getElementById('victory-vault-welcome-overlay');
-        if (!o) return;
-        o.classList.add('is-open');
-        o.setAttribute('aria-hidden', 'false');
-      });
     }
   }
 
@@ -6272,356 +4173,9 @@
     requestAnimationFrame(() => scaleBottleDropSimIframe2());
   }
 
-  const BOTTLE_DROP_HYPOTHESIS_PLAY_SIM_URL = 'https://mamarillasaops.github.io/Hackathon-Sims/ba_bottle_drop_sim.html';
-
-  function openBottleDropHypothesisPlaySimOverlay() {
-    const o = document.getElementById('bottle-drop-hypothesis-play-overlay');
-    const f = document.getElementById('bottle-drop-hypothesis-play-iframe');
-    if (!o || !f) return;
-    o.classList.add('is-open');
-    o.setAttribute('aria-hidden', 'false');
-    if (!f.getAttribute('src')) f.setAttribute('src', BOTTLE_DROP_HYPOTHESIS_PLAY_SIM_URL);
-  }
-
-  function closeBottleDropHypothesisPlaySimOverlay() {
-    const o = document.getElementById('bottle-drop-hypothesis-play-overlay');
-    const f = document.getElementById('bottle-drop-hypothesis-play-iframe');
-    if (o) {
-      o.classList.remove('is-open');
-      o.setAttribute('aria-hidden', 'true');
-    }
-    if (f) f.removeAttribute('src');
-  }
-
-  function openBottleDropQ2PlaySimOverlay() {
-    const o = document.getElementById('bottle-drop-q2-play-overlay');
-    const f = document.getElementById('bottle-drop-q2-play-iframe');
-    if (!o || !f) return;
-    o.classList.add('is-open');
-    o.setAttribute('aria-hidden', 'false');
-    if (!f.getAttribute('src')) f.setAttribute('src', BOTTLE_DROP_HYPOTHESIS_PLAY_SIM_URL);
-  }
-
-  function closeBottleDropQ2PlaySimOverlay() {
-    const o = document.getElementById('bottle-drop-q2-play-overlay');
-    const f = document.getElementById('bottle-drop-q2-play-iframe');
-    if (o) {
-      o.classList.remove('is-open');
-      o.setAttribute('aria-hidden', 'true');
-    }
-    if (f) f.removeAttribute('src');
-  }
-
-  function openBottleDropQ5PlaySimOverlay() {
-    const o = document.getElementById('bottle-drop-q5-play-overlay');
-    const f = document.getElementById('bottle-drop-q5-play-iframe');
-    if (!o || !f) return;
-    o.classList.add('is-open');
-    o.setAttribute('aria-hidden', 'false');
-    if (!f.getAttribute('src')) f.setAttribute('src', BOTTLE_DROP_HYPOTHESIS_PLAY_SIM_URL);
-  }
-
-  function closeBottleDropQ5PlaySimOverlay() {
-    const o = document.getElementById('bottle-drop-q5-play-overlay');
-    const f = document.getElementById('bottle-drop-q5-play-iframe');
-    if (o) {
-      o.classList.remove('is-open');
-      o.setAttribute('aria-hidden', 'true');
-    }
-    if (f) f.removeAttribute('src');
-  }
-
-  function hideBottleDropQ5Feedback() {
-    const ov = document.getElementById('bottle-drop-q5-success-overlay');
-    if (ov) {
-      ov.classList.remove('is-visible');
-      ov.setAttribute('aria-hidden', 'true');
-    }
-    const kw = document.getElementById('bottle-drop-q5-kraken-wrap');
-    if (kw) {
-      kw.classList.remove('is-revealed');
-      kw.setAttribute('aria-hidden', 'true');
-    }
-    const bubble = document.getElementById('bottle-drop-q5-kraken-bubble');
-    if (bubble) bubble.textContent = '';
-    const ka = document.getElementById('bottle-drop-q5-kraken-actions');
-    if (ka) {
-      ka.classList.remove('is-visible');
-      ka.setAttribute('aria-hidden', 'true');
-    }
-  }
-
-  function dismissBottleDropQ5Kraken() {
-    hideBottleDropQ5Feedback();
-  }
-
-  function resetBottleDropQ5Screen() {
-    const ta = document.getElementById('bottle-drop-q5-answer-textarea');
-    if (ta) ta.value = '';
-    hideBottleDropQ5Feedback();
-    closeBottleDropQ5PlaySimOverlay();
-    const box = document.getElementById('bottle-drop-q5-answer-box');
-    if (box) box.classList.remove('shake');
-  }
-
-  function expandBottleDropQ5Contractions(s) {
-    return s
-      .replace(/\bdoesn't\b/gi, 'does not')
-      .replace(/\bdon't\b/gi, 'do not')
-      .replace(/\bdont\b/gi, 'do not')
-      .replace(/\bdidn't\b/gi, 'did not')
-      .replace(/\bwon't\b/gi, 'will not')
-      .replace(/\bwont\b/gi, 'will not')
-      .replace(/\bcan't\b/gi, 'can not')
-      .replace(/\bcant\b/gi, 'can not')
-      .replace(/\bcannot\b/gi, 'can not')
-      .replace(/\bwouldn't\b/gi, 'would not')
-      .replace(/\bcouldn't\b/gi, 'could not')
-      .replace(/\bshouldn't\b/gi, 'should not')
-      .replace(/\bisn't\b/gi, 'is not')
-      .replace(/\bwasn't\b/gi, 'was not')
-      .replace(/\bhasn't\b/gi, 'has not')
-      .replace(/\bhaven't\b/gi, 'have not')
-      .replace(/\bit's\b/gi, 'it is');
-  }
-
-  function normalizeBottleDropQ5(text) {
-    let s = String(text || '').trim().toLowerCase();
-    s = s.replace(/\u2019/g, "'");
-    s = expandBottleDropQ5Contractions(s);
-    s = s.replace(/[^a-z0-9\s]/g, ' ');
-    return s.replace(/\s+/g, ' ').trim();
-  }
-
-  function isBottleDropQ5AnswerCorrect(text) {
-    const e = normalizeBottleDropQ5(text);
-    if (e.length < 2) return false;
-
-    if (/\byes\b/.test(e)) {
-      if (/\b(would not|will not|does not|do not|can not|is not|was not)\b/.test(e)) return true;
-      return false;
-    }
-
-    if (/\bno\s+way\b/.test(e) && /\b(would|will|could|might|may)\s+help\b/.test(e)) return true;
-
-    const helpRe = /\b(would|will|could|might|may)\s+help\b/g;
-    let hm;
-    while ((hm = helpRe.exec(e)) !== null) {
-      const before = e.slice(0, hm.index);
-      if (!/\b(no\s+way|no\s+chance|do not|does not|did not|will not|would not|can not|not|never)\b/.test(before)) return false;
-    }
-    if (/\bparachute\s+helps\b/.test(e)) return false;
-    if (/\b(it|this|that|the|a)\s+helps\b/.test(e) && /\b(parachute|rocket|moon|landing)\b/.test(e)) return false;
-    if (/\ba\s+little\b/.test(e) && /\b(help|slow|work)\b/.test(e)) return false;
-    if (/\b(maybe|probably)\b/.test(e) && /\b(help|helps|work)\b/.test(e) && !/\bnot\b/.test(e)) return false;
-
-    if (/^(no|nope|nah)\b/.test(e)) return true;
-    if (/\b(nope|nah|negative)\b/.test(e)) return true;
-    if (/\bdo not\s+think\b/.test(e) || /\bdoes not\s+think\b/.test(e)) return true;
-    if (/\b(would not|will not|does not|do not|can not)\s+(help|work)\b/.test(e)) return true;
-    if (/\bnot\s+(really\s+)?(helpful|useful|effective)\b/.test(e)) return true;
-    if (/\b(no|without)\s+air\b/.test(e) || /\bno\s+atmosphere\b/.test(e) || /\bvacuum\b/.test(e)) return true;
-    if (/\bnot\s+enough\s+air\b/.test(e)) return true;
-    if (/\b(parachute|it|they|that|this)\s+(would|will|can)\s+not\b/.test(e)) return true;
-    if (/\bdoes not\s+(help|work)\b/.test(e)) return true;
-    if (/\bwould not\s+slow\b/.test(e)) return true;
-    if (/\buseless\b/.test(e)) return true;
-    if (/\bno\s+point\b/.test(e)) return true;
-
-    return false;
-  }
-
-  function submitBottleDropQ5Answer() {
-    const ta = document.getElementById('bottle-drop-q5-answer-textarea');
-    const box = document.getElementById('bottle-drop-q5-answer-box');
-    if (!ta) return;
-    const raw = ta.value;
-    if (!String(raw).trim()) {
-      if (box) {
-        box.classList.add('shake');
-        setTimeout(function () { box.classList.remove('shake'); }, 400);
-      }
-      return;
-    }
-    hideBottleDropQ5Feedback();
-    if (isBottleDropQ5AnswerCorrect(raw)) {
-      const ov = document.getElementById('bottle-drop-q5-success-overlay');
-      if (ov) {
-        ov.classList.add('is-visible');
-        ov.setAttribute('aria-hidden', 'false');
-      }
-      return;
-    }
-    const bubble = document.getElementById('bottle-drop-q5-kraken-bubble');
-    if (bubble) {
-      bubble.textContent = 'You can perform the experiment for yourself using the simulation.';
-    }
-    const kw = document.getElementById('bottle-drop-q5-kraken-wrap');
-    if (kw) {
-      if (!kw.classList.contains('is-revealed')) void kw.offsetWidth;
-      kw.classList.add('is-revealed');
-      kw.setAttribute('aria-hidden', 'false');
-    }
-    const ka = document.getElementById('bottle-drop-q5-kraken-actions');
-    if (ka) {
-      ka.classList.add('is-visible');
-      ka.setAttribute('aria-hidden', 'false');
-    }
-  }
-
-  function onBottleDropQ5SuccessNext() {
-    const ov = document.getElementById('bottle-drop-q5-success-overlay');
-    if (!ov || !ov.classList.contains('is-visible')) return;
-    hideBottleDropQ5Feedback();
-    lessonFinalSource = 'bottle-drop';
-    showScreen('screen-lesson-final');
-  }
-
-  function hideBottleDropQ2Feedback() {
-    const ov = document.getElementById('bottle-drop-q2-success-overlay');
-    if (ov) {
-      ov.classList.remove('is-visible');
-      ov.setAttribute('aria-hidden', 'true');
-    }
-    const fn = document.getElementById('bottle-drop-q2-footer-next');
-    if (fn) fn.disabled = true;
-    const kw = document.getElementById('bottle-drop-q2-kraken-wrap');
-    if (kw) {
-      kw.classList.remove('is-revealed');
-      kw.setAttribute('aria-hidden', 'true');
-    }
-    const bubble = document.getElementById('bottle-drop-q2-kraken-bubble');
-    if (bubble) bubble.textContent = '';
-    const ka = document.getElementById('bottle-drop-q2-kraken-actions');
-    if (ka) {
-      ka.classList.remove('is-visible');
-      ka.setAttribute('aria-hidden', 'true');
-    }
-  }
-
-  function dismissBottleDropQ2Kraken() {
-    hideBottleDropQ2Feedback();
-  }
-
-  function resetBottleDropQ2Screen() {
-    const inp = document.getElementById('bottle-drop-q2-answer-input');
-    if (inp) inp.value = '';
-    hideBottleDropQ2Feedback();
-    closeBottleDropQ2PlaySimOverlay();
-    const wrap = document.getElementById('bottle-drop-q2-answer-wrap');
-    if (wrap) wrap.classList.remove('shake');
-    const fn = document.getElementById('bottle-drop-q2-footer-next');
-    if (fn) fn.disabled = true;
-  }
-
-  function parseBottleDropQ2Meters(text) {
-    const t = String(text || '').trim().toLowerCase().replace(/,/g, '');
-    if (!t) return NaN;
-    const m1 = t.match(/(-?\d+(?:\.\d+)?)\s*m(?:eter|etre)?s?\b/);
-    if (m1) return parseFloat(m1[1]);
-    const m2 = t.match(/^(-?\d+(?:\.\d+)?)\s*$/);
-    if (m2) return parseFloat(m2[1]);
-    const m3 = t.match(/(-?\d+(?:\.\d+)?)/);
-    return m3 ? parseFloat(m3[1]) : NaN;
-  }
-
-  function isBottleDropQ2AnswerCorrect(text) {
-    const n = parseBottleDropQ2Meters(text);
-    if (Number.isNaN(n)) return false;
-    return Math.abs(n - 25) < 0.501;
-  }
-
-  function submitBottleDropQ2Answer() {
-    const inp = document.getElementById('bottle-drop-q2-answer-input');
-    const wrap = document.getElementById('bottle-drop-q2-answer-wrap');
-    if (!inp) return;
-    const raw = inp.value;
-    if (!String(raw).trim()) {
-      if (wrap) {
-        wrap.classList.add('shake');
-        setTimeout(function () { wrap.classList.remove('shake'); }, 400);
-      }
-      return;
-    }
-    hideBottleDropQ2Feedback();
-    if (isBottleDropQ2AnswerCorrect(raw)) {
-      const ov = document.getElementById('bottle-drop-q2-success-overlay');
-      if (ov) {
-        ov.classList.add('is-visible');
-        ov.setAttribute('aria-hidden', 'false');
-      }
-      const fn = document.getElementById('bottle-drop-q2-footer-next');
-      if (fn) fn.disabled = false;
-      return;
-    }
-    const bubble = document.getElementById('bottle-drop-q2-kraken-bubble');
-    if (bubble) {
-      bubble.textContent = 'Unlike the moon, when you are visiting Titan a bowling ball needs more time to fall than a balloon does if you want them to land at the same time. Keep experimenting with the simulator.';
-    }
-    const kw = document.getElementById('bottle-drop-q2-kraken-wrap');
-    if (kw) {
-      if (!kw.classList.contains('is-revealed')) void kw.offsetWidth;
-      kw.classList.add('is-revealed');
-      kw.setAttribute('aria-hidden', 'false');
-    }
-    const ka = document.getElementById('bottle-drop-q2-kraken-actions');
-    if (ka) {
-      ka.classList.add('is-visible');
-      ka.setAttribute('aria-hidden', 'false');
-    }
-  }
-
-  function bottleDropQ2AnswerKeydown(e) {
-    if (e.key !== 'Enter') return;
-    e.preventDefault();
-    submitBottleDropQ2Answer();
-  }
-
-  function onBottleDropQ2FooterNext() {
-    const ov = document.getElementById('bottle-drop-q2-success-overlay');
-    if (!ov || !ov.classList.contains('is-visible')) {
-      const wrap = document.getElementById('bottle-drop-q2-answer-wrap');
-      if (wrap) {
-        wrap.classList.add('shake');
-        setTimeout(function () { wrap.classList.remove('shake'); }, 400);
-      }
-      return;
-    }
-    hideBottleDropQ2Feedback();
-    showScreen('screen-bottle-drop-q5');
-  }
-
-  function onBottleDropQ2SuccessNext() {
-    onBottleDropQ2FooterNext();
-  }
-
-  function closeBottleDropHypothesisIntroOverlay() {
-    const o = document.getElementById('bottle-drop-hypothesis-intro-overlay');
-    if (!o) return;
-    o.classList.remove('is-open');
-    o.setAttribute('aria-hidden', 'true');
-  }
-
-  function closeVictoryVaultWelcomeOverlay() {
-    const o = document.getElementById('victory-vault-welcome-overlay');
-    if (!o) return;
-    o.classList.remove('is-open');
-    o.setAttribute('aria-hidden', 'true');
-  }
-
   function closeAllBottleDropIntroOverlays() {
     closeBottleDropIntroOverlay();
     closeBottleDropIntroOverlay2();
-    closeBottleDropHypothesisIntroOverlay();
-    closeVictoryVaultWelcomeOverlay();
-    closeBottleDropHypothesisPlaySimOverlay();
-    closeBottleDropQ2PlaySimOverlay();
-    closeBottleDropQ5PlaySimOverlay();
-    hideBottleDropHypothesisFeedback();
-    hideBottleDropQ2Feedback();
-    hideBottleDropQ5Feedback();
-    hideBottleDropSim1SuccessOverlay();
-    hideBottleDropSim2SuccessOverlay();
   }
 
   window.addEventListener('message', function onBottleDropSimMessage(e) {
@@ -6659,59 +4213,7 @@
     if (e.key !== 'Escape') return;
     const o1 = document.getElementById('bottle-drop-intro-overlay');
     const o2 = document.getElementById('bottle-drop-intro-overlay-2');
-    const oPlay = document.getElementById('bottle-drop-hypothesis-play-overlay');
-    const q2Play = document.getElementById('bottle-drop-q2-play-overlay');
-    const q5Play = document.getElementById('bottle-drop-q5-play-overlay');
-    const oHypIntro = document.getElementById('bottle-drop-hypothesis-intro-overlay');
-    const oVvWelcome = document.getElementById('victory-vault-welcome-overlay');
-    const hypSuccess = document.getElementById('bottle-drop-hypothesis-success-overlay');
-    const hypKraken = document.getElementById('bottle-drop-hypothesis-kraken-wrap');
-    const q2Success = document.getElementById('bottle-drop-q2-success-overlay');
-    const q2Kraken = document.getElementById('bottle-drop-q2-kraken-wrap');
-    const q5Success = document.getElementById('bottle-drop-q5-success-overlay');
-    const q5Kraken = document.getElementById('bottle-drop-q5-kraken-wrap');
-    const sim1Success = document.getElementById('bottle-drop-sim1-success-overlay');
-    const sim2Success = document.getElementById('bottle-drop-sim2-success-overlay');
-    if (oPlay && oPlay.classList.contains('is-open')) {
-      e.preventDefault();
-      closeBottleDropHypothesisPlaySimOverlay();
-    } else if (q5Play && q5Play.classList.contains('is-open')) {
-      e.preventDefault();
-      closeBottleDropQ5PlaySimOverlay();
-    } else if (q2Play && q2Play.classList.contains('is-open')) {
-      e.preventDefault();
-      closeBottleDropQ2PlaySimOverlay();
-    } else if (oHypIntro && oHypIntro.classList.contains('is-open')) {
-      e.preventDefault();
-      closeBottleDropHypothesisIntroOverlay();
-    } else if (oVvWelcome && oVvWelcome.classList.contains('is-open')) {
-      e.preventDefault();
-      closeVictoryVaultWelcomeOverlay();
-    } else if (sim1Success && sim1Success.classList.contains('is-visible')) {
-      e.preventDefault();
-      hideBottleDropSim1SuccessOverlay();
-    } else if (sim2Success && sim2Success.classList.contains('is-visible')) {
-      e.preventDefault();
-      hideBottleDropSim2SuccessOverlay();
-    } else if (hypSuccess && hypSuccess.classList.contains('is-visible')) {
-      e.preventDefault();
-      hideBottleDropHypothesisFeedback();
-    } else if (hypKraken && hypKraken.classList.contains('is-revealed')) {
-      e.preventDefault();
-      dismissBottleDropHypothesisKraken();
-    } else if (q5Success && q5Success.classList.contains('is-visible')) {
-      e.preventDefault();
-      hideBottleDropQ5Feedback();
-    } else if (q5Kraken && q5Kraken.classList.contains('is-revealed')) {
-      e.preventDefault();
-      dismissBottleDropQ5Kraken();
-    } else if (q2Success && q2Success.classList.contains('is-visible')) {
-      e.preventDefault();
-      hideBottleDropQ2Feedback();
-    } else if (q2Kraken && q2Kraken.classList.contains('is-revealed')) {
-      e.preventDefault();
-      dismissBottleDropQ2Kraken();
-    } else if (o1 && o1.classList.contains('is-open')) {
+    if (o1 && o1.classList.contains('is-open')) {
       e.preventDefault();
       closeBottleDropIntroOverlay();
     } else if (o2 && o2.classList.contains('is-open')) {
@@ -7054,8 +4556,6 @@
   }
   initAnswerDictation('answer-input', 'answer-mic-1');
   initAnswerDictation('answer-input-2', 'answer-mic-2');
-  initAnswerDictation('bottle-drop-q5-answer-textarea', 'bottle-drop-q5-answer-mic');
-  applyLessonFinalChrome();
 
   /* ════════════════════════════════════════
      Q3–Q6 — bags / MC; then air intro + Q1–Q2
