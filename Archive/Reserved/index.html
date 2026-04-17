@@ -306,6 +306,39 @@
     .action-btn-wrap--pair .action-btn span {
       text-transform: none;
     }
+    /* Skip — Figma MCP node 4223:14013 (exported frame + label)
+       https://www.figma.com/design/FH1ei8HwUvRzFvnpQ5cBfd/Hackathon?node-id=4223-14013 */
+    .action-btn.action-btn--skip .btn-bg-img {
+      object-fit: fill;
+    }
+    .action-btn-wrap--pair .action-btn.action-btn--skip span {
+      font-family: 'Roboto Slab', serif;
+      font-weight: 500;
+      font-size: 17.84px;
+      color: #0058a8;
+      letter-spacing: -0.1962px;
+      text-transform: uppercase;
+      text-shadow: none;
+    }
+    .dot.dot-skipped {
+      background: #e02020 !important;
+      border: 3px solid #9a1414 !important;
+      color: #fff !important;
+      box-shadow: 2px 2px 0 #5c0d0d;
+    }
+    .dot.dot-skipped img {
+      display: none !important;
+    }
+    .dot-skipped-x {
+      font-weight: 800;
+      font-size: 22px;
+      line-height: 1;
+      color: #fff;
+      pointer-events: none;
+    }
+    .problem-nav--bottle-drop .dot.dot-skipped {
+      box-shadow: 2px 2px 0 #5c0d0d;
+    }
     .action-btn {
       position:relative; width:170px; height:59px;
       background:none; border:none; cursor:pointer; padding:0;
@@ -331,6 +364,15 @@
       position:absolute; right:-85px; top:120px;
       width:550px; height:680px; z-index:30;
       animation: krakenIn 0.55s cubic-bezier(0.34,1.56,0.64,1) both;
+    }
+    /* Kraken error screens — Try Again / Skip sit above Kraken art */
+    #screen-kraken .action-btn-wrap,
+    #screen-q2-kraken .action-btn-wrap,
+    #screen-q3-kraken .action-btn-wrap,
+    #screen-q4-kraken .action-btn-wrap,
+    #screen-q5-kraken .action-btn-wrap,
+    #screen-q6-kraken .action-btn-wrap {
+      z-index: 50;
     }
     @keyframes krakenIn {
       from { transform:translateX(160px) translateY(20px); opacity:0; }
@@ -1242,7 +1284,13 @@
       display: none;
     }
     #bottle-drop-hypothesis-kraken-actions.is-visible {
-      display: block;
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      justify-content: center;
+      gap: 24px;
+      width: max-content;
+      z-index: 50;
     }
     /* Error (Kraken) or success: hide in-card Submit so Try Again / overlay aren’t stacked */
     #screen-bottle-drop-hypothesis-prompt:has(#bottle-drop-hypothesis-kraken-wrap.is-revealed) #bottle-drop-hypothesis-submit-actions,
@@ -1330,7 +1378,13 @@
       display: none;
     }
     #screen-bottle-drop-q2 #bottle-drop-q2-kraken-actions.is-visible {
-      display: block;
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      justify-content: center;
+      gap: 24px;
+      width: max-content;
+      z-index: 50;
     }
     #screen-bottle-drop-q2:has(#bottle-drop-q2-kraken-wrap.is-revealed) #bottle-drop-q2-submit-actions,
     #screen-bottle-drop-q2:has(#bottle-drop-q2-success-overlay.is-visible) #bottle-drop-q2-submit-actions {
@@ -1502,7 +1556,13 @@
       display: none;
     }
     #screen-bottle-drop-q5 #bottle-drop-q5-kraken-actions.is-visible {
-      display: block;
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      justify-content: center;
+      gap: 24px;
+      width: max-content;
+      z-index: 50;
     }
     #screen-bottle-drop-q5:has(#bottle-drop-q5-kraken-wrap.is-revealed) #bottle-drop-q5-submit-actions,
     #screen-bottle-drop-q5:has(#bottle-drop-q5-success-overlay.is-visible) #bottle-drop-q5-submit-actions {
@@ -1816,8 +1876,8 @@
       100% { opacity: 0.85; transform: scale(1.02); }
     }
 
-    /* Victory Vault — full-bleed shop art; cover keeps aspect ratio while filling the stage */
-    #screen-victory-vault .victory-vault-bg {
+    /* Victory Vault / Arena — full-bleed shop art; cover keeps aspect ratio while filling the stage */
+    :is(#screen-victory-vault, #screen-arena) .victory-vault-bg {
       position: absolute;
       inset: 0;
       z-index: 0;
@@ -1827,8 +1887,11 @@
       background-repeat: no-repeat;
       background-size: cover;
     }
+    #screen-arena .victory-vault-bg {
+      background-image: url('assets/aops-arena.png');
+    }
     /* Home control — composite art (arrow pentagon + BA + house); scoped so other lessons keep Figma assets */
-    #screen-victory-vault .home-btn.victory-vault-home-btn {
+    :is(#screen-victory-vault, #screen-arena) .home-btn.victory-vault-home-btn {
       width: 112px;
       height: 76px;
       padding: 0;
@@ -1836,12 +1899,12 @@
       background: transparent;
       box-shadow: none;
     }
-    #screen-victory-vault .home-btn.victory-vault-home-btn:focus-visible {
+    :is(#screen-victory-vault, #screen-arena) .home-btn.victory-vault-home-btn:focus-visible {
       outline: 3px solid #fff;
       outline-offset: 3px;
       border-radius: 4px;
     }
-    #screen-victory-vault .home-btn.victory-vault-home-btn .victory-vault-home-btn-img {
+    :is(#screen-victory-vault, #screen-arena) .home-btn.victory-vault-home-btn .victory-vault-home-btn-img {
       position: absolute;
       inset: 0;
       width: 100%;
@@ -1851,7 +1914,7 @@
       display: block;
     }
     /* Right shelf — per-plush links + hover sparkles (tuned for background-size: cover) */
-    #screen-victory-vault .victory-vault-stuffy-hits {
+    :is(#screen-victory-vault, #screen-arena) .victory-vault-stuffy-hits {
       position: absolute;
       z-index: 15;
       top: 12%;
@@ -1860,7 +1923,7 @@
       left: 52%;
       pointer-events: none;
     }
-    #screen-victory-vault .victory-vault-stuffy-hit {
+    :is(#screen-victory-vault, #screen-arena) .victory-vault-stuffy-hit {
       position: absolute;
       display: block;
       pointer-events: auto;
@@ -1872,31 +1935,31 @@
       box-sizing: border-box;
       overflow: visible;
     }
-    #screen-victory-vault .victory-vault-stuffy-hit:focus-visible {
+    :is(#screen-victory-vault, #screen-arena) .victory-vault-stuffy-hit:focus-visible {
       outline: 3px solid #f59e0b;
       outline-offset: 3px;
       border-radius: 12px;
     }
     /* Approximate rows on the right display (percent of shelf region) */
-    #screen-victory-vault .victory-vault-stuffy-hit--top {
+    :is(#screen-victory-vault, #screen-arena) .victory-vault-stuffy-hit--top {
       left: 8%;
       top: 0;
       width: 78%;
       height: 40%;
     }
-    #screen-victory-vault .victory-vault-stuffy-hit--mid {
+    :is(#screen-victory-vault, #screen-arena) .victory-vault-stuffy-hit--mid {
       left: 4%;
       top: 36%;
       width: 84%;
       height: 30%;
     }
-    #screen-victory-vault .victory-vault-stuffy-hit--low {
+    :is(#screen-victory-vault, #screen-arena) .victory-vault-stuffy-hit--low {
       left: 10%;
       top: 64%;
       width: 76%;
       height: 34%;
     }
-    #screen-victory-vault .victory-vault-stuffy-sparkles {
+    :is(#screen-victory-vault, #screen-arena) .victory-vault-stuffy-sparkles {
       position: absolute;
       left: 50%;
       top: 50%;
@@ -1904,7 +1967,7 @@
       height: 0;
       pointer-events: none;
     }
-    #screen-victory-vault .victory-vault-stuffy-sparkle {
+    :is(#screen-victory-vault, #screen-arena) .victory-vault-stuffy-sparkle {
       position: absolute;
       left: 0;
       top: 0;
@@ -1933,41 +1996,41 @@
         transform: rotate(var(--vv-rot, 0deg)) translateX(42px) scale(0.85);
       }
     }
-    #screen-victory-vault .victory-vault-stuffy-hit:hover .victory-vault-stuffy-sparkle {
+    :is(#screen-victory-vault, #screen-arena) .victory-vault-stuffy-hit:hover .victory-vault-stuffy-sparkle {
       animation: victoryVaultStuffySpark 0.72s ease-out forwards;
     }
-    #screen-victory-vault .victory-vault-stuffy-hit:hover .victory-vault-stuffy-sparkle:nth-child(1) {
+    :is(#screen-victory-vault, #screen-arena) .victory-vault-stuffy-hit:hover .victory-vault-stuffy-sparkle:nth-child(1) {
       animation-delay: 0s;
     }
-    #screen-victory-vault .victory-vault-stuffy-hit:hover .victory-vault-stuffy-sparkle:nth-child(2) {
+    :is(#screen-victory-vault, #screen-arena) .victory-vault-stuffy-hit:hover .victory-vault-stuffy-sparkle:nth-child(2) {
       animation-delay: 0.05s;
     }
-    #screen-victory-vault .victory-vault-stuffy-hit:hover .victory-vault-stuffy-sparkle:nth-child(3) {
+    :is(#screen-victory-vault, #screen-arena) .victory-vault-stuffy-hit:hover .victory-vault-stuffy-sparkle:nth-child(3) {
       animation-delay: 0.1s;
     }
-    #screen-victory-vault .victory-vault-stuffy-hit:hover .victory-vault-stuffy-sparkle:nth-child(4) {
+    :is(#screen-victory-vault, #screen-arena) .victory-vault-stuffy-hit:hover .victory-vault-stuffy-sparkle:nth-child(4) {
       animation-delay: 0.03s;
     }
-    #screen-victory-vault .victory-vault-stuffy-hit:hover .victory-vault-stuffy-sparkle:nth-child(5) {
+    :is(#screen-victory-vault, #screen-arena) .victory-vault-stuffy-hit:hover .victory-vault-stuffy-sparkle:nth-child(5) {
       animation-delay: 0.08s;
     }
-    #screen-victory-vault .victory-vault-stuffy-hit:hover .victory-vault-stuffy-sparkle:nth-child(6) {
+    :is(#screen-victory-vault, #screen-arena) .victory-vault-stuffy-hit:hover .victory-vault-stuffy-sparkle:nth-child(6) {
       animation-delay: 0.12s;
     }
-    #screen-victory-vault .victory-vault-stuffy-hit:hover .victory-vault-stuffy-sparkle:nth-child(7) {
+    :is(#screen-victory-vault, #screen-arena) .victory-vault-stuffy-hit:hover .victory-vault-stuffy-sparkle:nth-child(7) {
       animation-delay: 0.06s;
     }
-    #screen-victory-vault .victory-vault-stuffy-hit:hover .victory-vault-stuffy-sparkle:nth-child(8) {
+    :is(#screen-victory-vault, #screen-arena) .victory-vault-stuffy-hit:hover .victory-vault-stuffy-sparkle:nth-child(8) {
       animation-delay: 0.14s;
     }
     @media (prefers-reduced-motion: reduce) {
-      #screen-victory-vault .victory-vault-stuffy-hit:hover .victory-vault-stuffy-sparkle {
+      :is(#screen-victory-vault, #screen-arena) .victory-vault-stuffy-hit:hover .victory-vault-stuffy-sparkle {
         animation: none !important;
         opacity: 0;
       }
     }
     /* Top-right profile + XP bar — same visual weight as campus; flush to right edge of stage */
-    #screen-victory-vault .victory-vault-profile-wrap {
+    :is(#screen-victory-vault, #screen-arena) .victory-vault-profile-wrap {
       position: absolute;
       right: 0;
       top: 1.5%;
@@ -1978,10 +2041,11 @@
       line-height: 0;
     }
     /* Victory Vault welcome — Figma 4219:13788 (Modal) */
-    #screen-victory-vault #victory-vault-welcome-overlay.bottle-drop-intro-overlay {
+    #screen-victory-vault #victory-vault-welcome-overlay.bottle-drop-intro-overlay,
+    #screen-arena #arena-welcome-overlay.bottle-drop-intro-overlay {
       z-index: 65;
     }
-    #screen-victory-vault .victory-vault-figma-modal {
+    :is(#screen-victory-vault, #screen-arena) .victory-vault-figma-modal {
       position: relative;
       width: min(726px, calc(100% - 48px));
       min-height: 455px;
@@ -1989,7 +2053,7 @@
       box-sizing: border-box;
       filter: drop-shadow(0 16px 40px rgba(0, 0, 0, 0.2));
     }
-    #screen-victory-vault .victory-vault-figma-modal-surface {
+    :is(#screen-victory-vault, #screen-arena) .victory-vault-figma-modal-surface {
       position: absolute;
       left: 0;
       top: 21px;
@@ -1999,7 +2063,7 @@
       background: #fff;
       border: 11px solid #4090cd;
     }
-    #screen-victory-vault .victory-vault-figma-modal-close {
+    :is(#screen-victory-vault, #screen-arena) .victory-vault-figma-modal-close {
       position: absolute;
       right: 0;
       top: 0;
@@ -2011,19 +2075,19 @@
       cursor: pointer;
       z-index: 2;
     }
-    #screen-victory-vault .victory-vault-figma-modal-close:focus-visible {
+    :is(#screen-victory-vault, #screen-arena) .victory-vault-figma-modal-close:focus-visible {
       outline: 3px solid #0058a8;
       outline-offset: 3px;
       border-radius: 6px;
     }
-    #screen-victory-vault .victory-vault-figma-modal-close img {
+    :is(#screen-victory-vault, #screen-arena) .victory-vault-figma-modal-close img {
       display: block;
       width: 100%;
       height: 100%;
       object-fit: contain;
       pointer-events: none;
     }
-    #screen-victory-vault .victory-vault-figma-modal-body {
+    :is(#screen-victory-vault, #screen-arena) .victory-vault-figma-modal-body {
       position: absolute;
       left: 92px;
       top: 85px;
@@ -2035,7 +2099,7 @@
       gap: 26px;
       color: #000;
     }
-    #screen-victory-vault .victory-vault-figma-modal-title {
+    :is(#screen-victory-vault, #screen-arena) .victory-vault-figma-modal-title {
       margin: 0;
       font-family: 'Roboto Slab', serif;
       font-weight: 700;
@@ -2043,20 +2107,20 @@
       line-height: 1.5;
       letter-spacing: -0.704px;
     }
-    #screen-victory-vault .victory-vault-figma-modal-copy {
+    :is(#screen-victory-vault, #screen-arena) .victory-vault-figma-modal-copy {
       font-family: 'Roboto Flex', sans-serif;
       font-weight: 400;
       font-size: 20px;
       line-height: 1.5;
       letter-spacing: 0;
     }
-    #screen-victory-vault .victory-vault-figma-modal-copy p {
+    :is(#screen-victory-vault, #screen-arena) .victory-vault-figma-modal-copy p {
       margin: 0;
     }
-    #screen-victory-vault .victory-vault-figma-modal-copy p:first-child {
+    :is(#screen-victory-vault, #screen-arena) .victory-vault-figma-modal-copy p:first-child {
       margin-bottom: 16px;
     }
-    #screen-victory-vault .victory-vault-profile-bar-img {
+    :is(#screen-victory-vault, #screen-arena) .victory-vault-profile-bar-img {
       width: 100%;
       height: auto;
       display: block;
@@ -2150,67 +2214,24 @@
       width: 62.037%;
       height: 50%;
     }
+    /* Top-right profile + XP — composite art (265×88) */
     #screen-campus .profile-wrap {
       position: absolute;
-      right: 0.9375%;
+      right: 0;
       top: 1.5%;
-      display: flex;
-      flex-direction: row-reverse;
-      align-items: flex-start;
+      /* 85% of prior scale (265/1280 stage × 0.85) */
+      width: min(17.59765625cqw, 225.25px);
+      max-width: 100%;
       z-index: 30;
       pointer-events: none;
+      line-height: 0;
     }
-    #screen-campus .profile-wrap .nav-avatar {
-      width: 4.53125%;
-      height: 7%;
-      box-shadow: 0.208% 0.333% 0 #1057a8;
-    }
-    #screen-campus .profile-wrap .nav-profile-info {
-      background: #0759a6;
-      border-top: 4px solid #4292ce;
-      border-bottom: 4px solid #4292ce;
-      border-radius: 10px 0 0 10px;
-      padding: 1% 1.5625% 1.5% 3.90625%;
-      margin-right: -2.8125%;
-      margin-top: 0.25%;
-      display: flex;
-      flex-direction: column;
-      align-items: flex-end;
-      gap: 4px;
-    }
-    #screen-campus .profile-wrap .nav-username {
-      font-weight: 500;
-      font-size: 14px;
-      font-size: max(10px, 1.1cqw);
-      color: #fff;
-      text-shadow: 1px 1px 0 #053564;
-    }
-    #screen-campus .profile-wrap .xp-bar {
-      position: relative;
-      width: 11.40625%;
-      min-width: 72px;
-      height: 2.75%;
-      min-height: 16px;
-      border-radius: 10px;
-      background: #bf9414;
-      overflow: hidden;
-    }
-    #screen-campus .profile-wrap .xp-bar-fill {
-      width: 57.5%;
-      height: 100%;
-      background: #ffc640;
-      border-radius: 10px;
-      box-shadow: 2px 1px 0 rgba(0,0,0,.25);
-    }
-    #screen-campus .profile-wrap .xp-bar-label {
-      position: absolute;
-      left: 50%;
-      top: 50%;
-      transform: translate(-50%, -50%);
-      font-weight: 700;
-      font-size: 14px;
-      font-size: max(10px, 1.1cqw);
-      color: #fff;
+    #screen-campus .profile-wrap .campus-profile-progress-img {
+      display: block;
+      width: 100%;
+      height: auto;
+      object-fit: contain;
+      filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.22));
     }
     #screen-campus .hit {
       position: absolute;
@@ -2231,9 +2252,8 @@
     #screen-campus .hit-math {
       cursor: default;
     }
-    /* Language Loft + AoPS Arena: decorative campus regions only (no navigation). */
-    #screen-campus .hit-lang,
-    #screen-campus .hit-arena {
+    /* Language Loft: decorative campus region only (no navigation). */
+    #screen-campus .hit-lang {
       cursor: default;
     }
     #screen-campus .stage:has(.hit-swag:hover) .glow-swag .glow__blob,
@@ -3063,17 +3083,13 @@
         <img class="btn-logo" src="https://www.figma.com/api/mcp/asset/6da4976c-1ad1-4529-9f43-4555ffe88593" alt="">
       </button>
       <div class="profile-wrap" aria-hidden="true">
-        <img class="nav-avatar" src="assets/avatar.svg" alt="">
-        <div class="nav-profile-info">
-          <span class="nav-username">EnergeticArmadillo35</span>
-          <div class="xp-bar"><div class="xp-bar-fill"></div><span class="xp-bar-label">Lv. 13</span></div>
-        </div>
+        <img class="campus-profile-progress-img" src="assets/victory-vault-profile-bar.png" width="265" height="88" alt="">
       </div>
       <a class="hit hit-swag" href="#" aria-label="Victory Vault" onclick="event.preventDefault();showScreen('screen-victory-vault');"></a>
       <a class="hit hit-sci" href="path.html" aria-label="Science Center — learning path"></a>
       <div class="hit hit-math" aria-hidden="true"></div>
       <span class="hit hit-lang" aria-hidden="true"></span>
-      <span class="hit hit-arena" aria-hidden="true"></span>
+      <a class="hit hit-arena" href="#" aria-label="AoPS Arena" onclick="event.preventDefault();showScreen('screen-arena');"></a>
     </div>
   </div>
 
@@ -3352,6 +3368,42 @@
 
   </div>
 
+  <!-- ══ SCREEN: ARENA (Victory Vault clone) ══ -->
+  <div class="screen" id="screen-arena">
+
+    <div class="victory-vault-bg" aria-hidden="true"></div>
+
+    <button type="button" class="home-btn victory-vault-home-btn" aria-label="Back to Campus" onclick="showScreen('screen-campus')">
+      <img class="victory-vault-home-btn-img" src="assets/victory-vault-home-btn.png" alt="">
+    </button>
+
+    <div style="position:absolute;top:0;left:25%;right:25%;min-width:600px;background:#f59e0b;border-bottom:8px solid #ba7705;border-bottom-left-radius:60px;border-bottom-right-radius:60px;display:flex;align-items:center;justify-content:center;height:90px;overflow:hidden;z-index:10;">
+      <span style="font-family:'Roboto Slab',serif;font-weight:500;font-size:24px;color:white;letter-spacing:-0.528px;white-space:nowrap;">AOPS Arena</span>
+    </div>
+
+    <div class="victory-vault-profile-wrap">
+      <img class="victory-vault-profile-bar-img" src="assets/victory-vault-profile-bar.png" width="529" height="176" alt="EnergeticArmadillo35, level 13">
+    </div>
+
+    <div id="arena-welcome-overlay" class="bottle-drop-intro-overlay" aria-hidden="true">
+      <div class="bottle-drop-intro-backdrop" onclick="closeArenaWelcomeOverlay()" aria-hidden="true"></div>
+      <div class="victory-vault-figma-modal" role="dialog" aria-modal="true" aria-labelledby="arena-welcome-title" aria-describedby="arena-welcome-copy" onclick="event.stopPropagation()">
+        <div class="victory-vault-figma-modal-surface" aria-hidden="true"></div>
+        <button type="button" class="victory-vault-figma-modal-close" onclick="closeArenaWelcomeOverlay()" aria-label="Close">
+          <img src="https://www.figma.com/api/mcp/asset/81ec583d-db1a-4255-a7ed-446bb2c333f5" alt="">
+        </button>
+        <div class="victory-vault-figma-modal-body">
+          <h2 id="arena-welcome-title" class="victory-vault-figma-modal-title">Welcome to AoPS Arena</h2>
+          <div id="arena-welcome-copy" class="victory-vault-figma-modal-copy">
+            <p>A math jam is happening right now.</p>
+            <p><br>Jump in and give it a try. When you graduate from Beast Academy, you can take even more classes just like these in AoPS Online.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
   <!-- ══ Mathnasium — lesson pathway (Figma 4004:4281) ══ -->
   <div class="screen lesson-pathway" id="screen-math-pathway">
     <div class="math-pathway-wall-accent" aria-hidden="true"></div>
@@ -3608,8 +3660,12 @@
       </div>
     </div>
 
-    <div class="action-btn-wrap">
-      <button class="action-btn" onclick="tryAgain()">
+    <div class="action-btn-wrap action-btn-wrap--pair">
+      <button type="button" class="action-btn action-btn--skip" onclick="skipAirResistanceFromKraken('screen-question','screen-q2')">
+        <img class="btn-bg-img" src="https://www.figma.com/api/mcp/asset/03d871e1-d648-42b7-8475-4e828673a4e2" alt="">
+        <span>Skip</span>
+      </button>
+      <button type="button" class="action-btn" onclick="tryAgain()">
         <img class="btn-bg-img" src="https://www.figma.com/api/mcp/asset/d1c6e57a-5b6e-4e30-9cee-21bc587850e2" alt="">
         <span>Try Again</span>
       </button>
@@ -3872,8 +3928,12 @@
       </div>
     </div>
 
-    <div class="action-btn-wrap">
-      <button class="action-btn" onclick="tryAgainQ2()">
+    <div class="action-btn-wrap action-btn-wrap--pair">
+      <button type="button" class="action-btn action-btn--skip" onclick="skipAirResistanceFromKraken('screen-q2','screen-lesson-final')">
+        <img class="btn-bg-img" src="https://www.figma.com/api/mcp/asset/03d871e1-d648-42b7-8475-4e828673a4e2" alt="">
+        <span>Skip</span>
+      </button>
+      <button type="button" class="action-btn" onclick="tryAgainQ2()">
         <img class="btn-bg-img" src="https://www.figma.com/api/mcp/asset/d1c6e57a-5b6e-4e30-9cee-21bc587850e2" alt="">
         <span>Try Again</span>
       </button>
@@ -4211,8 +4271,12 @@
       </div>
     </div>
 
-    <div class="action-btn-wrap">
-      <button class="action-btn" onclick="tryAgainQ3()">
+    <div class="action-btn-wrap action-btn-wrap--pair">
+      <button type="button" class="action-btn action-btn--skip" onclick="skipAirResistanceFromKraken('screen-q3','screen-q4')">
+        <img class="btn-bg-img" src="https://www.figma.com/api/mcp/asset/03d871e1-d648-42b7-8475-4e828673a4e2" alt="">
+        <span>Skip</span>
+      </button>
+      <button type="button" class="action-btn" onclick="tryAgainQ3()">
         <img class="btn-bg-img" src="https://www.figma.com/api/mcp/asset/d1c6e57a-5b6e-4e30-9cee-21bc587850e2" alt="">
         <span>Try Again</span>
       </button>
@@ -4390,8 +4454,12 @@
       </div>
     </div>
 
-    <div class="action-btn-wrap">
-      <button class="action-btn" onclick="tryAgainQ4()">
+    <div class="action-btn-wrap action-btn-wrap--pair">
+      <button type="button" class="action-btn action-btn--skip" onclick="skipAirResistanceFromKraken('screen-q4','screen-q5')">
+        <img class="btn-bg-img" src="https://www.figma.com/api/mcp/asset/03d871e1-d648-42b7-8475-4e828673a4e2" alt="">
+        <span>Skip</span>
+      </button>
+      <button type="button" class="action-btn" onclick="tryAgainQ4()">
         <img class="btn-bg-img" src="https://www.figma.com/api/mcp/asset/d1c6e57a-5b6e-4e30-9cee-21bc587850e2" alt="">
         <span>Try Again</span>
       </button>
@@ -4556,8 +4624,12 @@
       </div>
     </div>
 
-    <div class="action-btn-wrap">
-      <button class="action-btn" onclick="tryAgainQ5()">
+    <div class="action-btn-wrap action-btn-wrap--pair">
+      <button type="button" class="action-btn action-btn--skip" onclick="skipAirResistanceFromKraken('screen-q5','screen-q6')">
+        <img class="btn-bg-img" src="https://www.figma.com/api/mcp/asset/03d871e1-d648-42b7-8475-4e828673a4e2" alt="">
+        <span>Skip</span>
+      </button>
+      <button type="button" class="action-btn" onclick="tryAgainQ5()">
         <img class="btn-bg-img" src="https://www.figma.com/api/mcp/asset/d1c6e57a-5b6e-4e30-9cee-21bc587850e2" alt="">
         <span>Try Again</span>
       </button>
@@ -4722,8 +4794,12 @@
       </div>
     </div>
 
-    <div class="action-btn-wrap">
-      <button class="action-btn" onclick="tryAgainQ6()">
+    <div class="action-btn-wrap action-btn-wrap--pair">
+      <button type="button" class="action-btn action-btn--skip" onclick="skipAirResistanceFromKraken('screen-q6','screen-info')">
+        <img class="btn-bg-img" src="https://www.figma.com/api/mcp/asset/03d871e1-d648-42b7-8475-4e828673a4e2" alt="">
+        <span>Skip</span>
+      </button>
+      <button type="button" class="action-btn" onclick="tryAgainQ6()">
         <img class="btn-bg-img" src="https://www.figma.com/api/mcp/asset/d1c6e57a-5b6e-4e30-9cee-21bc587850e2" alt="">
         <span>Try Again</span>
       </button>
@@ -5084,9 +5160,9 @@
         </p>
         <div class="q4-mc-row" id="bottle-drop-empty-mc-row" role="group" aria-label="Choose an answer">
           <div class="q3-text-choice" id="bd-empty-choice-same" role="button" tabindex="0"
-               onclick="selectBottleDropEmptyChoice('same')" onkeydown="bottleDropEmptyMcKey(event,'same')">1: They will land at the same time.</div>
+               onclick="selectBottleDropEmptyChoice('same')" onkeydown="bottleDropEmptyMcKey(event,'same')"> They will land at the same time.</div>
           <div class="q3-text-choice" id="bd-empty-choice-full" role="button" tabindex="0"
-               onclick="selectBottleDropEmptyChoice('full')" onkeydown="bottleDropEmptyMcKey(event,'full')">2: The full bottle will land first.</div>
+               onclick="selectBottleDropEmptyChoice('full')" onkeydown="bottleDropEmptyMcKey(event,'full')"> The full bottle will land first.</div>
         </div>
         <div class="q3-modal-actions">
           <button type="button" class="action-btn" onclick="submitBottleDropEmptyMC()">
@@ -5266,7 +5342,7 @@
           </div>
         </div>
         <p class="bottle-drop-hypothesis-question">
-          If dropped from the same height, would a bowling ball fall faster on Earth or on Titan (Saturn’s largest moon)?
+          If dropped from the same height, would a balloon fall faster on Earth or on Titan (Saturn’s largest moon)?
         </p>
         <div class="q4-mc-row" id="bottle-drop-hypothesis-mc-row" role="group" aria-label="Choose where the ball falls faster">
           <div class="q3-text-choice" id="bd-hyp-choice-earth" role="button" tabindex="0"
@@ -5307,7 +5383,11 @@
       </div>
     </div>
 
-    <div class="action-btn-wrap" id="bottle-drop-hypothesis-kraken-actions" aria-hidden="true">
+    <div class="action-btn-wrap action-btn-wrap--pair" id="bottle-drop-hypothesis-kraken-actions" aria-hidden="true">
+      <button type="button" class="action-btn action-btn--skip" onclick="skipBottleDropHypothesisProblem()">
+        <img class="btn-bg-img" src="https://www.figma.com/api/mcp/asset/03d871e1-d648-42b7-8475-4e828673a4e2" alt="">
+        <span>Skip</span>
+      </button>
       <button type="button" class="action-btn" onclick="dismissBottleDropHypothesisKraken()">
         <img class="btn-bg-img" src="https://www.figma.com/api/mcp/asset/d1c6e57a-5b6e-4e30-9cee-21bc587850e2" alt="">
         <span>Try Again</span>
@@ -5506,7 +5586,11 @@
       </div>
     </div>
 
-    <div class="action-btn-wrap" id="bottle-drop-q2-kraken-actions" aria-hidden="true">
+    <div class="action-btn-wrap action-btn-wrap--pair" id="bottle-drop-q2-kraken-actions" aria-hidden="true">
+      <button type="button" class="action-btn action-btn--skip" onclick="skipBottleDropQ2Problem()">
+        <img class="btn-bg-img" src="https://www.figma.com/api/mcp/asset/03d871e1-d648-42b7-8475-4e828673a4e2" alt="">
+        <span>Skip</span>
+      </button>
       <button type="button" class="action-btn" onclick="dismissBottleDropQ2Kraken()">
         <img class="btn-bg-img" src="https://www.figma.com/api/mcp/asset/d1c6e57a-5b6e-4e30-9cee-21bc587850e2" alt="">
         <span>Try Again</span>
@@ -5641,7 +5725,11 @@
       </div>
     </div>
 
-    <div class="action-btn-wrap" id="bottle-drop-q5-kraken-actions" aria-hidden="true">
+    <div class="action-btn-wrap action-btn-wrap--pair" id="bottle-drop-q5-kraken-actions" aria-hidden="true">
+      <button type="button" class="action-btn action-btn--skip" onclick="skipBottleDropQ5Problem()">
+        <img class="btn-bg-img" src="https://www.figma.com/api/mcp/asset/03d871e1-d648-42b7-8475-4e828673a4e2" alt="">
+        <span>Skip</span>
+      </button>
       <button type="button" class="action-btn" onclick="dismissBottleDropQ5Kraken()">
         <img class="btn-bg-img" src="https://www.figma.com/api/mcp/asset/d1c6e57a-5b6e-4e30-9cee-21bc587850e2" alt="">
         <span>Try Again</span>
@@ -6124,6 +6212,102 @@
   /* Track which screens have been visited */
   const visited = new Set(['screen-campus']);
 
+  /* Skipped problems (Kraken) — red × on matching lesson nav dots */
+  const skippedProblemDots = new Set();
+
+  function navPrefixForProblemNav(navEl) {
+    if (navEl.classList.contains('problem-nav--bottle-drop')) return 'bd';
+    if (navEl.classList.contains('problem-nav--ar8')) return 'ar';
+    return null;
+  }
+
+  function applySkippedNavDots() {
+    document.querySelectorAll('.problem-nav').forEach(function (nav) {
+      const prefix = navPrefixForProblemNav(nav);
+      if (!prefix) return;
+      nav.querySelectorAll('.dot.nav-link[onclick]').forEach(function (dot) {
+        const oc = dot.getAttribute('onclick') || '';
+        const m = oc.match(/navTo\('([^']+)'\)/);
+        if (!m) return;
+        const targetId = m[1];
+        const key = prefix + ':' + targetId;
+        if (!skippedProblemDots.has(key)) return;
+        dot.classList.add('dot-skipped');
+        if (dot.querySelector('.dot-skipped-x')) return;
+        while (dot.firstChild) dot.removeChild(dot.firstChild);
+        const x = document.createElement('span');
+        x.className = 'dot-skipped-x';
+        x.setAttribute('aria-hidden', 'true');
+        x.textContent = '\u00d7';
+        dot.appendChild(x);
+      });
+    });
+  }
+
+  function markLessonProblemSkipped(prefix, problemScreenId) {
+    skippedProblemDots.add(prefix + ':' + problemScreenId);
+    applySkippedNavDots();
+  }
+
+  function skipAirResistanceFromKraken(problemScreenId, nextScreenId) {
+    markLessonProblemSkipped('ar', problemScreenId);
+    if (problemScreenId === 'screen-question') {
+      const inp = document.getElementById('answer-input');
+      if (inp) inp.value = '';
+    } else if (problemScreenId === 'screen-q2') {
+      const inp = document.getElementById('answer-input-2');
+      if (inp) inp.value = '';
+    } else if (problemScreenId === 'screen-q3') {
+      closeQ3VideoOverlay();
+      q3ImageChoice = null;
+      document.querySelectorAll('#q3-choice-open, #q3-choice-crumpled').forEach(function (el) {
+        el.classList.remove('selected');
+      });
+    } else if (problemScreenId === 'screen-q4') {
+      q4Choice = null;
+      document.querySelectorAll('#q4-more, #q4-less').forEach(function (el) {
+        el.classList.remove('selected');
+      });
+    } else if (problemScreenId === 'screen-q5') {
+      closeQ5VideoOverlay();
+      q5ImageChoice = null;
+      document.querySelectorAll('#q5-choice-open, #q5-choice-bag-apple').forEach(function (el) {
+        el.classList.remove('selected');
+      });
+    } else if (problemScreenId === 'screen-q6') {
+      q6Choice = null;
+      document.querySelectorAll('#q6-more, #q6-less').forEach(function (el) {
+        el.classList.remove('selected');
+      });
+    }
+    if (nextScreenId === 'screen-lesson-final') {
+      lessonFinalSource = 'air';
+    }
+    showScreen(nextScreenId);
+  }
+
+  function skipBottleDropHypothesisProblem() {
+    markLessonProblemSkipped('bd', 'screen-bottle-drop-hypothesis-prompt');
+    hideBottleDropHypothesisFeedback();
+    resetBottleDropHypothesisScreen();
+    showScreen('screen-bottle-drop-q2');
+  }
+
+  function skipBottleDropQ2Problem() {
+    markLessonProblemSkipped('bd', 'screen-bottle-drop-q2');
+    hideBottleDropQ2Feedback();
+    showScreen('screen-bottle-drop-q5');
+  }
+
+  function skipBottleDropQ5Problem() {
+    markLessonProblemSkipped('bd', 'screen-bottle-drop-q5');
+    hideBottleDropQ5Feedback();
+    const ta = document.getElementById('bottle-drop-q5-answer-textarea');
+    if (ta) ta.value = '';
+    lessonFinalSource = 'bottle-drop';
+    showScreen('screen-lesson-final');
+  }
+
   /* Shared lesson-complete screen: Air vs Bottle Drop chrome */
   let lessonFinalSource = 'air';
 
@@ -6244,6 +6428,15 @@
         o.setAttribute('aria-hidden', 'false');
       });
     }
+    if (id === 'screen-arena') {
+      requestAnimationFrame(() => {
+        const o = document.getElementById('arena-welcome-overlay');
+        if (!o) return;
+        o.classList.add('is-open');
+        o.setAttribute('aria-hidden', 'false');
+      });
+    }
+    applySkippedNavDots();
   }
 
   /* Open Air Resistance lesson (Does Weight Matter first) when arriving from path.html */
@@ -6609,11 +6802,19 @@
     o.setAttribute('aria-hidden', 'true');
   }
 
+  function closeArenaWelcomeOverlay() {
+    const o = document.getElementById('arena-welcome-overlay');
+    if (!o) return;
+    o.classList.remove('is-open');
+    o.setAttribute('aria-hidden', 'true');
+  }
+
   function closeAllBottleDropIntroOverlays() {
     closeBottleDropIntroOverlay();
     closeBottleDropIntroOverlay2();
     closeBottleDropHypothesisIntroOverlay();
     closeVictoryVaultWelcomeOverlay();
+    closeArenaWelcomeOverlay();
     closeBottleDropHypothesisPlaySimOverlay();
     closeBottleDropQ2PlaySimOverlay();
     closeBottleDropQ5PlaySimOverlay();
@@ -6664,6 +6865,7 @@
     const q5Play = document.getElementById('bottle-drop-q5-play-overlay');
     const oHypIntro = document.getElementById('bottle-drop-hypothesis-intro-overlay');
     const oVvWelcome = document.getElementById('victory-vault-welcome-overlay');
+    const oArenaWelcome = document.getElementById('arena-welcome-overlay');
     const hypSuccess = document.getElementById('bottle-drop-hypothesis-success-overlay');
     const hypKraken = document.getElementById('bottle-drop-hypothesis-kraken-wrap');
     const q2Success = document.getElementById('bottle-drop-q2-success-overlay');
@@ -6687,6 +6889,9 @@
     } else if (oVvWelcome && oVvWelcome.classList.contains('is-open')) {
       e.preventDefault();
       closeVictoryVaultWelcomeOverlay();
+    } else if (oArenaWelcome && oArenaWelcome.classList.contains('is-open')) {
+      e.preventDefault();
+      closeArenaWelcomeOverlay();
     } else if (sim1Success && sim1Success.classList.contains('is-visible')) {
       e.preventDefault();
       hideBottleDropSim1SuccessOverlay();
